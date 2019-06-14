@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingDefaultResource">
+
+    <!--底部背景-->
+    <attr name="pejoy_bottom_toolbar.preview.textColor" format="reference|color"/>
+
+    <attr name="pejoy_bottom_toolbar.preview.radioOnColor" format="reference|color"/>
+
+    <attr name="pejoy_bottom_toolbar.preview.radioOffColor" format="reference|color"/>
+
+    <attr name="pejoy_bottom_toolbar.apply.textColor" format="reference|color"/>
+
+    <attr name="pejoy_bottom_toolbar.background" format="reference|color"/>
+
+    <attr name="pejoy_item.checkCircle.backgroundColor" format="reference|color"/>
+
+    <attr name="pejoy_item.checkCircle.borderColor" format="reference|color"/>
+
+    <attr name="pejoy_item.placeholder" format="reference|color"/>
+
+</resources>

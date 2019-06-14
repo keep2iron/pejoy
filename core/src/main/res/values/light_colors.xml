@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="pejoy_light_bottom_toolbar_preview_text">#DE000000</color>
+
+    <color name="pejoy_light_bottom_toolbar_background">#ffffff</color>
+
+    <color name="pejoy_light_item_checkCircle_backgroundColor">#DE000000</color>
+
+    <color name="pejoy_light_item_checkCircle_borderColor">#FFFFFF</color>
+
+    <color name="pejoy_light_item_place_holder">#000000</color>
+
+    <color name="pejoy_light_check_original_radio_disable">#808080</color>
+
+    <color name="pejoy_light_check_apply_text_color">#808080</color>
+
+</resources>

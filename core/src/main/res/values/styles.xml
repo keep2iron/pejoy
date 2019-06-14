@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Pejoy" />
+
+    <style name="Pejoy.Light" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="pejoy_bottom_toolbar.preview.textColor">
+            @color/pejoy_light_bottom_toolbar_preview_text
+        </item>
+        <item name="pejoy_bottom_toolbar.background">
+            @color/pejoy_light_bottom_toolbar_background
+        </item>
+        <item name="pejoy_item.checkCircle.backgroundColor">
+            @color/pejoy_light_item_checkCircle_backgroundColor
+        </item>
+        <item name="pejoy_item.checkCircle.borderColor">
+            @color/pejoy_light_item_checkCircle_borderColor
+        </item>
+        <item name="pejoy_item.placeholder">
+            @color/pejoy_light_item_place_holder
+        </item>
+        <item name="pejoy_bottom_toolbar.apply.textColor">
+            @color/pejoy_light_check_apply_text_color
+        </item>
+    </style>
+
+</resources>

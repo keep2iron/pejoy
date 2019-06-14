@@ -1,0 +1,56 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion versions.build.target_sdk
+    buildToolsVersion versions.build.build_tools
+
+    defaultConfig {
+        applicationId "io.github.keep2iron.pejoy.app"
+        minSdkVersion versions.build.min_sdk
+        targetSdkVersion versions.build.target_sdk
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    signingConfigs {
+        release {
+            storeFile file('../keep2iron.jks')
+            storePassword 'keep2iron.github.io'
+            keyAlias 'keep2iron'
+            keyPassword 'keep2iron.github.io'
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation deps.kotlin.stdlib_jdk8
+    implementation deps.kotlin.coroutines_android
+    implementation deps.support.app_compat
+    implementation deps.support.constraint_layout
+
+    implementation deps.rxjava2
+
+    implementation deps.fast4android.pineapple
+    implementation deps.fresco
+
+    implementation project(':core')
+    implementation project(':engine')
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}
