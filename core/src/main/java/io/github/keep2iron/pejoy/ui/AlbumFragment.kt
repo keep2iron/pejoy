@@ -9,12 +9,10 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,12 +22,14 @@ import android.widget.Toast
 import io.github.keep2iron.pejoy.R
 import io.github.keep2iron.pejoy.adapter.AlbumMediaAdapter
 import io.github.keep2iron.pejoy.adapter.AlbumCategoryAdapter
-import java.security.Permission
 import android.widget.TextView
 import io.github.keep2iron.pejoy.ui.view.CheckRadioView
 import android.widget.LinearLayout
 import io.github.keep2iron.pejoy.Pejoy
+import io.github.keep2iron.pejoy.internal.entity.Item
 import io.github.keep2iron.pejoy.internal.entity.SelectionSpec
+import io.github.keep2iron.pejoy.internal.model.SelectedItemCollection
+import io.github.keep2iron.pejoy.ui.view.AlbumContentView
 import java.util.ArrayList
 
 
@@ -52,8 +52,6 @@ class AlbumFragment : Fragment(), View.OnClickListener {
 
     private var savedInstanceState: Bundle? = null
 
-    private lateinit var toolbar: Toolbar
-
     private lateinit var recyclerView: RecyclerView
 
     private lateinit var buttonPreview: TextView
@@ -63,6 +61,12 @@ class AlbumFragment : Fragment(), View.OnClickListener {
     private lateinit var original: CheckRadioView
 
     private lateinit var buttonApply: TextView
+
+    private lateinit var buttonAlbumCategory: TextView
+
+    private lateinit var albumContentView: AlbumContentView
+
+    private val spec = SelectionSpec.instance
 
     companion object {
         @JvmStatic
@@ -74,13 +78,13 @@ class AlbumFragment : Fragment(), View.OnClickListener {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.pejoy_fragment_album, container, false)
 
-        toolbar = view.findViewById(R.id.toolbar)
         recyclerView = view.findViewById(R.id.recyclerView)
         buttonPreview = view.findViewById(R.id.buttonPreview)
         originalLayout = view.findViewById(R.id.originalLayout)
         original = view.findViewById(R.id.original)
-
+        buttonAlbumCategory = view.findViewById(R.id.buttonAlbumCategory)
         buttonApply = view.findViewById(R.id.buttonApply)
+        albumContentView = view.findViewById(R.id.albumContentView)
 
         this.savedInstanceState = savedInstanceState
 
@@ -93,7 +97,7 @@ class AlbumFragment : Fragment(), View.OnClickListener {
 
         albumsAdapter = AlbumCategoryAdapter(requireContext(), null, false)
 
-        albumMediaAdapter = AlbumMediaAdapter(requireContext(), model.selectedItemCollection, recyclerView, model)
+        albumMediaAdapter = AlbumMediaAdapter(requireActivity(), model.selectedItemCollection, recyclerView, model)
 
         initRecyclerView()
 
@@ -102,6 +106,8 @@ class AlbumFragment : Fragment(), View.OnClickListener {
         subscribeOnUI()
 
         requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 0x01)
+
+        updateBottomToolbar()
 
         return view
     }
@@ -120,12 +126,27 @@ class AlbumFragment : Fragment(), View.OnClickListener {
 
     private fun subscribeOnUI() {
         buttonApply.setOnClickListener(this)
+        original.setOnClickListener(this)
+        buttonAlbumCategory.setOnClickListener(this)
     }
 
     private fun initRecyclerView() {
-        recyclerView.layoutManager = GridLayoutManager(requireContext(), 4)
-        recyclerView.addItemDecoration(DividerGridItemDecoration(requireContext()))
+        recyclerView.layoutManager = GridLayoutManager(requireContext(), spec.spanCount)
+        recyclerView.setHasFixedSize(true)
+
+        recyclerView.addItemDecoration(
+            MediaGridInset(
+                3,
+                resources.getDimensionPixelOffset(R.dimen.pejoy_media_grid_spacing),
+                false
+            )
+        )
         recyclerView.adapter = albumMediaAdapter
+        albumMediaAdapter.setOnCheckedViewStateChangeListener {
+            updateBottomToolbar()
+        }
+
+        albumContentView.setAdapter(albumsAdapter)
     }
 
     /**
@@ -152,32 +173,25 @@ class AlbumFragment : Fragment(), View.OnClickListener {
             setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             contentView = listView
         }
-
-//        dataBinding.tvTitle.setOnClickListener {
-//            popupWindow.showAsDropDown(dataBinding.tvTitle)
-//        }
-//
-//        model.selectedItemCollection.setOnItemSetChangeListener {
-//            if (it.isNotEmpty()) {
-//                dataBinding.tvContinue.text = resources.getString(R.string.str_continue_format, it.size)
-//            } else {
-//                dataBinding.tvContinue.text = resources.getString(R.string.str_continue)
-//            }
-//        }
     }
 
     override fun onClick(view: View) {
         when (view.id) {
             R.id.buttonApply -> {
                 val result = Intent()
-                val selectedUris = model.selectedItemCollection.asListOfUri() as ArrayList<Uri>
-                result.putParcelableArrayListExtra(Pejoy.EXTRA_RESULT_SELECTION, selectedUris)
                 val selectedPaths = model.selectedItemCollection.asListOfString() as ArrayList<String>
                 result.putStringArrayListExtra(Pejoy.EXTRA_RESULT_SELECTION_PATH, selectedPaths)
 
                 val activity = requireActivity()
                 activity.setResult(Activity.RESULT_OK, result)
                 activity.finish()
+            }
+            R.id.original -> {
+                model.originEnabled = !model.originEnabled
+                updateBottomToolbar()
+            }
+            R.id.buttonAlbumCategory -> {
+                albumContentView.switch()
             }
         }
     }
@@ -194,11 +208,53 @@ class AlbumFragment : Fragment(), View.OnClickListener {
         super.onDestroy()
     }
 
-    fun updateBottomToolbar() {
-        originalLayout.visibility = if (SelectionSpec.instance.originalable) {
+    private fun updateBottomToolbar() {
+        val selectCount = model.selectedItemCollection.count()
+
+        when {
+            selectCount == 0 -> {
+                buttonPreview.isEnabled = false
+                buttonApply.isEnabled = false
+                buttonApply.text = getString(R.string.pejoy_button_apply_default)
+            }
+            selectCount == 1 && spec.singleSelectionModeEnabled() -> {
+                buttonPreview.isEnabled = true
+                buttonApply.isEnabled = true
+                buttonApply.text = getString(R.string.pejoy_button_apply_default)
+            }
+            else -> {
+                buttonPreview.isEnabled = true
+                buttonApply.isEnabled = true
+                buttonApply.text = getString(R.string.pejoy_button_apply, selectCount)
+            }
+        }
+
+        original.setChecked(model.originEnabled)
+
+        originalLayout.visibility = if (spec.originalable) {
             View.VISIBLE
         } else {
             View.GONE
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == AbstractPreviewActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
+            val originEnabled = data.getBooleanExtra(AbstractPreviewActivity.EXTRA_BOOLEAN_ORIGIN_ENABLE, false)
+
+            val bundle = data.getBundleExtra(AbstractPreviewActivity.EXTRA_BUNDLE_ITEMS)
+            val collectionType = bundle.getInt(
+                SelectedItemCollection.STATE_COLLECTION_TYPE,
+                SelectedItemCollection.COLLECTION_UNDEFINED
+            )
+            val selected = bundle.getParcelableArrayList<Item>(SelectedItemCollection.STATE_SELECTION)
+
+            model.selectedItemCollection.overwrite(selected, collectionType)
+
+            model.originEnabled = originEnabled
+
+            albumMediaAdapter.notifyDataSetChanged()
+            updateBottomToolbar()
         }
     }
 }

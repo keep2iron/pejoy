@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Pejoy" />
+    <style name="Pejoy"/>
 
     <style name="Pejoy.Light" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/pejoy_light_primary</item>
+        <item name="colorPrimaryDark">@color/pejoy_light_primary_dark</item>
         <item name="pejoy_bottom_toolbar.preview.textColor">
             @color/pejoy_light_bottom_toolbar_preview_text
         </item>
@@ -22,6 +24,8 @@
         <item name="pejoy_bottom_toolbar.apply.textColor">
             @color/pejoy_light_check_apply_text_color
         </item>
+        <item name="pejoy_toolbar.text_color">
+            @color/pejoy_light_toolbar_text_color
+        </item>
     </style>
-
 </resources>

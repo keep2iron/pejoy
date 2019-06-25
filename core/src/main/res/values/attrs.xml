@@ -18,4 +18,7 @@
 
     <attr name="pejoy_item.placeholder" format="reference|color"/>
 
+    <attr name="pejoy_toolbar.text_color" format="reference|color"/>
+
+    <attr name="pejoy_player_action" format="string"/>
 </resources>

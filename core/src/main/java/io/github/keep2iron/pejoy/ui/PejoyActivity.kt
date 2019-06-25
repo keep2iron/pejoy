@@ -1,6 +1,7 @@
 package io.github.keep2iron.pejoy.ui
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
@@ -18,7 +19,7 @@ internal class PejoyActivity : AppCompatActivity() {
     private var currentShowFragment: Fragment? = null
 
     private val fragmentArr = arrayOf(
-            AlbumFragment.newInstance()
+        AlbumFragment.newInstance()
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +34,9 @@ internal class PejoyActivity : AppCompatActivity() {
 
         setContentView(R.layout.pejoy_activity_pejoy)
 
-        setContainerFragment(AlbumFragment.newInstance())
+        if (savedInstanceState == null) {
+            setContainerFragment(AlbumFragment.newInstance())
+        }
     }
 
     private fun setContainerFragment(fragment: Fragment) {
@@ -41,5 +44,10 @@ internal class PejoyActivity : AppCompatActivity() {
         transaction.replace(R.id.pejoyContainer, fragment)
         transaction.commit()
         currentShowFragment = fragment
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        currentShowFragment?.onActivityResult(requestCode, resultCode, data)
     }
 }

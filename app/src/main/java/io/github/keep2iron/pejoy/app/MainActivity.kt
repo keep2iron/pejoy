@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.View
+import android.widget.TextView
 import com.facebook.common.util.ByteConstants
 import io.github.keep2iron.pejoy.MimeType
 import io.github.keep2iron.pejoy.Pejoy
@@ -23,9 +24,11 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
-    private val subject: PublishSubject<Intent> = PublishSubject.create<Intent>()
+    private val tvImageResult by lazy {
+        findViewById<TextView>(R.id.tvImageResult)
+    }
 
-    private val handler = Handler()
+    private val imageResultBuilder = StringBuilder()
 
     @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +46,6 @@ class MainActivity : AppCompatActivity() {
                 ),
                 defaultImageLoaderOptions = {
                     scaleType = ImageLoaderOptions.ScaleType.FIT_CENTER
-                    placeHolderRes = R.drawable.ic_launcher_background
                 }
             )
         }
@@ -51,11 +53,25 @@ class MainActivity : AppCompatActivity() {
         findViewById<View>(R.id.btnGetImages).setOnClickListener {
             Pejoy.create(this)
                 .choose(MimeType.ofImage())
-                .maxSelectable(10)
+                .maxSelectable(3)
+                .countable(false)
+                .originalEnable(true)
                 .imageEngine(FrescoImageEngine())
                 .toObservable()
                 .extractStringPath()
                 .subscribe {
+                    imageResultBuilder.append("[\n")
+                    it.forEach { uri ->
+                        imageResultBuilder.apply {
+                            append(uri)
+                            if (uri != it.last()) {
+                                append("\n")
+                            } else {
+                                append("\n]\n")
+                            }
+                        }
+                    }
+                    tvImageResult.text = imageResultBuilder.toString()
                     Log.d("keep2iron", it.toString() + "this : " + this.hashCode())
                 }
         }

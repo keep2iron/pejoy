@@ -15,55 +15,48 @@
  */
 package io.github.keep2iron.pejoy.adapter
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.database.Cursor
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.View
-import android.widget.ImageView
 import io.github.keep2iron.pejoy.R
 import io.github.keep2iron.pejoy.internal.entity.IncapableCause
 import io.github.keep2iron.pejoy.internal.entity.Item
 import io.github.keep2iron.pejoy.internal.entity.SelectionSpec
 import io.github.keep2iron.pejoy.internal.model.SelectedItemCollection
 import io.github.keep2iron.pejoy.ui.AlbumModel
+import io.github.keep2iron.pejoy.ui.AbstractPreviewActivity
+import io.github.keep2iron.pejoy.ui.AlbumPreviewActivity
 import io.github.keep2iron.pejoy.ui.view.CheckView
 import io.github.keep2iron.pejoy.ui.view.MediaGrid
 import io.github.keep2iron.pejoy.utilities.getThemeDrawable
 
 class AlbumMediaAdapter(
-    context: Context,
+    val activity: Activity,
     private val mSelectedCollection: SelectedItemCollection,
     private val mRecyclerView: RecyclerView,
     private val model: AlbumModel
-) : RecyclerViewCursorAdapter(context, null), MediaGrid.OnMediaGridClickListener {
-
-    private var currentShowItemPosition = 0
-    private val selectionSpec = SelectionSpec.instance
+) : RecyclerViewCursorAdapter(activity, null), MediaGrid.OnMediaGridClickListener {
 
     private val placeholder by lazy {
         getThemeDrawable(context, R.attr.pejoy_item_placeholder)
     }
 
-    /**
-     * 添加的集合的状态监听
-     * @params Item -> 当前改变的item
-     * @params Boolean 是否添加 true添加 false删除
-     */
-    private var onChangeSelectionItemListener: ((Item, Boolean) -> Unit)? = null
+    private var onCheckedViewStateChangeListener: (() -> Unit)? = null
 
-
-//    /**
-//     * 点击相册item,返回上一个item
-//     */
-//    var onClickAlbumPreItemListener: ((Item?) -> Unit)? = null
+    fun setOnCheckedViewStateChangeListener(onCheckedViewStateChangeListener: () -> Unit) {
+        this.onCheckedViewStateChangeListener = onCheckedViewStateChangeListener
+    }
 
     override fun getLayoutId(): Int = R.layout.pejoy_item_grid_album
 
     override fun render(holder: RecyclerView.ViewHolder, cursor: Cursor?, position: Int) {
+        Log.d("keep2iron", "position : ${position}")
+
         val mediaGrid = holder.itemView as MediaGrid
         val context = holder.itemView.context.applicationContext
 
@@ -81,24 +74,6 @@ class AlbumMediaAdapter(
         setCheckStatus(item, mediaGrid)
 
         mediaGrid.setOnMediaGridClickListener(this)
-
-        setMediaGridCheckEnabled(item, mediaGrid)
-    }
-
-    private fun setMediaGridCheckEnabled(item: Item, mediaGrid: MediaGrid) {
-        val selected = model.selectedItemCollection.isSelected(item)
-        val dotSelectMore = model.selectedItemCollection.maxSelectableReached() && !selected
-        val isDifferentType =
-            (mSelectedCollection.collectionType == SelectedItemCollection.COLLECTION_IMAGE && item.isVideo) or
-                    (mSelectedCollection.collectionType == SelectedItemCollection.COLLECTION_VIDEO && item.isImage)
-
-        if (dotSelectMore || isDifferentType) {
-            mediaGrid.foreground = ColorDrawable(Color.parseColor("#99ffffff"))
-            mediaGrid.setCheckEnabled(false)
-        } else {
-            mediaGrid.foreground = null
-            mediaGrid.setCheckEnabled(true)
-        }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
@@ -113,13 +88,7 @@ class AlbumMediaAdapter(
                 )
             }
             val gridView = holder.itemView as MediaGrid
-            val item = Item.valueOf(cursor!!)
-
-//            if (currentShowItem.id == item.id) {
-//                gridView.setMediaSelected(true)
-//            } else {
-//                gridView.setMediaSelected(false)
-//            }
+            gridView.setOnMediaGridClickListener(this)
         } else {
             super.onBindViewHolder(holder, position, payloads)
         }
@@ -164,23 +133,18 @@ class AlbumMediaAdapter(
         }
     }
 
-    override fun swapCursor(newCursor: Cursor?) {
-        currentShowItemPosition = 0
-        super.swapCursor(newCursor)
-    }
-
     override fun onCheckViewClicked(checkView: CheckView, item: Item, holder: RecyclerView.ViewHolder, position: Int) {
         val gridView = holder.itemView as MediaGrid
 
         val selected = model.selectedItemCollection.isSelected(item)
         if (selected) {
             model.selectedItemCollection.remove(item)
-            onChangeSelectionItemListener?.invoke(item, false)
+            onCheckedViewStateChangeListener?.invoke()
             refreshSelection()
         } else {
             if (!model.selectedItemCollection.maxSelectableReached() && assertAddSelection(context, item)) {
                 model.selectedItemCollection.add(item)
-                onChangeSelectionItemListener?.invoke(item, true)
+                onCheckedViewStateChangeListener?.invoke()
                 refreshSelection()
             }
         }
@@ -189,11 +153,12 @@ class AlbumMediaAdapter(
     }
 
     override fun onThumbnailClicked(thumbnail: View, item: Item, holder: RecyclerView.ViewHolder, position: Int) {
-        if (currentShowItemPosition != position) {
-            notifyItemChanged(currentShowItemPosition, 0)
-            currentShowItemPosition = position
-            notifyItemChanged(position, 0)
-        }
+        val intent = Intent(context, AlbumPreviewActivity::class.java)
+        intent.putExtra(AbstractPreviewActivity.EXTRA_BUNDLE_ITEMS, model.selectedItemCollection.dataWithBundle)
+        intent.putExtra(AbstractPreviewActivity.EXTRA_BOOLEAN_ORIGIN_ENABLE, model.originEnabled)
+        intent.putExtra(AlbumPreviewActivity.EXTRA_ITEM, item)
+        intent.putExtra(AlbumPreviewActivity.EXTRA_ALBUM, model.currentShowAlbum())
+        activity.startActivityForResult(intent, AbstractPreviewActivity.REQUEST_CODE)
     }
 
     private fun assertAddSelection(context: Context, item: Item): Boolean {
@@ -203,25 +168,7 @@ class AlbumMediaAdapter(
     }
 
     private fun refreshSelection() {
-        val layoutManager = mRecyclerView.layoutManager as GridLayoutManager
-        val first = layoutManager.findFirstVisibleItemPosition()
-        val last = layoutManager.findLastVisibleItemPosition()
-        if (first == -1 || last == -1) {
-            return
-        }
-        for (i in first..last) {
-            cursor!!.moveToPosition(i)
-            val item = Item.valueOf(cursor!!)
-            val holder = mRecyclerView.findViewHolderForAdapterPosition(i)
-            val mediaGrid = holder?.itemView as MediaGrid
-
-            setMediaGridCheckEnabled(item, mediaGrid)
-
-            if (selectionSpec.countable) {
-                val checkedNum = mSelectedCollection.checkedNumOf(item)
-                mediaGrid.setCheckedNum(checkedNum)
-            }
-        }
+        notifyDataSetChanged()
     }
 
     private fun getImageResize(context: Context): Int {

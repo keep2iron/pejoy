@@ -17,13 +17,11 @@
 package io.github.keep2iron.pejoy.internal.entity
 
 import android.content.pm.ActivityInfo
-
 import android.support.annotation.StyleRes
 import io.github.keep2iron.pejoy.MimeType
 import io.github.keep2iron.pejoy.R
 import io.github.keep2iron.pejoy.engine.ImageEngine
 import io.github.keep2iron.pejoy.filter.Filter
-import io.github.keep2iron.pejoy.internal.HockFragment
 import io.github.keep2iron.pejoy.listener.OnCheckedListener
 import java.lang.IllegalArgumentException
 
@@ -44,14 +42,14 @@ class SelectionSpec private constructor() {
     var captureStrategy: CaptureStrategy? = null
     var spanCount: Int = 0
     var gridExpectedSize: Int = 0
-    var thumbnailScale: Float = 0.toFloat()
+    var thumbnailScale: Float = 0.75f
     var imageEngine: ImageEngine? = null
     var hasInited: Boolean = false
     //    public OnSelectedListener onSelectedListener;
     var originalable: Boolean = false
     var originalMaxSize: Int = 0
     var onCheckedListener: OnCheckedListener? = null
-    var hockFragment: HockFragment? = null
+    var autoHideToolbar: Boolean = true
 
     private fun reset() {
         mimeTypeSet = null
@@ -68,10 +66,11 @@ class SelectionSpec private constructor() {
         captureStrategy = null
         spanCount = 3
         gridExpectedSize = 0
-        thumbnailScale = 0.5f
+        thumbnailScale = 0.75f
         imageEngine = null
         hasInited = true
         originalable = false
+        autoHideToolbar = true
         originalMaxSize = Integer.MAX_VALUE
     }
 

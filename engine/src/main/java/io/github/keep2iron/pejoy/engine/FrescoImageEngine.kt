@@ -10,6 +10,18 @@ import io.github.keep2iron.pineapple.ImageLoader
 import io.github.keep2iron.pineapple.ImageLoaderManager
 import io.github.keep2iron.pineapple.ImageLoaderOptions
 import io.github.keep2iron.pineapple.MiddlewareView
+import me.relex.photodraweeview.PhotoDraweeView
+import android.opengl.ETC1.getHeight
+import android.opengl.ETC1.getWidth
+import android.provider.SyncStateContract.Helpers.update
+import android.graphics.drawable.Animatable
+import android.util.Log
+import com.facebook.drawee.controller.BaseControllerListener
+import com.facebook.drawee.backends.pipeline.Fresco
+import com.facebook.drawee.backends.pipeline.PipelineDraweeControllerBuilder
+import com.facebook.drawee.view.SimpleDraweeView
+import com.facebook.imagepipeline.image.ImageInfo
+
 
 /**
  *
@@ -18,7 +30,6 @@ import io.github.keep2iron.pineapple.MiddlewareView
  * @since 2018/07/16 14:43
  */
 class FrescoImageEngine : ImageEngine {
-
     private val imageLoader: ImageLoader = ImageLoaderManager.getInstance()
 
     override fun provideImageView(context: Context): View {
@@ -37,6 +48,8 @@ class FrescoImageEngine : ImageEngine {
         imageView: View,
         uri: Uri
     ) {
+        Log.d("tag","resize : ${resize}")
+//        (imageView as SimpleDraweeView).setImageURI(uri, context)
         imageLoader.showImageView(
             imageView as MiddlewareView, uri
         ) {
@@ -55,39 +68,90 @@ class FrescoImageEngine : ImageEngine {
         imageView: View,
         uri: Uri
     ) {
+//        (imageView as SimpleDraweeView).setImageURI(uri, context)
         imageLoader.showImageView(
             imageView as MiddlewareView, uri
         ) {
             imageWidth = resize
             imageHeight = resize
-            scaleType = ImageLoaderOptions.ScaleType.FIT_CENTER
+            scaleType = ImageLoaderOptions.ScaleType.CENTER_CROP
             placeHolder = placeholder
             placeHolderRes = 0
-            isLoadGif = true
+            isLoadGif = false
         }
     }
 
-    override fun loadImage(context: Context, resizeX: Int, resizeY: Int, imageView: View, uri: Uri) {
-        imageLoader.showImageView(
-            imageView as MiddlewareView, uri
-        ) {
-            imageWidth = resizeX
-            imageHeight = resizeY
-            scaleType = ImageLoaderOptions.ScaleType.FIT_CENTER
-        }
+    override fun loadImage(
+        context: Context,
+        resizeX: Int,
+        resizeY: Int,
+        placeholder: Drawable?,
+        imageView: View,
+        uri: Uri
+    ) {
+        val mPhotoDraweeView = imageView as PhotoDraweeView
+        mPhotoDraweeView.setPhotoUri(uri, context)
     }
 
-    override fun loadGifImage(context: Context, resizeX: Int, resizeY: Int, imageView: View, uri: Uri) {
-        imageLoader.showImageView(
-            imageView as MiddlewareView, uri
-        ) {
-            imageWidth = resizeX
-            imageHeight = resizeY
-            scaleType = ImageLoaderOptions.ScaleType.FIT_CENTER
-            isLoadGif = true
-        }
+    override fun loadGifImage(
+        context: Context,
+        resizeX: Int,
+        resizeY: Int,
+        placeholder: Drawable?,
+        imageView: View,
+        uri: Uri
+    ) {
+        val mPhotoDraweeView = imageView as PhotoDraweeView
+        val controller = Fresco.newDraweeControllerBuilder()
+            .setCallerContext(context)
+            .setUri(uri)
+            .setOldController(mPhotoDraweeView.controller)
+            .setAutoPlayAnimations(true)
+            .setControllerListener(object : BaseControllerListener<ImageInfo>() {
+                override fun onFailure(id: String?, throwable: Throwable?) {
+                    super.onFailure(id, throwable)
+                    mPhotoDraweeView.isEnableDraweeMatrix = false
+                }
+
+                override fun onFinalImageSet(
+                    id: String?, imageInfo: ImageInfo?,
+                    animatable: Animatable?
+                ) {
+                    super.onFinalImageSet(id, imageInfo, animatable)
+                    mPhotoDraweeView.isEnableDraweeMatrix = true
+                    if (imageInfo != null) {
+                        mPhotoDraweeView.update(imageInfo.width, imageInfo.height)
+                    }
+                }
+
+                override fun onIntermediateImageFailed(id: String?, throwable: Throwable?) {
+                    super.onIntermediateImageFailed(id, throwable)
+                    mPhotoDraweeView.isEnableDraweeMatrix = false
+                }
+
+                override fun onIntermediateImageSet(id: String?, imageInfo: ImageInfo?) {
+                    super.onIntermediateImageSet(id, imageInfo)
+                    mPhotoDraweeView.isEnableDraweeMatrix = true
+                    if (imageInfo != null) {
+                        mPhotoDraweeView.update(imageInfo.width, imageInfo.height)
+                    }
+                }
+            })
+            .build()
+        mPhotoDraweeView.controller = controller
     }
 
+    override fun provideScaleImageView(context: Context): View {
+        return PhotoDraweeView(context)
+    }
 
     override fun supportAnimatedGif(): Boolean = true
+
+    override fun resetViewMatrix(view: View) {
+        (view as PhotoDraweeView).attacher.let {
+            it.drawMatrix.reset()
+            it.checkMatrixBounds()
+            it.draweeView?.invalidate()
+        }
+    }
 }

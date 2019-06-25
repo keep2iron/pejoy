@@ -1,7 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="horizontal"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:foreground="?android:attr/selectableItemBackground"
+              android:layout_height="112dp"
+              tools:targetApi="m">
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_weight="5"
+            android:layout_width="0dp"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content">
+
+        <TextView android:layout_width="wrap_content"
+                  android:id="@+id/tvAlbumTitle"
+                  android:textSize="16sp"
+                  tools:text="全部"
+                  android:layout_height="wrap_content"/>
+
+        <TextView android:layout_width="wrap_content"
+                  android:id="@+id/tvAlbumCount"
+                  android:layout_marginTop="8dp"
+                  android:textSize="14sp"
+                  tools:text="6"
+                  android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <io.github.keep2iron.pejoy.ui.view.CheckRadioView
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
 
 </LinearLayout>

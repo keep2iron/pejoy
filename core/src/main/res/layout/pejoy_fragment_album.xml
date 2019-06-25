@@ -6,16 +6,64 @@
               android:orientation="vertical"
               tools:context=".ui.PejoyActivity">
 
-    <android.support.v7.widget.Toolbar
+    <LinearLayout
+            android:orientation="horizontal"
             android:id="@+id/toolbar"
+            android:elevation="4dp"
+            tools:layout_height="60dp"
+            tools:targetApi="lollipop"
+            android:background="?attr/colorPrimary"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"/>
+            android:layout_height="?attr/actionBarSize">
 
-    <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <ImageView
+                android:padding="16dp"
+                android:src="@drawable/pejoy_ic_back_arrow"
+                android:layout_gravity="left|center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <TextView
+                android:layout_weight="1"
+                android:id="@+id/tvTitle"
+                android:textColor="?attr/pejoy_toolbar.text_color"
+                android:layout_marginLeft="16dp"
+                android:gravity="center_vertical|start"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                tools:text="Album"/>
+
+        <TextView
+                android:id="@+id/buttonApply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:background="@drawable/pejoy_shape_apply_background"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/pejoy_button_apply"
+                android:textColor="?attr/pejoy_bottom_toolbar.apply.textColor"
+                android:textSize="16sp"
+                tools:targetApi="m"/>
+
+    </LinearLayout>
+
+    <io.github.keep2iron.pejoy.ui.view.AlbumContentView
+            android:id="@+id/albumContentView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1">
+
+        <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+    </io.github.keep2iron.pejoy.ui.view.AlbumContentView>
 
     <FrameLayout
             android:layout_width="match_parent"
@@ -23,15 +71,29 @@
             android:background="?attr/pejoy_bottom_toolbar.background">
 
         <TextView
+                android:drawablePadding="5dp"
+                android:drawableEnd="@drawable/pejoy_ic_baseline_collections"
+                android:id="@+id/buttonAlbumCategory"
+                android:layout_gravity="start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:padding="16dp"
+                android:textColor="?attr/pejoy_bottom_toolbar.preview.textColor"
+                android:textSize="16sp"
+                tools:targetApi="m"/>
+
+        <TextView
                 android:id="@+id/buttonPreview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
+                android:layout_gravity="end"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:padding="16dp"
                 android:text="@string/pejoy_button_preview"
                 android:textColor="?attr/pejoy_bottom_toolbar.preview.textColor"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
+                tools:targetApi="m"/>
 
         <LinearLayout
                 android:id="@+id/originalLayout"
@@ -41,12 +103,12 @@
                 android:foreground="?android:attr/selectableItemBackground"
                 android:orientation="horizontal"
                 android:padding="16dp"
-                android:visibility="visible">
+                android:visibility="visible" tools:targetApi="m">
 
             <io.github.keep2iron.pejoy.ui.view.CheckRadioView
                     android:id="@+id/original"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
                     android:src="@drawable/pejoy_ic_preview_radio_off"/>
 
@@ -62,17 +124,6 @@
                     android:textSize="14sp"/>
 
         </LinearLayout>
-
-        <TextView
-                android:id="@+id/buttonApply"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:padding="16dp"
-                android:text="@string/pejoy_button_apply"
-                android:textColor="?attr/pejoy_bottom_toolbar.apply.textColor"
-                android:textSize="16sp"/>
 
     </FrameLayout>
 

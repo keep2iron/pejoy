@@ -22,11 +22,6 @@ android {
         }
     }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
 }
 
 dependencies {
@@ -36,9 +31,8 @@ dependencies {
     implementation deps.fast4android.pineapple
     implementation deps.fresco
     implementation deps.fresco_gif
-    implementation deps.kotlin.stdlib_jdk8
-
-    implementation deps.support.app_compat
+    implementation deps.kotlin.stdlib_jdk7
+    implementation 'me.relex:photodraweeview:1.1.3'
 
     testImplementation deps.test.junit
     androidTestImplementation deps.test.runner

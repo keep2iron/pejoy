@@ -59,7 +59,7 @@ interface ImageEngine {
      * @param imageView ImageView widget
      * @param uri       Uri of the loaded image
      */
-    fun loadImage(context: Context, resizeX: Int, resizeY: Int, imageView: View, uri: Uri)
+    fun loadImage(context: Context, resizeX: Int, resizeY: Int, placeholder: Drawable?, imageView: View, uri: Uri)
 
     /**
      * Load a gif image resource.
@@ -70,7 +70,7 @@ interface ImageEngine {
      * @param imageView ImageView widget
      * @param uri       Uri of the loaded image
      */
-    fun loadGifImage(context: Context, resizeX: Int, resizeY: Int, imageView: View, uri: Uri)
+    fun loadGifImage(context: Context, resizeX: Int, resizeY: Int, placeholder: Drawable?, imageView: View, uri: Uri)
 
     /**
      * Whether this implementation supports animated gif.
@@ -93,4 +93,15 @@ interface ImageEngine {
      * @return 返回列表中的图片控件
      */
     fun provideImageView(context: Context): View
+
+    /**
+     * create a touch scale imageView
+     * @return
+     */
+    fun provideScaleImageView(context: Context): View
+
+    /**
+     * reset view matrix
+     */
+    fun resetViewMatrix(view: View)
 }

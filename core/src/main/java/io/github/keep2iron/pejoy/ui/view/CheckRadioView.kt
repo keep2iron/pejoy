@@ -8,17 +8,25 @@ import android.util.AttributeSet
 import io.github.keep2iron.pejoy.R
 import io.github.keep2iron.pejoy.utilities.getThemeColor
 
-class CheckRadioView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : AppCompatImageView(context, attrs, defStyleAttr) {
+class CheckRadioView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
+    AppCompatImageView(context, attrs, defStyleAttr) {
 
     private var mDrawable: Drawable? = null
 
     private var mSelectedColor: Int = 0
     private var mUnSelectUdColor: Int = 0
 
-
     init {
-        mSelectedColor = getThemeColor(context, R.attr.pejoy_bottom_toolbar_preview_radioOnColor, R.color.pejoy_light_item_checkCircle_backgroundColor)
-        mUnSelectUdColor = getThemeColor(context, R.attr.pejoy_bottom_toolbar_preview_radioOffColor, R.color.pejoy_light_check_original_radio_disable)
+        mSelectedColor = getThemeColor(
+            context,
+            R.attr.pejoy_bottom_toolbar_preview_radioOnColor,
+            R.color.pejoy_light_item_checkCircle_backgroundColor
+        )
+        mUnSelectUdColor = getThemeColor(
+            context,
+            R.attr.pejoy_bottom_toolbar_preview_radioOffColor,
+            R.color.pejoy_light_check_original_radio_disable
+        )
         setChecked(false)
     }
 
@@ -34,7 +42,6 @@ class CheckRadioView @JvmOverloads constructor(context: Context, attrs: Attribut
             mDrawable!!.setColorFilter(mUnSelectUdColor, PorterDuff.Mode.SRC_IN)
         }
     }
-
 
     fun setColor(color: Int) {
         if (mDrawable == null) {

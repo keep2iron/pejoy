@@ -59,9 +59,9 @@ class Pejoy {
         mFragment = WeakReference(fragment)
     }
 
-//    fun choose(mimeTypes: Set<MimeType>): SelectionCreator {
-//        return this.choose(mimeTypes, true)
-//    }
+    fun choose(mimeTypes: Set<MimeType>): SelectionCreator {
+        return this.choose(mimeTypes, true)
+    }
 
     /**
      * MIME types the selection constrains on.

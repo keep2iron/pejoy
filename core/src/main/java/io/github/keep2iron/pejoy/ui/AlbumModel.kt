@@ -39,6 +39,12 @@ class AlbumModel(application: Application) : AndroidViewModel(application) {
      */
     private val currentShowAlbum = MutableLiveData<Album>()
 
+    var originEnabled = false
+
+    fun currentShowAlbum(): Album {
+        return currentShowAlbum.value!!
+    }
+
 
     fun onCreateViewFragment(savedInstanceState: Bundle?) {
         selectedItemCollection = SelectedItemCollection(getApplication())
@@ -75,7 +81,7 @@ class AlbumModel(application: Application) : AndroidViewModel(application) {
             }
 
             override fun onAlbumReset() {
-
+                albumsAdapter.swapCursor(null)
             }
         })
         albumCollection.onRestoreInstanceState(savedInstanceState)
@@ -108,9 +114,6 @@ class AlbumModel(application: Application) : AndroidViewModel(application) {
         albumMediaCollection.onCreate(activity, object : AlbumMediaCollection.AlbumMediaCallbacks {
             override fun onAlbumMediaLoad(cursor: Cursor) {
                 if (cursor.count > 0) {
-                    cursor.moveToPosition(0)
-//                    val item = Item.valueOf(cursor)
-//                    this@AlbumModel.currentShowAlbum.set(item)
                     albumMediaAdapter.swapCursor(cursor)
                 }
             }

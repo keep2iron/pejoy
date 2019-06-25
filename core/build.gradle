@@ -33,7 +33,7 @@ dependencies {
     implementation deps.arch.lifecycle
     implementation deps.arch.extensions
 
-    implementation deps.kotlin.stdlib_jdk8
+    implementation deps.kotlin.stdlib_jdk7
 
     implementation deps.rxjava2
 

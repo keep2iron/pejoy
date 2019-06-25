@@ -1,20 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
-    <Button
-            android:id="@+id/btnGetImages"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="start get images!"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+    <ImageView
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/logo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"/>
 
-</android.support.constraint.ConstraintLayout>
+    <Button
+            android:background="@color/colorPrimaryDark"
+            android:id="@+id/btnGetImages"
+            android:textColor="@android:color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="start get pejoy!"/>
+
+    <TextView android:id="@+id/tvImageResult"
+              android:textColor="@android:color/white"
+              android:layout_width="match_parent"
+              android:layout_height="0dp"
+              android:layout_weight="1"/>
+
+</LinearLayout>
