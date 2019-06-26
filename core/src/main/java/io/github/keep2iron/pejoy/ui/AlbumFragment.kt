@@ -1,6 +1,7 @@
 package io.github.keep2iron.pejoy.ui
 
 import android.Manifest
+import android.annotation.TargetApi
 import android.app.Activity
 import android.app.Application
 import android.arch.lifecycle.Observer
@@ -8,6 +9,9 @@ import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.PorterDuff
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
@@ -21,10 +25,13 @@ import io.github.keep2iron.pejoy.adapter.AlbumMediaAdapter
 import io.github.keep2iron.pejoy.adapter.AlbumCategoryAdapter
 import io.github.keep2iron.pejoy.ui.view.CheckRadioView
 import io.github.keep2iron.pejoy.Pejoy
+import io.github.keep2iron.pejoy.internal.entity.CaptureStrategy
 import io.github.keep2iron.pejoy.internal.entity.Item
 import io.github.keep2iron.pejoy.internal.entity.SelectionSpec
 import io.github.keep2iron.pejoy.internal.model.SelectedItemCollection
 import io.github.keep2iron.pejoy.ui.view.AlbumContentView
+import io.github.keep2iron.pejoy.utilities.MediaStoreCompat
+import io.github.keep2iron.pejoy.utilities.getThemeColor
 import java.util.ArrayList
 
 
@@ -63,6 +70,10 @@ class AlbumFragment : Fragment(), View.OnClickListener {
 
     private val spec = SelectionSpec.instance
 
+    private val mediaStoreCompat: MediaStoreCompat by lazy {
+        MediaStoreCompat(requireActivity(), this)
+    }
+
     companion object {
         @JvmStatic
         fun newInstance(): AlbumFragment {
@@ -90,6 +101,17 @@ class AlbumFragment : Fragment(), View.OnClickListener {
 
         model.onCreateViewFragment(savedInstanceState)
 
+        if (spec.captureStrategy != null) {
+            mediaStoreCompat.setCaptureStrategy(spec.captureStrategy!!)
+        } else {
+            mediaStoreCompat.setCaptureStrategy(
+                CaptureStrategy(
+                    true,
+                    "io.github.keep2iron.pejoy.provider.PejoyProvider"
+                )
+            )
+        }
+
         albumsAdapter = AlbumCategoryAdapter(requireContext(), null, false, model)
 
         albumMediaAdapter = AlbumMediaAdapter(requireActivity(), model.selectedItemCollection, recyclerView, model)
@@ -100,7 +122,11 @@ class AlbumFragment : Fragment(), View.OnClickListener {
 
         subscribeOnUI()
 
-        requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 0x01)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 0x01)
+        } else {
+            model.loadAlbum(requireActivity(), albumsAdapter, albumMediaAdapter, savedInstanceState)
+        }
 
         updateBottomToolbar()
 
@@ -108,6 +134,24 @@ class AlbumFragment : Fragment(), View.OnClickListener {
     }
 
     private fun initAlbumCategory() {
+        val drawables = buttonAlbumCategory.compoundDrawables
+        val captureColor = getThemeColor(
+            requireContext(),
+            R.attr.pejoy_bottom_toolbar_lintColor,
+            R.color.pejoy_light_check_apply_text_color
+        )
+        drawables.indices.forEach {
+            val drawable = drawables[it]
+            if (drawable != null && drawable.constantState != null) {
+                val state = drawable.constantState!!
+
+                val newDrawable = state.newDrawable().mutate()
+                newDrawable.setColorFilter(captureColor, PorterDuff.Mode.SRC_IN)
+                newDrawable.bounds = drawable.bounds
+                drawables[it] = newDrawable
+            }
+        }
+        buttonAlbumCategory.setCompoundDrawables(drawables[0], drawables[1], drawables[2], drawables[3])
 
         albumContentView.setAdapter(albumsAdapter)
         albumContentView.setOnItemClickListener(AdapterView.OnItemClickListener { _, _, position, _ ->
@@ -116,6 +160,7 @@ class AlbumFragment : Fragment(), View.OnClickListener {
         })
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         val isReadExternalStoragePermission =
             permissions.isNotEmpty() && permissions.first() == Manifest.permission.READ_EXTERNAL_STORAGE
@@ -259,6 +304,31 @@ class AlbumFragment : Fragment(), View.OnClickListener {
                 setResult()
                 requireActivity().finish()
             }
+        } else if (requestCode == Pejoy.REQUEST_CODE_CAPTURE && resultCode == Activity.RESULT_OK && data != null) {
+            // Just pass the data back to previous calling Activity.
+            val contentUri = mediaStoreCompat.getCurrentPhotoUri()
+            val path = mediaStoreCompat.getCurrentPhotoPath()
+            val selected = ArrayList<Uri>()
+            selected.add(contentUri)
+            val selectedPath = ArrayList<String>()
+            selectedPath.add(path)
+            val result = Intent()
+            result.putParcelableArrayListExtra(Pejoy.EXTRA_RESULT_SELECTION, selected)
+            result.putStringArrayListExtra(Pejoy.EXTRA_RESULT_SELECTION_PATH, selectedPath)
+            val activity = requireActivity()
+            activity.setResult(Activity.RESULT_OK, result)
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                activity.revokeUriPermission(
+                    contentUri,
+                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
+            }
+            activity.finish()
         }
+    }
+
+    fun capture() {
+        mediaStoreCompat.dispatchCaptureIntent(requireContext(), Pejoy.REQUEST_CODE_CAPTURE)
     }
 }

@@ -18,7 +18,7 @@ class PreviewViewPager @JvmOverloads constructor(context: Context, attrs: Attrib
         gestureDetector = GestureDetectorCompat(context, object : GestureDetector.SimpleOnGestureListener() {
             override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
                 onClickListener?.onClick(this@PreviewViewPager)
-                return true
+                return false
             }
         })
     }

@@ -40,7 +40,7 @@
                 android:background="@drawable/pejoy_shape_apply_background"
                 android:text="@string/pejoy_button_apply"
                 android:textSize="16sp"
-                android:textColor="?attr/pejoy_bottom_toolbar.apply.textColor"
+                android:textColor="?attr/pejoy_bottom_toolbar.lintColor"
                 tools:targetApi="m"/>
     </FrameLayout>
 

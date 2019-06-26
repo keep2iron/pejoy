@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="pejoy_light_bottom_toolbar_preview_text">#DE000000</color>
+    <!--<color name="pejoy_light_bottom_toolbar_preview_text">#DE000000</color>-->
 
-    <color name="pejoy_light_bottom_toolbar_background">#ffffff</color>
+    <color name="pejoy_light_bottom_toolbar_background">@color/pejoy_light_primary</color>
 
     <color name="pejoy_light_item_checkCircle_backgroundColor">@color/pejoy_light_primary</color>
 
     <color name="pejoy_light_item_checkCircle_borderColor">#FFFFFF</color>
 
-    <color name="pejoy_light_item_place_holder">#EAEEF4</color>
+    <color name="pejoy_light_item_place_holder">#37474F</color>
 
     <color name="pejoy_light_check_original_radio_disable">#808080</color>
 
@@ -21,4 +21,7 @@
 
     <color name="pejoy_light_toolbar_text_color">#ffffff</color>
 
+    <color name="pejoy_light_capture">#FFFFFF</color>
+
+    <color name="pejoy_light_background">@color/pejoy_light_primary_dark</color>
 </resources>

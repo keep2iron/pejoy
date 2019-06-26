@@ -13,6 +13,7 @@ import android.widget.FrameLayout
 import android.widget.ListView
 import io.github.keep2iron.pejoy.R
 import io.github.keep2iron.pejoy.adapter.AlbumCategoryAdapter
+import io.github.keep2iron.pejoy.utilities.getThemeColor
 
 class AlbumContentView @JvmOverloads constructor(
     context: Context,

@@ -19,10 +19,13 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
+import android.graphics.PorterDuff
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
 import io.github.keep2iron.pejoy.R
 import io.github.keep2iron.pejoy.internal.entity.IncapableCause
 import io.github.keep2iron.pejoy.internal.entity.Item
@@ -31,9 +34,12 @@ import io.github.keep2iron.pejoy.internal.model.SelectedItemCollection
 import io.github.keep2iron.pejoy.ui.AlbumModel
 import io.github.keep2iron.pejoy.ui.AbstractPreviewActivity
 import io.github.keep2iron.pejoy.ui.AlbumPreviewActivity
+import io.github.keep2iron.pejoy.ui.PejoyActivity
 import io.github.keep2iron.pejoy.ui.view.CheckView
 import io.github.keep2iron.pejoy.ui.view.MediaGrid
+import io.github.keep2iron.pejoy.utilities.getThemeColor
 import io.github.keep2iron.pejoy.utilities.getThemeDrawable
+import java.lang.IllegalArgumentException
 
 class AlbumMediaAdapter(
     val activity: Activity,
@@ -41,6 +47,11 @@ class AlbumMediaAdapter(
     private val mRecyclerView: RecyclerView,
     private val model: AlbumModel
 ) : RecyclerViewCursorAdapter(activity, null), MediaGrid.OnMediaGridClickListener {
+
+    companion object {
+        const val VIEW_TYPE_CAPTURE = 0x01
+        const val VIEW_TYPE_MEDIA = 0x02
+    }
 
     private val placeholder by lazy {
         getThemeDrawable(context, R.attr.pejoy_item_placeholder)
@@ -52,28 +63,66 @@ class AlbumMediaAdapter(
         this.onCheckedViewStateChangeListener = onCheckedViewStateChangeListener
     }
 
-    override fun getLayoutId(): Int = R.layout.pejoy_item_grid_album
+//    override fun getLayoutId(): Int = R.layout.pejoy_item_grid_album
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            VIEW_TYPE_MEDIA -> {
+                ViewHolder(R.layout.pejoy_item_grid_album, parent)
+            }
+            VIEW_TYPE_CAPTURE -> {
+                ViewHolder(R.layout.pejoy_item_album_capture, parent).apply {
+                    itemView.setOnClickListener {
+                        (activity as PejoyActivity).capture()
+                    }
+                }
+            }
+            else -> {
+                throw IllegalArgumentException("not support this viewType = $viewType.")
+            }
+        }
+    }
 
     override fun render(holder: RecyclerView.ViewHolder, cursor: Cursor?, position: Int) {
-        Log.d("keep2iron", "position : ${position}")
+        when (getItemViewType(position, cursor)) {
+            VIEW_TYPE_CAPTURE -> {
+                val hint = holder.itemView.findViewById<TextView>(R.id.hint)
+                val drawables = hint.compoundDrawables
+                val captureColor =
+                    getThemeColor(hint.context, R.attr.pejoy_capture_text_color, R.color.pejoy_light_capture)
+                drawables.indices.forEach {
+                    val drawable = drawables[it]
+                    if (drawable != null && drawable.constantState != null) {
+                        val state = drawable.constantState!!
 
-        val mediaGrid = holder.itemView as MediaGrid
-        val context = holder.itemView.context.applicationContext
+                        val newDrawable = state.newDrawable().mutate()
+                        newDrawable.setColorFilter(captureColor, PorterDuff.Mode.SRC_IN)
+                        newDrawable.bounds = drawable.bounds
+                        drawables[it] = newDrawable
+                    }
+                }
+                hint.setCompoundDrawables(drawables[0], drawables[1], drawables[2], drawables[3])
+            }
+            VIEW_TYPE_MEDIA -> {
+                val mediaGrid = holder.itemView as MediaGrid
+                val context = holder.itemView.context.applicationContext
 
-        val item = Item.valueOf(cursor!!)
-        mediaGrid.preBindMedia(
-            MediaGrid.PreBindInfo(
-                getImageResize(context),
-                placeholder,
-                mSelectionSpec.countable,
-                holder,
-                position
-            )
-        )
-        mediaGrid.bindMedia(item)
-        setCheckStatus(item, mediaGrid)
+                val item = Item.valueOf(cursor!!)
+                mediaGrid.preBindMedia(
+                    MediaGrid.PreBindInfo(
+                        getImageResize(context),
+                        placeholder,
+                        mSelectionSpec.countable,
+                        holder,
+                        position
+                    )
+                )
+                mediaGrid.bindMedia(item)
+                setCheckStatus(item, mediaGrid)
 
-        mediaGrid.setOnMediaGridClickListener(this)
+                mediaGrid.setOnMediaGridClickListener(this)
+            }
+        }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
@@ -95,7 +144,7 @@ class AlbumMediaAdapter(
     }
 
     override fun getItemViewType(position: Int, cursor: Cursor?): Int {
-        return 0
+        return if (Item.valueOf(cursor).isCapture) VIEW_TYPE_CAPTURE else VIEW_TYPE_MEDIA
     }
 
     private val mSelectionSpec: SelectionSpec = SelectionSpec.instance

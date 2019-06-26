@@ -4,4 +4,13 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent">
 
+    <ImageView
+            android:id="@+id/playVideo"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:src="@drawable/pejoy_ic_twotone_play_circle_outline"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+    />
+
 </FrameLayout>

@@ -56,6 +56,7 @@ class MainActivity : AppCompatActivity() {
                 .maxSelectable(3)
                 .countable(false)
                 .originalEnable(true)
+                .capture(true)
                 .imageEngine(FrescoImageEngine())
                 .toObservable()
                 .extractStringPath()

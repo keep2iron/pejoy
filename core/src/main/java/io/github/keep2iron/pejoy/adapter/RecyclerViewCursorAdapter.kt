@@ -30,17 +30,17 @@ abstract class RecyclerViewCursorAdapter constructor(val context: Context, prote
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var mRowIDColumn: Int = 0
 
-    /**
-     * 获取布局的layout id
-     *
-     * @return layout id
-     */
-    @LayoutRes
-    abstract fun getLayoutId(): Int
+//    /**
+//     * 获取布局的layout id
+//     *
+//     * @return layout id
+//     */
+//    @LayoutRes
+//    abstract fun getLayoutId(): Int
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return ViewHolder(getLayoutId(), parent)
-    }
+//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+//        return ViewHolder(getLayoutId(), parent)
+//    }
 
 
     /**

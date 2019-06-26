@@ -41,8 +41,8 @@ class MediaStoreCompat {
     private val mContext: WeakReference<Activity>
     private var mFragment: WeakReference<Fragment>? = null
     private var mCaptureStrategy: CaptureStrategy? = null
-    private var currentPhotoUri: Uri? = null
-    var currentPhotoPath: String? = null
+    private lateinit var currentPhotoUri: Uri
+    private lateinit var currentPhotoPath: String
 
     constructor(activity: Activity, fragment: Fragment? = null) {
         mContext = WeakReference(activity)
@@ -110,6 +110,14 @@ class MediaStoreCompat {
             null
         } else tempFile
 
+    }
+
+    fun getCurrentPhotoUri(): Uri {
+        return currentPhotoUri
+    }
+
+    fun getCurrentPhotoPath(): String {
+        return currentPhotoPath
     }
 
     companion object {

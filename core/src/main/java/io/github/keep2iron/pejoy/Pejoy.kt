@@ -33,6 +33,7 @@ class Pejoy {
         const val IMAGE = 0x01
 
         const val REQUEST_CODE = 101
+        const val REQUEST_CODE_CAPTURE = 102
 
         @JvmStatic
         fun create(activity: FragmentActivity): Pejoy {

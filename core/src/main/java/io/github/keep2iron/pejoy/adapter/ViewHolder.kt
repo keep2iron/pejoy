@@ -6,7 +6,7 @@ import android.view.ViewGroup
 
 class ViewHolder(resId: Int, viewParent: ViewGroup) :
     RecyclerView.ViewHolder(
-        LayoutInflater.from(viewParent.context.applicationContext).inflate(
+        LayoutInflater.from(viewParent.context).inflate(
             resId,
             viewParent,
             false

@@ -18,9 +18,9 @@ internal class PejoyActivity : AppCompatActivity() {
 
     private var currentShowFragment: Fragment? = null
 
-    private val fragmentArr = arrayOf(
+    private val albumFragment by lazy {
         AlbumFragment.newInstance()
-    )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val mSpec = SelectionSpec.instance
@@ -35,7 +35,7 @@ internal class PejoyActivity : AppCompatActivity() {
         setContentView(R.layout.pejoy_activity_pejoy)
 
         if (savedInstanceState == null) {
-            setContainerFragment(AlbumFragment.newInstance())
+            setContainerFragment(albumFragment)
         }
     }
 
@@ -49,5 +49,9 @@ internal class PejoyActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         currentShowFragment?.onActivityResult(requestCode, resultCode, data)
+    }
+
+    fun capture() {
+        albumFragment.capture()
     }
 }

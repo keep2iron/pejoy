@@ -19,4 +19,8 @@
 
     <string name="pejoy_button_apply">确定(%1$d)</string>
 
+    <string name="pejoy_error_no_video_activity">没有支持视频预览的应用</string>
+
+    <string name="pejoy_photo_grid_capture">拍照</string>
+
 </resources>

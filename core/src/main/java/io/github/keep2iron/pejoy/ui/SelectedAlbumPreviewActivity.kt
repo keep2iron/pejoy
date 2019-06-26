@@ -16,7 +16,7 @@ class SelectedAlbumPreviewActivity : AbstractPreviewActivity() {
         }
 
         val bundle = intent.getBundleExtra(EXTRA_BUNDLE_ITEMS)
-        val selected = bundle.getParcelableArrayList<Item>(SelectedItemCollection.STATE_SELECTION)
+        val selected = bundle.getParcelableArrayList<Item>(SelectedItemCollection.STATE_SELECTION)!!
         adapter.addAll(selected)
         adapter.notifyDataSetChanged()
 

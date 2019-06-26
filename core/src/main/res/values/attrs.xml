@@ -8,7 +8,7 @@
 
     <attr name="pejoy_bottom_toolbar.preview.radioOffColor" format="reference|color"/>
 
-    <attr name="pejoy_bottom_toolbar.apply.textColor" format="reference|color"/>
+    <attr name="pejoy_bottom_toolbar.lintColor" format="reference|color"/>
 
     <attr name="pejoy_bottom_toolbar.background" format="reference|color"/>
 
@@ -20,5 +20,11 @@
 
     <attr name="pejoy_toolbar.text_color" format="reference|color"/>
 
+    <attr name="pejoy_capture.text_color" format="reference|color"/>
+
     <attr name="pejoy_player_action" format="string"/>
+
+    <attr name="pejoy_file_provider" format="string"/>
+
+    <attr name="pejoy_background" format="reference|color"/>
 </resources>

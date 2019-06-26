@@ -225,6 +225,20 @@ internal constructor(private val mPejoy: Pejoy, mimeTypes: Set<MimeType>, mediaT
     }
 
     /**
+     * Determines whether the photo capturing is enabled or not on the media grid view.
+     *
+     *
+     * If this value is set true, photo capturing entry will appear only on All Media's page.
+     *
+     * @param enable Whether to enable capturing or not. Default value is false;
+     * @return [SelectionCreator] for fluent API.
+     */
+    fun capture(enable: Boolean): SelectionCreator {
+        mSelectionSpec.capture = enable
+        return this
+    }
+
+    /**
      * Set the desired orientation of this activity.
      *
      * @param orientation An orientation constant as used in [ScreenOrientation].

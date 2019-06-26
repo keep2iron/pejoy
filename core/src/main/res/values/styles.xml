@@ -6,12 +6,6 @@
     <style name="Pejoy.Light" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/pejoy_light_primary</item>
         <item name="colorPrimaryDark">@color/pejoy_light_primary_dark</item>
-        <item name="pejoy_bottom_toolbar.preview.textColor">
-            @color/pejoy_light_bottom_toolbar_preview_text
-        </item>
-        <item name="pejoy_bottom_toolbar.background">
-            @color/pejoy_light_bottom_toolbar_background
-        </item>
         <item name="pejoy_item.checkCircle.backgroundColor">
             @color/pejoy_light_item_checkCircle_backgroundColor
         </item>
@@ -21,11 +15,30 @@
         <item name="pejoy_item.placeholder">
             @color/pejoy_light_item_place_holder
         </item>
-        <item name="pejoy_bottom_toolbar.apply.textColor">
-            @color/pejoy_light_check_apply_text_color
-        </item>
         <item name="pejoy_toolbar.text_color">
             @color/pejoy_light_toolbar_text_color
+        </item>
+        <item name="pejoy_capture.text_color">
+            @color/pejoy_light_capture
+        </item>
+        <item name="pejoy_file_provider">
+            io.github.keep2iron.pejoy.provider.PejoyProvider
+        </item>
+        <item name="pejoy_background">
+            @color/pejoy_light_background
+        </item>
+
+        <item name="pejoy_bottom_toolbar.lintColor">
+            @color/pejoy_light_check_apply_text_color
+        </item>
+        <item name="pejoy_bottom_toolbar.background">
+            @color/pejoy_light_bottom_toolbar_background
+        </item>
+        <item name="pejoy_bottom_toolbar.preview.radioOnColor">
+            @color/pejoy_light_check_apply_text_color
+        </item>
+        <item name="pejoy_bottom_toolbar.preview.radioOffColor">
+            @color/pejoy_light_check_apply_text_color
         </item>
     </style>
 </resources>
