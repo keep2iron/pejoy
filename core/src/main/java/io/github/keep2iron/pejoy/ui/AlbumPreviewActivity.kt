@@ -42,6 +42,7 @@ class AlbumPreviewActivity : AbstractPreviewActivity(), AlbumMediaCollection.Alb
         } else {
             checkView.setChecked(selectedCollection.isSelected(item))
         }
+        updateToolbar(item)
     }
 
     override fun onAlbumMediaLoad(cursor: Cursor) {

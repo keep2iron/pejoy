@@ -19,6 +19,7 @@ import io.github.keep2iron.pejoy.internal.model.SelectedItemCollection
 import io.github.keep2iron.pejoy.ui.view.CheckRadioView
 import io.github.keep2iron.pejoy.ui.view.CheckView
 import io.github.keep2iron.pejoy.ui.view.PreviewViewPager
+import io.github.keep2iron.pejoy.utilities.PhotoMetadataUtils
 import io.github.keep2iron.pejoy.utilities.Platform
 
 abstract class AbstractPreviewActivity : AppCompatActivity(), View.OnClickListener, ViewPager.OnPageChangeListener {
@@ -30,6 +31,9 @@ abstract class AbstractPreviewActivity : AppCompatActivity(), View.OnClickListen
     private val originalLayout: View by lazy { findViewById<View>(R.id.originalLayout) }
     private val topToolbar: View by lazy { findViewById<View>(R.id.topToolbar) }
     private val bottomToolbar: View by lazy { findViewById<View>(R.id.bottomToolbar) }
+    private val size: TextView by lazy { findViewById<TextView>(R.id.size) }
+
+    protected lateinit var adapter: PreviewFragmentAdapter
 
     protected val selectionSpec by lazy { SelectionSpec.instance }
 
@@ -63,11 +67,10 @@ abstract class AbstractPreviewActivity : AppCompatActivity(), View.OnClickListen
         checkView.setOnClickListener(this)
         checkView.setCountable(selectionSpec.countable)
 
-        viewPager.adapter = PreviewFragmentAdapter(supportFragmentManager)
+        adapter = PreviewFragmentAdapter(supportFragmentManager)
+        viewPager.adapter = adapter
         viewPager.addOnPageChangeListener(this)
         viewPager.setOnClickListener(this)
-
-        updateToolbar()
     }
 
     override fun onClick(v: View) {
@@ -75,16 +78,16 @@ abstract class AbstractPreviewActivity : AppCompatActivity(), View.OnClickListen
             R.id.checkView -> {
                 val item = (viewPager.adapter as PreviewFragmentAdapter).getMediaItem(viewPager.currentItem)
 
-                if(!selectedCollection.maxSelectableReached() && assertAddSelection(this, item)){
-                    val selected = selectedCollection.isSelected(item)
-                    if (selected) {
-                        selectedCollection.remove(item)
-                        if (selectionSpec.countable) {
-                            checkView.setCheckedNum(CheckView.UNCHECKED)
-                        } else {
-                            checkView.setChecked(false)
-                        }
+                val selected = selectedCollection.isSelected(item)
+                if (selected) {
+                    selectedCollection.remove(item)
+                    if (selectionSpec.countable) {
+                        checkView.setCheckedNum(CheckView.UNCHECKED)
                     } else {
+                        checkView.setChecked(false)
+                    }
+                } else {
+                    if (!selectedCollection.maxSelectableReached() && assertAddSelection(this, item)) {
                         selectedCollection.add(item)
                         if (selectionSpec.countable) {
                             checkView.setCheckedNum(selectedCollection.checkedNumOf(item))
@@ -92,10 +95,11 @@ abstract class AbstractPreviewActivity : AppCompatActivity(), View.OnClickListen
                             checkView.setChecked(true)
                         }
                     }
-                    updateToolbar()
                 }
+                updateToolbar(adapter.getMediaItem(viewPager.currentItem))
             }
             R.id.imageBack -> {
+                setResult(false)
                 finish()
             }
             R.id.viewPager -> {
@@ -120,7 +124,11 @@ abstract class AbstractPreviewActivity : AppCompatActivity(), View.OnClickListen
             }
             R.id.original -> {
                 originEnable = !originEnable
-                updateToolbar()
+                updateToolbar(adapter.getMediaItem(viewPager.currentItem))
+            }
+            R.id.buttonApply -> {
+                setResult(true)
+                finish()
             }
         }
     }
@@ -140,7 +148,7 @@ abstract class AbstractPreviewActivity : AppCompatActivity(), View.OnClickListen
     override fun onPageSelected(position: Int) {
         if (previousPos != -1 && previousPos != position) {
             val adapter = viewPager.adapter as PreviewFragmentAdapter
-//            (adapter.instantiateItem(viewPager, previousPos) as PreviewItemFragment).resetView()
+            (adapter.instantiateItem(viewPager, previousPos) as PreviewItemFragment).resetView()
 
             val item = adapter.getMediaItem(position)
             if (selectionSpec.countable) {
@@ -162,20 +170,29 @@ abstract class AbstractPreviewActivity : AppCompatActivity(), View.OnClickListen
             }
 
             previousPos = position
+            updateToolbar(item)
         }
     }
 
-    override fun finish() {
+    private fun setResult(apply: Boolean) {
         val intent = Intent()
         intent.putExtra(EXTRA_BOOLEAN_ORIGIN_ENABLE, originEnable)
         intent.putExtra(EXTRA_BUNDLE_ITEMS, selectedCollection.dataWithBundle)
+        intent.putExtra(EXTRA_BOOLEAN_RESULT_APPLY, apply)
         setResult(Activity.RESULT_OK, intent)
-        super.finish()
     }
 
-    private fun updateToolbar() {
-        original.setChecked(originEnable)
-        originalLayout.visibility = if (selectionSpec.originalable) {
+    fun updateToolbar(item: Item) {
+
+        if (item.isGif) {
+            size.visibility = View.VISIBLE
+            size.text = "${PhotoMetadataUtils.getSizeInMB(item.size)}M"
+        } else {
+            size.visibility = View.GONE
+        }
+
+        originalLayout.visibility = if (!item.isVideo && selectionSpec.originalable) {
+            original.setChecked(originEnable)
             View.VISIBLE
         } else {
             View.GONE
@@ -200,6 +217,7 @@ abstract class AbstractPreviewActivity : AppCompatActivity(), View.OnClickListen
                 buttonApply.text = getString(R.string.pejoy_button_apply, selectCount)
             }
         }
+
     }
 
     private fun assertAddSelection(context: Context, item: Item): Boolean {
@@ -212,6 +230,8 @@ abstract class AbstractPreviewActivity : AppCompatActivity(), View.OnClickListen
         const val EXTRA_BUNDLE_ITEMS = "extra_bundle_items"
 
         const val EXTRA_BOOLEAN_ORIGIN_ENABLE = "extra_boolean_origin_enable"
+
+        const val EXTRA_BOOLEAN_RESULT_APPLY = "extra_boolean_result_apply"
 
         const val REQUEST_CODE = 0x01
     }

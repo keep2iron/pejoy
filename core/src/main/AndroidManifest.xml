@@ -7,5 +7,6 @@
     <application>
         <activity android:name=".ui.PejoyActivity" />
         <activity android:name=".ui.AlbumPreviewActivity"/>
+        <activity android:name=".ui.SelectedAlbumPreviewActivity"/>
     </application>
 </manifest>

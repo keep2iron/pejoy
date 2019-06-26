@@ -2,5 +2,6 @@
 <resources>
 
     <color name="pejoy_preview_bottom_toolbar_bg">#44000000</color>
+    <color name="pejoy_preview_bottom_size">#61FFFFFF</color>
 
 </resources>

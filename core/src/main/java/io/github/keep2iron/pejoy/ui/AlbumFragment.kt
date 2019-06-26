@@ -8,8 +8,6 @@ import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
@@ -134,6 +132,7 @@ class AlbumFragment : Fragment(), View.OnClickListener {
         buttonApply.setOnClickListener(this)
         original.setOnClickListener(this)
         buttonAlbumCategory.setOnClickListener(this)
+        buttonPreview.setOnClickListener(this)
         model.currentAlbum.observe(this, Observer {
             if (it != null) {
                 buttonAlbumCategory.text = it.getDisplayName(requireContext())
@@ -158,17 +157,20 @@ class AlbumFragment : Fragment(), View.OnClickListener {
         }
     }
 
+    private fun setResult() {
+        val result = Intent()
+        val selectedPaths = model.selectedItemCollection.asListOfString() as ArrayList<String>
+        result.putStringArrayListExtra(Pejoy.EXTRA_RESULT_SELECTION_PATH, selectedPaths)
+
+        val activity = requireActivity()
+        activity.setResult(Activity.RESULT_OK, result)
+    }
 
     override fun onClick(view: View) {
         when (view.id) {
             R.id.buttonApply -> {
-                val result = Intent()
-                val selectedPaths = model.selectedItemCollection.asListOfString() as ArrayList<String>
-                result.putStringArrayListExtra(Pejoy.EXTRA_RESULT_SELECTION_PATH, selectedPaths)
-
-                val activity = requireActivity()
-                activity.setResult(Activity.RESULT_OK, result)
-                activity.finish()
+                setResult()
+                requireActivity().finish()
             }
             R.id.original -> {
                 model.originEnabled = !model.originEnabled
@@ -176,6 +178,12 @@ class AlbumFragment : Fragment(), View.OnClickListener {
             }
             R.id.buttonAlbumCategory -> {
                 albumContentView.switch()
+            }
+            R.id.buttonPreview -> {
+                val intent = Intent(requireContext(), SelectedAlbumPreviewActivity::class.java)
+                intent.putExtra(AbstractPreviewActivity.EXTRA_BUNDLE_ITEMS, model.selectedItemCollection.dataWithBundle)
+                intent.putExtra(AbstractPreviewActivity.EXTRA_BOOLEAN_ORIGIN_ENABLE, model.originEnabled)
+                startActivityForResult(intent, AbstractPreviewActivity.REQUEST_CODE)
             }
         }
     }
@@ -230,21 +238,27 @@ class AlbumFragment : Fragment(), View.OnClickListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == AbstractPreviewActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
-            val originEnabled = data.getBooleanExtra(AbstractPreviewActivity.EXTRA_BOOLEAN_ORIGIN_ENABLE, false)
+            val apply = data.getBooleanExtra(AbstractPreviewActivity.EXTRA_BOOLEAN_RESULT_APPLY, false)
+            if (!apply) {
+                val originEnabled = data.getBooleanExtra(AbstractPreviewActivity.EXTRA_BOOLEAN_ORIGIN_ENABLE, false)
 
-            val bundle = data.getBundleExtra(AbstractPreviewActivity.EXTRA_BUNDLE_ITEMS)
-            val collectionType = bundle.getInt(
-                SelectedItemCollection.STATE_COLLECTION_TYPE,
-                SelectedItemCollection.COLLECTION_UNDEFINED
-            )
-            val selected = bundle.getParcelableArrayList<Item>(SelectedItemCollection.STATE_SELECTION)
+                val bundle = data.getBundleExtra(AbstractPreviewActivity.EXTRA_BUNDLE_ITEMS)
+                val collectionType = bundle.getInt(
+                    SelectedItemCollection.STATE_COLLECTION_TYPE,
+                    SelectedItemCollection.COLLECTION_UNDEFINED
+                )
+                val selected = bundle.getParcelableArrayList<Item>(SelectedItemCollection.STATE_SELECTION)
 
-            model.selectedItemCollection.overwrite(selected, collectionType)
+                model.selectedItemCollection.overwrite(selected, collectionType)
 
-            model.originEnabled = originEnabled
+                model.originEnabled = originEnabled
 
-            albumMediaAdapter.notifyDataSetChanged()
-            updateBottomToolbar()
+                albumMediaAdapter.notifyDataSetChanged()
+                updateBottomToolbar()
+            } else {
+                setResult()
+                requireActivity().finish()
+            }
         }
     }
 }

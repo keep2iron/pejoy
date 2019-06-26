@@ -47,40 +47,56 @@
     <FrameLayout
             android:id="@+id/bottomToolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?attr/actionBarSize"
             android:layout_gravity="bottom"
             android:background="@color/pejoy_preview_bottom_toolbar_bg">
 
         <LinearLayout
-                android:id="@+id/originalLayout"
+                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:orientation="horizontal"
-                android:padding="16dp"
-                android:visibility="visible"
-                tools:targetApi="m">
+                android:orientation="horizontal">
 
-            <io.github.keep2iron.pejoy.ui.view.CheckRadioView
-                    android:id="@+id/original"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center_vertical"
-                    android:tint="#ffffff"/>
-
-            <TextView
+            <LinearLayout
+                    android:id="@+id/originalLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:enabled="true"
-                    android:paddingStart="4dp"
-                    android:paddingLeft="4dp"
-                    android:text="@string/pejoy_button_original"
-                    android:textColor="@android:color/white"
-                    android:textSize="14sp"/>
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:visibility="gone"
+                    tools:targetApi="m">
+
+                <io.github.keep2iron.pejoy.ui.view.CheckRadioView
+                        android:id="@+id/original"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_vertical"
+                        android:tint="#ffffff"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:enabled="true"
+                        android:paddingStart="4dp"
+                        android:paddingLeft="4dp"
+                        android:text="@string/pejoy_button_original"
+                        android:textColor="@android:color/white"
+                        android:textSize="14sp"/>
+            </LinearLayout>
+
+            <TextView
+                    android:id="@+id/size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="@color/pejoy_preview_bottom_size"
+                    android:textSize="16sp"
+                    android:visibility="gone"/>
 
         </LinearLayout>
+
 
         <io.github.keep2iron.pejoy.ui.view.CheckView
                 android:layout_gravity="end|center_vertical"
