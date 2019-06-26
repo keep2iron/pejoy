@@ -72,7 +72,7 @@
 
         <TextView
                 android:drawablePadding="5dp"
-                android:drawableEnd="@drawable/pejoy_ic_baseline_collections"
+                android:drawableStart="@drawable/pejoy_ic_baseline_collections"
                 android:id="@+id/buttonAlbumCategory"
                 android:layout_gravity="start"
                 android:layout_width="wrap_content"

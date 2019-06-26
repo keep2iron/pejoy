@@ -29,6 +29,7 @@
         <TextView
                 android:layout_gravity="end|center_vertical"
                 android:id="@+id/buttonApply"
+                android:layout_marginRight="16dp"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:paddingBottom="4dp"

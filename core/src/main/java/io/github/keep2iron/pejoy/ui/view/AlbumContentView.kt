@@ -8,6 +8,7 @@ import android.support.v4.view.animation.FastOutSlowInInterpolator
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
+import android.widget.AdapterView
 import android.widget.FrameLayout
 import android.widget.ListView
 import io.github.keep2iron.pejoy.R
@@ -26,6 +27,8 @@ class AlbumContentView @JvmOverloads constructor(
     private var hidden: Boolean = true
 
     private lateinit var listView: ListView
+
+    private lateinit var adapter: AlbumCategoryAdapter
 
     private lateinit var background: View
 
@@ -66,7 +69,11 @@ class AlbumContentView @JvmOverloads constructor(
     }
 
     fun setAdapter(adapter: AlbumCategoryAdapter) {
-        listView.adapter = adapter
+        this.adapter = adapter
+    }
+
+    fun setOnItemClickListener(listener: AdapterView.OnItemClickListener) {
+        listView.onItemClickListener = listener
     }
 
     fun switch() {
@@ -82,6 +89,7 @@ class AlbumContentView @JvmOverloads constructor(
             return
         }
 
+        listView.adapter = adapter
         listView.setSelection(0)
         listView.animate()
             .translationYBy(-listView.measuredHeight.toFloat())
@@ -116,6 +124,7 @@ class AlbumContentView @JvmOverloads constructor(
             .setListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator) {
                     background.visibility = View.GONE
+                    listView.adapter = null
                 }
             })
             .start()

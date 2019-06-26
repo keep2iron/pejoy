@@ -3,6 +3,7 @@ package io.github.keep2iron.pejoy.ui
 import android.Manifest
 import android.app.Activity
 import android.app.Application
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
@@ -16,15 +17,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListView
-import android.widget.PopupWindow
-import android.widget.Toast
+import android.widget.*
 import io.github.keep2iron.pejoy.R
 import io.github.keep2iron.pejoy.adapter.AlbumMediaAdapter
 import io.github.keep2iron.pejoy.adapter.AlbumCategoryAdapter
-import android.widget.TextView
 import io.github.keep2iron.pejoy.ui.view.CheckRadioView
-import android.widget.LinearLayout
 import io.github.keep2iron.pejoy.Pejoy
 import io.github.keep2iron.pejoy.internal.entity.Item
 import io.github.keep2iron.pejoy.internal.entity.SelectionSpec
@@ -95,13 +92,13 @@ class AlbumFragment : Fragment(), View.OnClickListener {
 
         model.onCreateViewFragment(savedInstanceState)
 
-        albumsAdapter = AlbumCategoryAdapter(requireContext(), null, false)
+        albumsAdapter = AlbumCategoryAdapter(requireContext(), null, false, model)
 
         albumMediaAdapter = AlbumMediaAdapter(requireActivity(), model.selectedItemCollection, recyclerView, model)
 
         initRecyclerView()
 
-        initAlbumTitles()
+        initAlbumCategory()
 
         subscribeOnUI()
 
@@ -110,6 +107,15 @@ class AlbumFragment : Fragment(), View.OnClickListener {
         updateBottomToolbar()
 
         return view
+    }
+
+    private fun initAlbumCategory() {
+
+        albumContentView.setAdapter(albumsAdapter)
+        albumContentView.setOnItemClickListener(AdapterView.OnItemClickListener { _, _, position, _ ->
+            model.onAlbumClick(requireActivity(), position, albumsAdapter, albumMediaAdapter)
+            albumContentView.hidden()
+        })
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -128,6 +134,11 @@ class AlbumFragment : Fragment(), View.OnClickListener {
         buttonApply.setOnClickListener(this)
         original.setOnClickListener(this)
         buttonAlbumCategory.setOnClickListener(this)
+        model.currentAlbum.observe(this, Observer {
+            if (it != null) {
+                buttonAlbumCategory.text = it.getDisplayName(requireContext())
+            }
+        })
     }
 
     private fun initRecyclerView() {
@@ -145,35 +156,8 @@ class AlbumFragment : Fragment(), View.OnClickListener {
         albumMediaAdapter.setOnCheckedViewStateChangeListener {
             updateBottomToolbar()
         }
-
-        albumContentView.setAdapter(albumsAdapter)
     }
 
-    /**
-     * 绑定相册title
-     */
-    private fun initAlbumTitles() {
-        val popupWindow = PopupWindow()
-
-        val listView = ListView(context)
-        listView.divider = ColorDrawable(Color.parseColor("#e6e6e6"))
-        listView.dividerHeight = 3
-        listView.setBackgroundColor(Color.WHITE)
-        listView.adapter = albumsAdapter
-        albumsAdapter.onItemClickListener = {
-            model.onAlbumSelected(activity!!, it, albumMediaAdapter)
-            popupWindow.dismiss()
-        }
-
-        popupWindow.apply {
-            height = (300 * resources.displayMetrics.density).toInt()
-            width = ViewGroup.LayoutParams.MATCH_PARENT
-            isOutsideTouchable = true
-            isFocusable = true
-            setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            contentView = listView
-        }
-    }
 
     override fun onClick(view: View) {
         when (view.id) {
@@ -214,17 +198,23 @@ class AlbumFragment : Fragment(), View.OnClickListener {
         when {
             selectCount == 0 -> {
                 buttonPreview.isEnabled = false
+                buttonPreview.alpha = 0.5f
                 buttonApply.isEnabled = false
+                buttonApply.alpha = 0.5f
                 buttonApply.text = getString(R.string.pejoy_button_apply_default)
             }
             selectCount == 1 && spec.singleSelectionModeEnabled() -> {
                 buttonPreview.isEnabled = true
+                buttonPreview.alpha = 1f
                 buttonApply.isEnabled = true
+                buttonApply.alpha = 1f
                 buttonApply.text = getString(R.string.pejoy_button_apply_default)
             }
             else -> {
                 buttonPreview.isEnabled = true
+                buttonPreview.alpha = 1f
                 buttonApply.isEnabled = true
+                buttonApply.alpha = 1f
                 buttonApply.text = getString(R.string.pejoy_button_apply, selectCount)
             }
         }

@@ -157,7 +157,7 @@ class AlbumMediaAdapter(
         intent.putExtra(AbstractPreviewActivity.EXTRA_BUNDLE_ITEMS, model.selectedItemCollection.dataWithBundle)
         intent.putExtra(AbstractPreviewActivity.EXTRA_BOOLEAN_ORIGIN_ENABLE, model.originEnabled)
         intent.putExtra(AlbumPreviewActivity.EXTRA_ITEM, item)
-        intent.putExtra(AlbumPreviewActivity.EXTRA_ALBUM, model.currentShowAlbum())
+        intent.putExtra(AlbumPreviewActivity.EXTRA_ALBUM, model.currentAlbum.value)
         activity.startActivityForResult(intent, AbstractPreviewActivity.REQUEST_CODE)
     }
 

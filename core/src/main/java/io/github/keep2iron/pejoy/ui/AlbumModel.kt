@@ -32,19 +32,11 @@ class AlbumModel(application: Application) : AndroidViewModel(application) {
 
     lateinit var selectedItemCollection: SelectedItemCollection
 
-    val selectionSpec: SelectionSpec = SelectionSpec.instance
+    var currentAlbum: MutableLiveData<Album> = MutableLiveData()
 
-    /**
-     * 当前选择相册
-     */
-    private val currentShowAlbum = MutableLiveData<Album>()
+    private val selectionSpec: SelectionSpec = SelectionSpec.instance
 
     var originEnabled = false
-
-    fun currentShowAlbum(): Album {
-        return currentShowAlbum.value!!
-    }
-
 
     fun onCreateViewFragment(savedInstanceState: Bundle?) {
         selectedItemCollection = SelectedItemCollection(getApplication())
@@ -103,9 +95,8 @@ class AlbumModel(application: Application) : AndroidViewModel(application) {
     /**
      *
      */
-    fun onAlbumSelected(activity: FragmentActivity, album: Album, albumMediaAdapter: AlbumMediaAdapter) {
-        currentShowAlbum.postValue(album)
-
+    private fun onAlbumSelected(activity: FragmentActivity, album: Album, albumMediaAdapter: AlbumMediaAdapter) {
+        currentAlbum.postValue(album)
         if (albumMediaCollection.isLoadComplete) {
             albumMediaCollection.onDestroy()
             albumMediaCollection = AlbumMediaCollection()

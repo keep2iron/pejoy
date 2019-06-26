@@ -186,14 +186,17 @@ abstract class AbstractPreviewActivity : AppCompatActivity(), View.OnClickListen
         when {
             selectCount == 0 -> {
                 buttonApply.isEnabled = false
+                buttonApply.alpha = 0.5f
                 buttonApply.text = getString(R.string.pejoy_button_apply_default)
             }
             selectCount == 1 && selectionSpec.singleSelectionModeEnabled() -> {
                 buttonApply.isEnabled = true
+                buttonApply.alpha = 1f
                 buttonApply.text = getString(R.string.pejoy_button_apply_default)
             }
             else -> {
                 buttonApply.isEnabled = true
+                buttonApply.alpha = 1f
                 buttonApply.text = getString(R.string.pejoy_button_apply, selectCount)
             }
         }

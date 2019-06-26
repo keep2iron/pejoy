@@ -32,33 +32,21 @@ import java.io.File
 import io.github.keep2iron.pejoy.R
 import io.github.keep2iron.pejoy.internal.entity.Album
 import io.github.keep2iron.pejoy.internal.entity.SelectionSpec
+import io.github.keep2iron.pejoy.ui.AlbumModel
+import io.github.keep2iron.pejoy.ui.view.CheckRadioView
+import io.github.keep2iron.pejoy.ui.view.CheckView
 
 /**
  * 相册分类
  */
-class AlbumCategoryAdapter : CursorAdapter {
-    var onItemClickListener: ((Album) -> Unit)? = null
+class AlbumCategoryAdapter(context: Context, c: Cursor?, autoRequery: Boolean, private val model: AlbumModel) :
+    CursorAdapter(context, c, autoRequery) {
+
     private val mPlaceholder: Drawable
 
-    constructor(context: Context, c: Cursor?, autoRequery: Boolean) : super(context, c, autoRequery) {
+    init {
         mPlaceholder = ColorDrawable(Color.WHITE)
     }
-
-    constructor(context: Context, c: Cursor?, flags: Int) : super(context, c, flags) {
-        mPlaceholder = ColorDrawable(Color.WHITE)
-    }
-
-//    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-//        val view = super.getView(position, convertView, parent)
-//
-//        if (position == 0) {
-//            view.setPadding(0, (parent.resources.displayMetrics.density * 16).toInt(), 0, 0)
-//        } else {
-//            view.setPadding(0, 0, 0, 0)
-//        }
-//
-//        return view
-//    }
 
     override fun newView(context: Context, cursor: Cursor, parent: ViewGroup): View {
         val dp = (context.resources.displayMetrics.density * 80).toInt()
@@ -78,15 +66,13 @@ class AlbumCategoryAdapter : CursorAdapter {
         val album = Album.valueOf(cursor)
         (view.findViewById<View>(R.id.tvAlbumTitle) as TextView).text = album.getDisplayName(context)
         (view.findViewById<View>(R.id.tvAlbumCount) as TextView).text = album.count.toString()
-
-        view.setOnClickListener {
-            onItemClickListener?.invoke(album)
-        }
         // do not need to load animated Gif
         SelectionSpec.instance.imageEngine!!.loadThumbnail(
             context, context.resources.getDimensionPixelSize(
                 R.dimen.pejoy_media_grid_size
             ), mPlaceholder, (view as ViewGroup).getChildAt(0), Uri.fromFile(File(album.coverPath))
         )
+        view.findViewById<CheckRadioView>(R.id.checkRadioView).setChecked(model.currentAlbum.value?.id == album.id)
     }
+
 }

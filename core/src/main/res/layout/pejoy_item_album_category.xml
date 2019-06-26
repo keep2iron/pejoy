@@ -29,6 +29,7 @@
     </LinearLayout>
 
     <io.github.keep2iron.pejoy.ui.view.CheckRadioView
+            android:id="@+id/checkRadioView"
             android:layout_weight="1"
             android:layout_gravity="center"
             android:layout_width="0dp"
