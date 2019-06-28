@@ -125,6 +125,7 @@ abstract class AbstractPreviewActivity : AppCompatActivity(), View.OnClickListen
             R.id.original -> {
                 originEnable = !originEnable
                 updateToolbar(adapter.getMediaItem(viewPager.currentItem))
+                selectionSpec.onOriginCheckedListener?.invoke(originEnable)
             }
             R.id.buttonApply -> {
                 setResult(true)
@@ -224,6 +225,10 @@ abstract class AbstractPreviewActivity : AppCompatActivity(), View.OnClickListen
         val cause = selectedCollection.isAcceptable(item)
         IncapableCause.handleCause(context, cause)
         return cause == null
+    }
+
+    override fun finish() {
+        super.finish()
     }
 
     companion object {

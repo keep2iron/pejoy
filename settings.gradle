@@ -1,1 +1,1 @@
-include ':app', ':core', ':engine'
+include ':app', ':core', ':engine', ':compress'

@@ -34,13 +34,11 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation deps.support.app_compat
-    implementation deps.support.recyclerview
-    implementation deps.arch.lifecycle
-    implementation deps.arch.extensions
-
-    implementation deps.kotlin.stdlib_jdk7
-
+    implementation 'top.zibin:Luban:1.1.8'
+    compileOnly project(':core')
     compileOnly deps.rxjava2
+    implementation deps.rx_android
+    implementation deps.kotlin.stdlib_jdk7
 
     testImplementation deps.test.junit
     androidTestImplementation deps.test.runner

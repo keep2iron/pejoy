@@ -63,17 +63,21 @@ class MediaStoreCompat {
 
             if (photoFile != null) {
                 currentPhotoPath = photoFile.absolutePath
-                currentPhotoUri = FileProvider.getUriForFile(context,
-                        mCaptureStrategy!!.authority, photoFile)
+                currentPhotoUri = FileProvider.getUriForFile(
+                    context,
+                    mCaptureStrategy!!.authority, photoFile
+                )
                 captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, currentPhotoUri)
                 captureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                     val resInfoList = context.packageManager
-                            .queryIntentActivities(captureIntent, PackageManager.MATCH_DEFAULT_ONLY)
+                        .queryIntentActivities(captureIntent, PackageManager.MATCH_DEFAULT_ONLY)
                     for (resolveInfo in resInfoList) {
                         val packageName = resolveInfo.activityInfo.packageName
-                        context.grantUriPermission(packageName, currentPhotoUri,
-                                Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        context.grantUriPermission(
+                            packageName, currentPhotoUri,
+                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        )
                     }
                 }
 
@@ -94,7 +98,8 @@ class MediaStoreCompat {
         val storageDir: File?
         if (mCaptureStrategy!!.isPublic) {
             storageDir = Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_PICTURES)
+                Environment.DIRECTORY_PICTURES
+            )
             if (!storageDir!!.exists()) {
                 storageDir.mkdirs()
             }
@@ -118,6 +123,16 @@ class MediaStoreCompat {
 
     fun getCurrentPhotoPath(): String {
         return currentPhotoPath
+    }
+
+    fun insertAlbum(context: Context, imagePath: String, onScanerComplete: (() -> Unit)? = null) {
+        val file = File(imagePath)
+        MediaStore.Images.Media.insertImage(
+            context.contentResolver,
+            file.absolutePath, file.nameWithoutExtension,
+            null
+        )
+        CaptureMediaScanner(context, imagePath, onScanerComplete)
     }
 
     companion object {

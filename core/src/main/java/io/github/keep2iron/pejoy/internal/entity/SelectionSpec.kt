@@ -22,7 +22,7 @@ import io.github.keep2iron.pejoy.MimeType
 import io.github.keep2iron.pejoy.R
 import io.github.keep2iron.pejoy.engine.ImageEngine
 import io.github.keep2iron.pejoy.filter.Filter
-import io.github.keep2iron.pejoy.listener.OnCheckedListener
+import io.github.keep2iron.pejoy.listener.OnOriginCheckedListener
 import java.lang.IllegalArgumentException
 
 class SelectionSpec private constructor() {
@@ -39,6 +39,7 @@ class SelectionSpec private constructor() {
     var maxVideoSelectable: Int = 0
     var filters: MutableList<Filter>? = null
     var capture: Boolean = false
+    var captureInsertAlbum: Boolean = false
     var captureStrategy: CaptureStrategy? = null
     var spanCount: Int = 0
     var gridExpectedSize: Int = 0
@@ -48,7 +49,7 @@ class SelectionSpec private constructor() {
     //    public OnSelectedListener onSelectedListener;
     var originalable: Boolean = false
     var originalMaxSize: Int = 0
-    var onCheckedListener: OnCheckedListener? = null
+    var onOriginCheckedListener: OnOriginCheckedListener? = null
     var autoHideToolbar: Boolean = true
 
     private fun reset() {

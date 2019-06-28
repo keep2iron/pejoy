@@ -20,6 +20,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import io.github.keep2iron.pejoy.BuildConfig
 import io.github.keep2iron.pejoy.R
 import io.github.keep2iron.pejoy.adapter.AlbumMediaAdapter
 import io.github.keep2iron.pejoy.adapter.AlbumCategoryAdapter
@@ -30,6 +31,7 @@ import io.github.keep2iron.pejoy.internal.entity.Item
 import io.github.keep2iron.pejoy.internal.entity.SelectionSpec
 import io.github.keep2iron.pejoy.internal.model.SelectedItemCollection
 import io.github.keep2iron.pejoy.ui.view.AlbumContentView
+import io.github.keep2iron.pejoy.utilities.CaptureMediaScanner
 import io.github.keep2iron.pejoy.utilities.MediaStoreCompat
 import io.github.keep2iron.pejoy.utilities.getThemeColor
 import java.util.ArrayList
@@ -107,7 +109,7 @@ class AlbumFragment : Fragment(), View.OnClickListener {
             mediaStoreCompat.setCaptureStrategy(
                 CaptureStrategy(
                     true,
-                    "io.github.keep2iron.pejoy.provider.PejoyProvider"
+                    "${BuildConfig.APPLICATION_ID}.provider.PejoyProvider"
                 )
             )
         }
@@ -206,6 +208,11 @@ class AlbumFragment : Fragment(), View.OnClickListener {
         val result = Intent()
         val selectedPaths = model.selectedItemCollection.asListOfString() as ArrayList<String>
         result.putStringArrayListExtra(Pejoy.EXTRA_RESULT_SELECTION_PATH, selectedPaths)
+        result.putParcelableArrayListExtra(
+            Pejoy.EXTRA_RESULT_SELECTION,
+            model.selectedItemCollection.asListOfUri() as ArrayList<Uri>
+        )
+        result.putExtra(Pejoy.EXTRA_RESULT_ORIGIN_ENABLE, model.originEnabled)
 
         val activity = requireActivity()
         activity.setResult(Activity.RESULT_OK, result)
@@ -219,6 +226,7 @@ class AlbumFragment : Fragment(), View.OnClickListener {
             }
             R.id.original -> {
                 model.originEnabled = !model.originEnabled
+                spec.onOriginCheckedListener?.invoke(model.originEnabled)
                 updateBottomToolbar()
             }
             R.id.buttonAlbumCategory -> {
@@ -284,20 +292,21 @@ class AlbumFragment : Fragment(), View.OnClickListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == AbstractPreviewActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
             val apply = data.getBooleanExtra(AbstractPreviewActivity.EXTRA_BOOLEAN_RESULT_APPLY, false)
+
+            val originEnabled = data.getBooleanExtra(AbstractPreviewActivity.EXTRA_BOOLEAN_ORIGIN_ENABLE, false)
+
+            val bundle = data.getBundleExtra(AbstractPreviewActivity.EXTRA_BUNDLE_ITEMS)
+            val collectionType = bundle.getInt(
+                SelectedItemCollection.STATE_COLLECTION_TYPE,
+                SelectedItemCollection.COLLECTION_UNDEFINED
+            )
+            val selected = bundle.getParcelableArrayList<Item>(SelectedItemCollection.STATE_SELECTION)
+
+            model.selectedItemCollection.overwrite(selected, collectionType)
+
+            model.originEnabled = originEnabled
+
             if (!apply) {
-                val originEnabled = data.getBooleanExtra(AbstractPreviewActivity.EXTRA_BOOLEAN_ORIGIN_ENABLE, false)
-
-                val bundle = data.getBundleExtra(AbstractPreviewActivity.EXTRA_BUNDLE_ITEMS)
-                val collectionType = bundle.getInt(
-                    SelectedItemCollection.STATE_COLLECTION_TYPE,
-                    SelectedItemCollection.COLLECTION_UNDEFINED
-                )
-                val selected = bundle.getParcelableArrayList<Item>(SelectedItemCollection.STATE_SELECTION)
-
-                model.selectedItemCollection.overwrite(selected, collectionType)
-
-                model.originEnabled = originEnabled
-
                 albumMediaAdapter.notifyDataSetChanged()
                 updateBottomToolbar()
             } else {
@@ -324,7 +333,14 @@ class AlbumFragment : Fragment(), View.OnClickListener {
                     Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION
                 )
             }
-            activity.finish()
+
+            if (spec.captureInsertAlbum) {
+                mediaStoreCompat.insertAlbum(requireContext(), path)
+                activity.finish()
+
+            } else {
+                activity.finish()
+            }
         }
     }
 

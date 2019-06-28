@@ -1,11 +1,8 @@
 package io.github.keep2iron.pejoy.app
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.TextView
@@ -13,11 +10,10 @@ import com.facebook.common.util.ByteConstants
 import io.github.keep2iron.pejoy.MimeType
 import io.github.keep2iron.pejoy.Pejoy
 import io.github.keep2iron.pejoy.engine.FrescoImageEngine
-import io.github.keep2iron.pejoy.utilities.extractStringPath
 import io.github.keep2iron.pineapple.ImageLoaderConfig
 import io.github.keep2iron.pineapple.ImageLoaderManager
 import io.github.keep2iron.pineapple.ImageLoaderOptions
-import io.reactivex.subjects.PublishSubject
+import keep2iron.github.io.compress.weatherCompressImage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -52,14 +48,17 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.btnGetImages).setOnClickListener {
             Pejoy.create(this)
-                .choose(MimeType.ofImage())
+                .choose(MimeType.ofAll(), false)
                 .maxSelectable(3)
-                .countable(false)
+                .countable(true)
                 .originalEnable(true)
-                .capture(true)
+                .capture(true, enableInsertAlbum = true)
                 .imageEngine(FrescoImageEngine())
+                .setOnOriginCheckedListener { check ->
+
+                }
                 .toObservable()
-                .extractStringPath()
+                .weatherCompressImage(this)
                 .subscribe {
                     imageResultBuilder.append("[\n")
                     it.forEach { uri ->

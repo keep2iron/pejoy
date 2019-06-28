@@ -22,12 +22,8 @@ class Pejoy {
          * 选中文件的path路径
          */
         const val EXTRA_RESULT_SELECTION_PATH = "extra_result_selection_path"
-        /**
-         * 选中的类型
-         * @see io.github.keep2iron.pejoy.Pejoy.VIDEO
-         * @see io.github.keep2iron.pejoy.Pejoy.IMAGE
-         */
-        const val EXTRA_RESULT_SELECTION_TYPE = "extra_result_selection_type"
+
+        const val EXTRA_RESULT_ORIGIN_ENABLE = "extra_result_origin_enable"
 
         const val VIDEO = 0x00
         const val IMAGE = 0x01

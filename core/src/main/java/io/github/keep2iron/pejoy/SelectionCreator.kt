@@ -21,12 +21,8 @@ import android.content.Intent
 import android.os.Build
 import android.support.annotation.IntDef
 import android.support.annotation.RequiresApi
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentActivity
 import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentTransaction
 
-import java.lang.annotation.RetentionPolicy
 import java.util.ArrayList
 
 import io.github.keep2iron.pejoy.engine.ImageEngine
@@ -34,7 +30,7 @@ import io.github.keep2iron.pejoy.filter.Filter
 import io.github.keep2iron.pejoy.internal.HockFragment
 import io.github.keep2iron.pejoy.internal.entity.CaptureStrategy
 import io.github.keep2iron.pejoy.internal.entity.SelectionSpec
-import io.github.keep2iron.pejoy.listener.OnCheckedListener
+import io.github.keep2iron.pejoy.listener.OnOriginCheckedListener
 import io.reactivex.Observable
 
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_BEHIND
@@ -231,10 +227,12 @@ internal constructor(private val mPejoy: Pejoy, mimeTypes: Set<MimeType>, mediaT
      * If this value is set true, photo capturing entry will appear only on All Media's page.
      *
      * @param enable Whether to enable capturing or not. Default value is false;
+     * @param enableInsertAlbum Whether to enable capturing picture to insert system album;
      * @return [SelectionCreator] for fluent API.
      */
-    fun capture(enable: Boolean): SelectionCreator {
+    fun capture(enable: Boolean, enableInsertAlbum: Boolean = false): SelectionCreator {
         mSelectionSpec.capture = enable
+        mSelectionSpec.captureInsertAlbum = enableInsertAlbum
         return this
     }
 
@@ -292,8 +290,8 @@ internal constructor(private val mPejoy: Pejoy, mimeTypes: Set<MimeType>, mediaT
         return this
     }
 
-    fun setOnCheckedListener(listener: OnCheckedListener?): SelectionCreator {
-        mSelectionSpec.onCheckedListener = listener
+    fun setOnOriginCheckedListener(listener: OnOriginCheckedListener?): SelectionCreator {
+        mSelectionSpec.onOriginCheckedListener = listener
         return this
     }
 

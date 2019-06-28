@@ -19,6 +19,7 @@ import android.util.Log
 import com.facebook.drawee.controller.BaseControllerListener
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.drawee.backends.pipeline.PipelineDraweeControllerBuilder
+import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder
 import com.facebook.drawee.view.SimpleDraweeView
 import com.facebook.imagepipeline.image.ImageInfo
 
@@ -90,6 +91,11 @@ class FrescoImageEngine : ImageEngine {
         uri: Uri
     ) {
         val mPhotoDraweeView = imageView as PhotoDraweeView
+
+//        mPhotoDraweeView.hierarchy = GenericDraweeHierarchyBuilder(mPhotoDraweeView.context.resources)
+//            .setFadeDuration(300)
+//            .build()
+
         mPhotoDraweeView.setPhotoUri(uri, context)
     }
 
@@ -102,6 +108,11 @@ class FrescoImageEngine : ImageEngine {
         uri: Uri
     ) {
         val mPhotoDraweeView = imageView as PhotoDraweeView
+
+//        mPhotoDraweeView.hierarchy = GenericDraweeHierarchyBuilder(mPhotoDraweeView.context.resources)
+//            .setFadeDuration(300)
+//            .build()
+
         val controller = Fresco.newDraweeControllerBuilder()
             .setCallerContext(context)
             .setUri(uri)
