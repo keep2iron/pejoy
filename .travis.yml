@@ -15,5 +15,6 @@ notifications:
   email: false
 
 script:
+  - chmod +x gradlew
   - ./gradlew assemble check
 #  - ./gradlew checkstyle
