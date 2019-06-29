@@ -13,15 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keep2iron.pejoy.internal.entity;
+package io.github.keep2iron.pejoy.internal.entity
 
-public class CaptureStrategy {
-
-    public final boolean isPublic;
-    public final String authority;
-
-    public CaptureStrategy(boolean isPublic, String authority) {
-        this.isPublic = isPublic;
-        this.authority = authority;
-    }
-}
+class CaptureStrategy(val isPublic: Boolean, val authority: String)

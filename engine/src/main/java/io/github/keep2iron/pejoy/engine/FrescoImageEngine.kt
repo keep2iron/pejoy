@@ -109,7 +109,7 @@ class FrescoImageEngine : ImageEngine {
     ) {
         val mPhotoDraweeView = imageView as PhotoDraweeView
 
-//        mPhotoDraweeView.hierarchy = GenericDraweeHierarchyBuilder(mPhotoDraweeView.context.resources)
+//        mPhotoDraweeView.hierakeep2iron.jksrchy = GenericDraweeHierarchyBuilder(mPhotoDraweeView.context.resources)
 //            .setFadeDuration(300)
 //            .build()
 

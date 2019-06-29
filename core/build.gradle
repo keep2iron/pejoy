@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'maven'
+apply plugin: 'checkstyle'
 
 group = 'com.github.keep2iron'
 version = 'SNAPSHOT'
@@ -84,4 +85,29 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 artifacts {
     archives sourcesJar
     archives javadocJar
+}
+
+checkstyle {
+    toolVersion = '7.6.1'
+    showViolations = true
+}
+
+tasks.withType(Javadoc) {
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.addStringOption('encoding', 'UTF-8')
+}
+
+task checkstyle(type: Checkstyle) {
+    description 'Runs Checkstyle inspection against matisse sourcesets.'
+    group = 'Code Quality'
+    ignoreFailures = false
+    showViolations true
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+    exclude '**/R.java'
+    exclude '**/BuildConfig.java'
+    configFile rootProject.file('checkstyle.xml')
+    // empty classpath
+    classpath = files()
 }

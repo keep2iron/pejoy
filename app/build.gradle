@@ -13,17 +13,9 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-    signingConfigs {
-        release {
-            storeFile file('../keep2iron.jks')
-            storePassword 'keep2iron.github.io'
-            keyAlias 'keep2iron'
-            keyPassword 'keep2iron.github.io'
-        }
-    }
+
     buildTypes {
         release {
-            signingConfig signingConfigs.release
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -47,9 +39,13 @@ dependencies {
     implementation deps.fast4android.pineapple
     implementation deps.fresco
 
-    implementation project(':core')
-    implementation project(':engine')
-    implementation project(':compress')
+    implementation 'com.github.keep2iron.pejoy:compress:1.0'
+    implementation 'com.github.keep2iron.pejoy:core:1.0'
+    implementation 'com.github.keep2iron.pejoy:engine:1.0'
+
+//    implementation project(':core')
+//    implementation project(':engine')
+//    implementation project(':compress')
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

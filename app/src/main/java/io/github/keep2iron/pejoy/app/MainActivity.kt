@@ -54,8 +54,7 @@ class MainActivity : AppCompatActivity() {
                 .originalEnable(true)
                 .capture(true, enableInsertAlbum = true)
                 .imageEngine(FrescoImageEngine())
-                .setOnOriginCheckedListener { check ->
-
+                .setOnOriginCheckedListener { _ ->
                 }
                 .toObservable()
                 .weatherCompressImage(this)

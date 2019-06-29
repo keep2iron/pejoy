@@ -42,10 +42,10 @@ class PreviewItemFragment : Fragment(), View.OnClickListener {
                 playVideo.visibility = View.VISIBLE
                 playVideo.setOnClickListener(this)
                 playVideo.tag = item
-                engine.loadImage(requireContext(), size.x, size.y, placeholder, imageView, item.uri)
+                engine.loadImage(requireContext(), size.x, size.y, placeholder, imageView, item.contentUri)
             }
-            item.isGif -> engine.loadGifImage(requireContext(), size.x, size.y, placeholder, imageView, item.uri)
-            else -> engine.loadImage(requireContext(), size.x, size.y, placeholder, imageView, item.uri)
+            item.isGif -> engine.loadGifImage(requireContext(), size.x, size.y, placeholder, imageView, item.contentUri)
+            else -> engine.loadImage(requireContext(), size.x, size.y, placeholder, imageView, item.contentUri)
         }
     }
 
@@ -53,7 +53,7 @@ class PreviewItemFragment : Fragment(), View.OnClickListener {
         val item = view.tag as Item?
         if (item != null) {
             val intent = Intent(Intent.ACTION_VIEW)
-            intent.setDataAndType(item.uri, "video/*")
+            intent.setDataAndType(item.contentUri, "video/*")
             try {
                 startActivity(intent)
             } catch (e: ActivityNotFoundException) {
