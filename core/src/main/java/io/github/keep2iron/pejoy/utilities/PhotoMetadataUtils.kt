@@ -119,15 +119,12 @@ class PhotoMetadataUtils private constructor() {
 
         fun isAcceptable(context: Context, item: Item): IncapableCause? {
             if (!isSelectableType(context, item)) {
-                return IncapableCause(context.getString(R.string.pejoy_error_file_type))
+                return IncapableCause(message = context.getString(R.string.pejoy_error_file_type))
             }
 
             if (SelectionSpec.instance.filters != null) {
                 for (filter in SelectionSpec.instance.filters!!) {
-                    val incapableCause = filter.filter(context, item)
-                    if (incapableCause != null) {
-                        return incapableCause
-                    }
+                    return filter.filter(context, item)
                 }
             }
             return null

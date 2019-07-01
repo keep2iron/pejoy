@@ -47,7 +47,7 @@ abstract class RecyclerViewCursorAdapter constructor(val context: Context, prote
      * @param holder
      * @param position
      */
-    abstract fun render(holder: RecyclerView.ViewHolder, cursor: Cursor?, position: Int)
+    abstract fun render(holder: RecyclerView.ViewHolder, cursor: Cursor, position: Int)
 
 
     init {
@@ -60,6 +60,7 @@ abstract class RecyclerViewCursorAdapter constructor(val context: Context, prote
         if (!isDataValid(cursor)) {
             throw IllegalStateException("Cannot bind view holder when cursor is in invalid state.")
         }
+
         if (!cursor!!.moveToPosition(position)) {
             throw IllegalStateException(
                 "Could not move cursor to position " + position
@@ -67,7 +68,7 @@ abstract class RecyclerViewCursorAdapter constructor(val context: Context, prote
             )
         }
 
-        render(holder, cursor, position)
+        render(holder, cursor!!, position)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -77,10 +78,10 @@ abstract class RecyclerViewCursorAdapter constructor(val context: Context, prote
                         + " when trying to get item view type."
             )
         }
-        return getItemViewType(position, cursor)
+        return getItemViewType(position, cursor!!)
     }
 
-    protected abstract fun getItemViewType(position: Int, cursor: Cursor?): Int
+    protected abstract fun getItemViewType(position: Int, cursor: Cursor): Int
 
     override fun getItemCount(): Int {
         return if (isDataValid(cursor)) {
@@ -107,7 +108,7 @@ abstract class RecyclerViewCursorAdapter constructor(val context: Context, prote
         return cursor!!.getLong(mRowIDColumn)
     }
 
-    open fun swapCursor(newCursor: Cursor?) {
+    fun swapCursor(newCursor: Cursor?) {
         if (newCursor === cursor) {
             return
         }

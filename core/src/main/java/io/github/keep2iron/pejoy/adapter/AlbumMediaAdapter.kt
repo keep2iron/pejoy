@@ -83,7 +83,7 @@ class AlbumMediaAdapter(
         }
     }
 
-    override fun render(holder: RecyclerView.ViewHolder, cursor: Cursor?, position: Int) {
+    override fun render(holder: RecyclerView.ViewHolder, cursor: Cursor, position: Int) {
         when (getItemViewType(position, cursor)) {
             VIEW_TYPE_CAPTURE -> {
                 val hint = holder.itemView.findViewById<TextView>(R.id.hint)
@@ -143,7 +143,7 @@ class AlbumMediaAdapter(
         }
     }
 
-    override fun getItemViewType(position: Int, cursor: Cursor?): Int {
+    override fun getItemViewType(position: Int, cursor: Cursor): Int {
         return if (Item.valueOf(cursor).isCapture) VIEW_TYPE_CAPTURE else VIEW_TYPE_MEDIA
     }
 
