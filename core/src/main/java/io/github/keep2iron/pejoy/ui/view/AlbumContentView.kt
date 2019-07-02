@@ -93,7 +93,7 @@ class AlbumContentView @JvmOverloads constructor(
         listView.adapter = adapter
         listView.setSelection(0)
         listView.animate()
-            .translationYBy(-listView.measuredHeight.toFloat())
+            .translationY(0f)
             .setInterpolator(FastOutSlowInInterpolator())
             .start()
 
@@ -115,7 +115,7 @@ class AlbumContentView @JvmOverloads constructor(
         }
 
         listView.animate()
-            .translationYBy(listView.measuredHeight.toFloat())
+            .translationY(listView.measuredHeight.toFloat())
             .setInterpolator(FastOutSlowInInterpolator())
             .start()
 

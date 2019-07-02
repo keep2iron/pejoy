@@ -49,8 +49,6 @@ class FrescoImageEngine : ImageEngine {
         imageView: View,
         uri: Uri
     ) {
-        Log.d("tag","resize : ${resize}")
-//        (imageView as SimpleDraweeView).setImageURI(uri, context)
         imageLoader.showImageView(
             imageView as MiddlewareView, uri
         ) {
