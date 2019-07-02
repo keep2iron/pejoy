@@ -6,7 +6,7 @@
               android:orientation="vertical"
               tools:context=".ui.PejoyActivity">
 
-    <LinearLayout
+    <FrameLayout
             android:orientation="horizontal"
             android:id="@+id/toolbar"
             android:elevation="4dp"
@@ -17,27 +17,18 @@
             android:layout_height="?attr/actionBarSize">
 
         <ImageView
+                android:id="@+id/imageBack"
                 android:padding="16dp"
                 android:src="@drawable/pejoy_ic_back_arrow"
-                android:layout_gravity="left|center_vertical"
+                android:layout_gravity="start|center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-
-        <TextView
-                android:layout_weight="1"
-                android:id="@+id/tvTitle"
-                android:textColor="?attr/pejoy_toolbar.text_color"
-                android:layout_marginLeft="16dp"
-                android:gravity="center_vertical|start"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                tools:text="Album"/>
 
         <TextView
                 android:id="@+id/buttonApply"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="center_vertical|end"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:background="@drawable/pejoy_shape_apply_background"
                 android:paddingLeft="8dp"
@@ -50,7 +41,7 @@
                 android:textSize="16sp"
                 tools:targetApi="m"/>
 
-    </LinearLayout>
+    </FrameLayout>
 
     <io.github.keep2iron.pejoy.ui.view.AlbumContentView
             android:id="@+id/albumContentView"

@@ -54,21 +54,23 @@ class AlbumFragment : Fragment(), View.OnClickListener {
      */
     private lateinit var albumMediaAdapter: AlbumMediaAdapter
 
-    private var savedInstanceState: Bundle? = null
+    var savedInstanceState: Bundle? = null
 
-    private lateinit var recyclerView: RecyclerView
+    lateinit var recyclerView: RecyclerView
 
-    private lateinit var buttonPreview: TextView
+    lateinit var buttonPreview: TextView
 
-    private lateinit var originalLayout: LinearLayout
+    lateinit var originalLayout: LinearLayout
 
-    private lateinit var original: CheckRadioView
+    lateinit var original: CheckRadioView
 
-    private lateinit var buttonApply: TextView
+    lateinit var buttonApply: TextView
 
-    private lateinit var buttonAlbumCategory: TextView
+    lateinit var buttonAlbumCategory: TextView
 
-    private lateinit var albumContentView: AlbumContentView
+    lateinit var albumContentView: AlbumContentView
+
+    lateinit var imageBack: ImageView
 
     private val spec = SelectionSpec.instance
 
@@ -86,13 +88,14 @@ class AlbumFragment : Fragment(), View.OnClickListener {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.pejoy_fragment_album, container, false)
 
-        recyclerView = view.findViewById(R.id.recyclerView)
         buttonPreview = view.findViewById(R.id.buttonPreview)
         originalLayout = view.findViewById(R.id.originalLayout)
         original = view.findViewById(R.id.original)
         buttonAlbumCategory = view.findViewById(R.id.buttonAlbumCategory)
         buttonApply = view.findViewById(R.id.buttonApply)
         albumContentView = view.findViewById(R.id.albumContentView)
+        imageBack = view.findViewById(R.id.imageBack)
+        recyclerView = view.findViewById(R.id.recyclerView)
 
         this.savedInstanceState = savedInstanceState
 
@@ -180,6 +183,7 @@ class AlbumFragment : Fragment(), View.OnClickListener {
         original.setOnClickListener(this)
         buttonAlbumCategory.setOnClickListener(this)
         buttonPreview.setOnClickListener(this)
+        imageBack.setOnClickListener(this)
         model.currentAlbum.observe(this, Observer {
             if (it != null) {
                 buttonAlbumCategory.text = it.getDisplayName(requireContext())
@@ -237,6 +241,9 @@ class AlbumFragment : Fragment(), View.OnClickListener {
                 intent.putExtra(AbstractPreviewActivity.EXTRA_BUNDLE_ITEMS, model.selectedItemCollection.dataWithBundle)
                 intent.putExtra(AbstractPreviewActivity.EXTRA_BOOLEAN_ORIGIN_ENABLE, model.originEnabled)
                 startActivityForResult(intent, AbstractPreviewActivity.REQUEST_CODE)
+            }
+            R.id.imageBack -> {
+                requireActivity().finish()
             }
         }
     }

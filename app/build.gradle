@@ -39,13 +39,9 @@ dependencies {
     implementation deps.fast4android.pineapple
     implementation deps.fresco
 
-    implementation 'com.github.keep2iron.pejoy:compress:1.0'
-    implementation 'com.github.keep2iron.pejoy:core:1.0'
-    implementation 'com.github.keep2iron.pejoy:engine:1.0'
-
-//    implementation project(':core')
-//    implementation project(':engine')
-//    implementation project(':compress')
+    implementation project(':core')
+    implementation project(':engine')
+    implementation project(':compress')
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

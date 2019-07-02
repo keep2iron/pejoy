@@ -2,11 +2,13 @@ package io.github.keep2iron.pejoy.ui
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import io.github.keep2iron.pejoy.R
 import io.github.keep2iron.pejoy.internal.entity.SelectionSpec
+import io.github.keep2iron.pejoy.utilities.getThemeColor
 
 /**
  *
@@ -25,6 +27,10 @@ internal class PejoyActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val mSpec = SelectionSpec.instance
         setTheme(mSpec.themeId)
+        val navigationColor = getThemeColor(this, R.attr.colorPrimary, android.R.color.black)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.navigationBarColor = navigationColor
+        }
         super.onCreate(savedInstanceState)
         if (!mSpec.hasInited) {
             setResult(Activity.RESULT_CANCELED)

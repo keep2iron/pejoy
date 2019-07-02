@@ -3,7 +3,9 @@ package io.github.keep2iron.pejoy.ui
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.support.v4.view.animation.FastOutSlowInInterpolator
 import android.support.v7.app.AppCompatActivity
@@ -52,7 +54,9 @@ abstract class AbstractPreviewActivity : AppCompatActivity(), View.OnClickListen
         if (Platform.hasKitKat()) {
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         }
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.navigationBarColor = ContextCompat.getColor(this, android.R.color.black)
+        }
         originEnable = if (savedInstanceState == null) {
             selectedCollection.onCreate(intent.getBundleExtra(EXTRA_BUNDLE_ITEMS))
             intent.getBooleanExtra(EXTRA_BOOLEAN_ORIGIN_ENABLE, false)
