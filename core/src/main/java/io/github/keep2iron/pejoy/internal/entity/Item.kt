@@ -115,12 +115,12 @@ class Item : Parcelable {
             return false
         }
 
-        val other = other as Item?
-        return (id == other!!.id
-                && (mimeType == other.mimeType)
-                && (contentUri == other.contentUri)
-                && size == other.size
-                && duration == other.duration)
+        val otherItem = other as Item?
+        return (id == otherItem?.id
+                && (mimeType == otherItem.mimeType)
+                && (contentUri == otherItem.contentUri)
+                && size == otherItem.size
+                && duration == otherItem.duration)
     }
 
     companion object {

@@ -106,7 +106,7 @@ class AlbumMediaAdapter(
                 val mediaGrid = holder.itemView as MediaGrid
                 val context = holder.itemView.context.applicationContext
 
-                val item = Item.valueOf(cursor!!)
+                val item = Item.valueOf(cursor)
                 mediaGrid.preBindMedia(
                     MediaGrid.PreBindInfo(
                         getImageResize(context),
