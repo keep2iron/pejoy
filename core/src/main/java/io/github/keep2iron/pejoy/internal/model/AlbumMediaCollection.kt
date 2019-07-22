@@ -29,7 +29,7 @@ import java.lang.IllegalArgumentException
 
 class AlbumMediaCollection : LoaderManager.LoaderCallbacks<Cursor> {
     private lateinit var mContext: WeakReference<Context>
-    private lateinit var mLoaderManager: LoaderManager
+    private var mLoaderManager: LoaderManager? = null
     private var mCallbacks: AlbumMediaCallbacks? = null
 
     var isLoadComplete = false
@@ -64,7 +64,8 @@ class AlbumMediaCollection : LoaderManager.LoaderCallbacks<Cursor> {
     }
 
     fun onDestroy() {
-        mLoaderManager.destroyLoader(LOADER_ID)
+        mLoaderManager?.destroyLoader(LOADER_ID)
+        mLoaderManager = null
         mCallbacks = null
         isLoadComplete = true
     }
@@ -76,7 +77,7 @@ class AlbumMediaCollection : LoaderManager.LoaderCallbacks<Cursor> {
         val args = Bundle()
         args.putParcelable(ARGS_ALBUM, target)
         args.putBoolean(ARGS_ENABLE_CAPTURE, enableCapture)
-        mLoaderManager.initLoader(LOADER_ID, args, this)
+        mLoaderManager?.initLoader(LOADER_ID, args, this)
     }
 
     interface AlbumMediaCallbacks {

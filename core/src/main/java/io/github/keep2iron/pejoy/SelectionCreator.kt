@@ -192,8 +192,9 @@ internal constructor(private val mPejoy: Pejoy, mimeTypes: Set<MimeType>, mediaT
      * @param enable Whether to enable original photo or not
      * @return [SelectionCreator] for fluent API.
      */
-    fun originalEnable(enable: Boolean): SelectionCreator {
+    fun originalEnable(enable: Boolean, originalSelectDefault: Boolean = false): SelectionCreator {
         mSelectionSpec.originalable = enable
+        mSelectionSpec.originEnabledDefault = originalSelectDefault
         return this
     }
 

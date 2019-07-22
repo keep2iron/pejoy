@@ -35,6 +35,7 @@ import io.github.keep2iron.pejoy.internal.entity.SelectionSpec
 import io.github.keep2iron.pejoy.ui.AlbumModel
 import io.github.keep2iron.pejoy.ui.view.CheckRadioView
 import io.github.keep2iron.pejoy.ui.view.CheckView
+import io.github.keep2iron.pejoy.utilities.getThemeDrawable
 
 /**
  * 相册分类
@@ -42,11 +43,8 @@ import io.github.keep2iron.pejoy.ui.view.CheckView
 class AlbumCategoryAdapter(context: Context, c: Cursor?, autoRequery: Boolean, private val model: AlbumModel) :
     CursorAdapter(context, c, autoRequery) {
 
-    private val mPlaceholder: Drawable
+    private val mPlaceholder = getThemeDrawable(context, R.attr.pejoy_item_placeholder)
 
-    init {
-        mPlaceholder = ColorDrawable(Color.WHITE)
-    }
 
     override fun newView(context: Context, cursor: Cursor, parent: ViewGroup): View {
         val dp = (context.resources.displayMetrics.density * 80).toInt()

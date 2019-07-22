@@ -29,7 +29,7 @@ class SelectionSpec private constructor() {
 
     var mimeTypeSet: Set<MimeType>? = null
     @StyleRes
-    var themeId = R.style.Pejoy_Light
+    var themeId = R.style.Pejoy_Dracula
     var mediaTypeExclusive: Boolean = false
     var showSingleMediaType: Boolean = false
     var orientation: Int = 0
@@ -48,6 +48,7 @@ class SelectionSpec private constructor() {
     var hasInited: Boolean = false
     //    public OnSelectedListener onSelectedListener;
     var originalable: Boolean = false
+    var originEnabledDefault: Boolean = false
     var originalMaxSize: Int = 0
     var onOriginCheckedListener: OnOriginCheckedListener? = null
     var autoHideToolbar: Boolean = true
@@ -61,7 +62,7 @@ class SelectionSpec private constructor() {
         maxSelectable = 1
         maxImageSelectable = 0
         maxVideoSelectable = 0
-        themeId = R.style.Pejoy_Light
+        themeId = R.style.Pejoy_Dracula
         filters = null
         capture = false
         captureStrategy = null
@@ -71,6 +72,7 @@ class SelectionSpec private constructor() {
         imageEngine = null
         hasInited = true
         originalable = false
+        originEnabledDefault = false
         autoHideToolbar = true
         originalMaxSize = Integer.MAX_VALUE
     }

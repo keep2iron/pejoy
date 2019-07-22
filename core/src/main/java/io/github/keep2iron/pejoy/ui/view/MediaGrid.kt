@@ -76,7 +76,7 @@ class MediaGrid @JvmOverloads constructor(
         paint.color = getThemeColor(
             context,
             R.attr.pejoy_item_checkCircle_borderColor,
-            R.color.pejoy_light_item_checkCircle_borderColor
+            R.color.pejoy_dracula_item_checkCircle_borderColor
         )
         paint.style = Paint.Style.STROKE
     }

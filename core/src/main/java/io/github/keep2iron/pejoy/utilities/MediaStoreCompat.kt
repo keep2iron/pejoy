@@ -27,6 +27,7 @@ import android.provider.MediaStore
 import android.support.v4.app.Fragment
 import android.support.v4.content.FileProvider
 import android.support.v4.os.EnvironmentCompat
+import io.github.keep2iron.pejoy.BuildConfig
 
 import java.io.File
 import java.lang.ref.WeakReference
@@ -65,10 +66,11 @@ class MediaStoreCompat {
                 currentPhotoPath = photoFile.absolutePath
                 currentPhotoUri = FileProvider.getUriForFile(
                     context,
-                    mCaptureStrategy!!.authority, photoFile
+                    mCaptureStrategy!!.authority,
+                    photoFile
                 )
                 captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, currentPhotoUri)
-                captureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                captureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                     val resInfoList = context.packageManager
                         .queryIntentActivities(captureIntent, PackageManager.MATCH_DEFAULT_ONLY)

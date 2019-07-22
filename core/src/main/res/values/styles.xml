@@ -3,42 +3,22 @@
 
     <style name="Pejoy"/>
 
-    <style name="Pejoy.Light" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/pejoy_light_primary</item>
-        <item name="colorPrimaryDark">@color/pejoy_light_primary_dark</item>
-        <item name="pejoy_item.checkCircle.backgroundColor">
-            @color/pejoy_light_item_checkCircle_backgroundColor
-        </item>
-        <item name="pejoy_item.checkCircle.borderColor">
-            @color/pejoy_light_item_checkCircle_borderColor
-        </item>
-        <item name="pejoy_item.placeholder">
-            @color/pejoy_light_item_place_holder
-        </item>
-        <item name="pejoy_toolbar.text_color">
-            @color/pejoy_light_toolbar_text_color
-        </item>
-        <item name="pejoy_capture.text_color">
-            @color/pejoy_light_capture
-        </item>
-        <item name="pejoy_file_provider">
-            io.github.keep2iron.pejoy.provider.PejoyProvider
-        </item>
-        <item name="pejoy_background">
-            @color/pejoy_light_background
-        </item>
+    <style name="Pejoy.Dracula" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/pejoy_dracula_primary</item>
+        <item name="colorPrimaryDark">@color/pejoy_dracula_primary_dark</item>
 
-        <item name="pejoy_bottom_toolbar.lintColor">
-            @color/pejoy_light_check_apply_text_color
-        </item>
-        <item name="pejoy_bottom_toolbar.background">
-            @color/pejoy_light_bottom_toolbar_background
-        </item>
-        <item name="pejoy_bottom_toolbar.preview.radioOnColor">
-            @color/pejoy_light_check_apply_text_color
-        </item>
-        <item name="pejoy_bottom_toolbar.preview.radioOffColor">
-            @color/pejoy_light_check_apply_text_color
-        </item>
+        <item name="pejoy_item.checkCircle.backgroundColor">@color/pejoy_dracula_item_checkCircle_backgroundColor</item>
+        <item name="pejoy_item.checkCircle.borderColor">@color/pejoy_dracula_item_checkCircle_borderColor</item>
+        <item name="pejoy_item.placeholder">@color/pejoy_dracula_item_place_holder</item>
+        <item name="pejoy_toolbar.text_color">@color/pejoy_dracula_toolbar_text_color</item>
+        <item name="pejoy_capture.text_color">@color/pejoy_dracula_capture</item>
+
+        <item name="pejoy_file_provider">io.github.keep2iron.pejoy.provider.PejoyProvider</item>
+        <item name="pejoy_background">@color/pejoy_dracula_background</item>
+
+        <item name="pejoy_bottom_toolbar.lintColor">@color/pejoy_dracula_check_apply_text_color</item>
+        <item name="pejoy_bottom_toolbar.background">@color/pejoy_dracula_bottom_toolbar_background</item>
+        <item name="pejoy_bottom_toolbar.preview.radioOnColor">@color/pejoy_dracula_check_apply_text_color</item>
+        <item name="pejoy_bottom_toolbar.preview.radioOffColor">@color/pejoy_dracula_check_apply_text_color</item>
     </style>
 </resources>

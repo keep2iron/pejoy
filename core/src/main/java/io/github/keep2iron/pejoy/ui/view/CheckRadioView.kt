@@ -20,12 +20,12 @@ class CheckRadioView @JvmOverloads constructor(context: Context, attrs: Attribut
         mSelectedColor = getThemeColor(
             context,
             R.attr.pejoy_bottom_toolbar_preview_radioOnColor,
-            R.color.pejoy_light_item_checkCircle_backgroundColor
+            R.color.pejoy_dracula_item_checkCircle_backgroundColor
         )
         mUnSelectUdColor = getThemeColor(
             context,
             R.attr.pejoy_bottom_toolbar_preview_radioOffColor,
-            R.color.pejoy_light_check_original_radio_disable
+            R.color.pejoy_dracula_check_original_radio_disable
         )
         setChecked(false)
     }

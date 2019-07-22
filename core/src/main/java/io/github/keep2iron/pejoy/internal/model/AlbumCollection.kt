@@ -28,7 +28,7 @@ import java.lang.ref.WeakReference
 
 class AlbumCollection : LoaderManager.LoaderCallbacks<Cursor> {
     private lateinit var mContext: WeakReference<Context>
-    private lateinit var mLoaderManager: LoaderManager
+    private var mLoaderManager: LoaderManager? = null
     private var mCallbacks: AlbumCallbacks? = null
     var currentSelection: Int = 0
         private set
@@ -74,12 +74,13 @@ class AlbumCollection : LoaderManager.LoaderCallbacks<Cursor> {
     }
 
     fun onDestroy() {
-        mLoaderManager.destroyLoader(LOADER_ID)
+        mLoaderManager?.destroyLoader(LOADER_ID)
+        mLoaderManager = null
         mCallbacks = null
     }
 
     fun loadAlbums() {
-        mLoaderManager.initLoader(LOADER_ID, null, this)
+        mLoaderManager?.initLoader(LOADER_ID, null, this)
     }
 
     fun setStateCurrentSelection(currentSelection: Int) {

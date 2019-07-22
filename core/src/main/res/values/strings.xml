@@ -11,7 +11,9 @@
 
     <string name="pejoy_error_type_conflict">不能同时选择图片和视频</string>
 
-    <string name="pejoy_error_read_external_storage_permission">外部存储权限被拒绝</string>
+    <string name="pejoy_error_read_external_storage_permission">读取外部存储权限被拒绝</string>
+
+    <string name="pejoy_error_write_external_storage_permission">写入外部存储权限被拒绝</string>
 
     <string name="pejoy_button_original">原图</string>
 
@@ -22,5 +24,6 @@
     <string name="pejoy_error_no_video_activity">没有支持视频预览的应用</string>
 
     <string name="pejoy_photo_grid_capture">拍照</string>
+    <string name="pejoy_empty_data">empty data</string>
 
 </resources>

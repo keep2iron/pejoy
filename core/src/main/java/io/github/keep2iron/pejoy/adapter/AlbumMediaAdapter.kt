@@ -22,7 +22,6 @@ import android.database.Cursor
 import android.graphics.PorterDuff
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -89,7 +88,7 @@ class AlbumMediaAdapter(
                 val hint = holder.itemView.findViewById<TextView>(R.id.hint)
                 val drawables = hint.compoundDrawables
                 val captureColor =
-                    getThemeColor(hint.context, R.attr.pejoy_capture_text_color, R.color.pejoy_light_capture)
+                    getThemeColor(hint.context, R.attr.pejoy_capture_text_color, R.color.pejoy_dracula_capture)
                 drawables.indices.forEach {
                     val drawable = drawables[it]
                     if (drawable != null && drawable.constantState != null) {

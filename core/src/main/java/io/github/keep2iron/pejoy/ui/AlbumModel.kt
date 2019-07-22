@@ -34,6 +34,8 @@ class AlbumModel(application: Application) : AndroidViewModel(application) {
 
     var currentAlbum: MutableLiveData<Album> = MutableLiveData()
 
+    var emptyData: MutableLiveData<Boolean> = MutableLiveData()
+
     private val selectionSpec: SelectionSpec = SelectionSpec.instance
 
     var originEnabled = false
@@ -106,6 +108,9 @@ class AlbumModel(application: Application) : AndroidViewModel(application) {
             override fun onAlbumMediaLoad(cursor: Cursor) {
                 if (cursor.count > 0) {
                     albumMediaAdapter.swapCursor(cursor)
+                    emptyData.postValue(false)
+                } else {
+                    emptyData.postValue(true)
                 }
             }
 

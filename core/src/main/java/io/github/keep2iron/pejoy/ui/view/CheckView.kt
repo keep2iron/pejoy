@@ -62,7 +62,7 @@ class CheckView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
         mStrokePaint!!.strokeWidth = STROKE_WIDTH * mDensity
         val ta = getContext().theme.obtainStyledAttributes(intArrayOf(R.attr.pejoy_item_checkCircle_borderColor))
         val defaultColor = ResourcesCompat.getColor(
-                resources, R.color.pejoy_light_item_checkCircle_borderColor,
+                resources, R.color.pejoy_dracula_item_checkCircle_borderColor,
                 getContext().theme)
         val color = ta.getColor(0, defaultColor)
         ta.recycle()
@@ -177,7 +177,7 @@ class CheckView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
             val ta = context.theme
                     .obtainStyledAttributes(intArrayOf(R.attr.pejoy_item_checkCircle_backgroundColor))
             val defaultColor = ResourcesCompat.getColor(
-                    resources, R.color.pejoy_light_item_checkCircle_backgroundColor,
+                    resources, R.color.pejoy_dracula_item_checkCircle_backgroundColor,
                     context.theme)
             val color = ta.getColor(0, defaultColor)
             ta.recycle()

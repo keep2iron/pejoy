@@ -17,6 +17,9 @@ import keep2iron.github.io.compress.weatherCompressImage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import android.os.StrictMode
+import io.github.keep2iron.pejoy.utilities.extractStringPath
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,6 +32,9 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val builder = StrictMode.VmPolicy.Builder()
+        StrictMode.setVmPolicy(builder.build())
+
         setContentView(R.layout.activity_main)
 
         GlobalScope.launch(Dispatchers.Main) {
@@ -51,10 +57,11 @@ class MainActivity : AppCompatActivity() {
                 .choose(MimeType.ofAll(), false)
                 .maxSelectable(3)
                 .countable(true)
-                .originalEnable(true)
+                .originalEnable(enable = true, originalSelectDefault = true)
                 .capture(true, enableInsertAlbum = true)
                 .imageEngine(FrescoImageEngine())
-                .setOnOriginCheckedListener { _ ->
+                .setOnOriginCheckedListener { isChecked ->
+                    Log.d("keep2iron", "isChecked : ${isChecked}")
                 }
                 .toObservable()
                 .weatherCompressImage(this)
