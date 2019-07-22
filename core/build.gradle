@@ -1,11 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'maven'
-apply plugin: 'checkstyle'
-
-group = 'com.github.keep2iron'
-version = 'SNAPSHOT'
+apply plugin: 'com.novoda.bintray-release'
 
 android {
     resourcePrefix "pejoy"
@@ -41,7 +36,7 @@ dependencies {
 
     implementation deps.kotlin.stdlib_jdk7
 
-    compileOnly deps.rxjava2
+    implementation deps.rxjava2
 
     testImplementation deps.test.junit
     androidTestImplementation deps.test.runner
@@ -58,56 +53,11 @@ dependencies {
     }
 }
 
-// 指定编码
-tasks.withType(JavaCompile) {
-    options.encoding = "UTF-8"
-}
-
-// 打包源码
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
-}
-
-task javadoc(type: Javadoc) {
-    failOnError false
-    source = android.sourceSets.main.java.sourceFiles
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    classpath += configurations.compile
-}
-
-// 制作文档(Javadoc)
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-artifacts {
-    archives sourcesJar
-    archives javadocJar
-}
-
-checkstyle {
-    toolVersion = '7.6.1'
-    showViolations = true
-}
-
-tasks.withType(Javadoc) {
-    options.addStringOption('Xdoclint:none', '-quiet')
-    options.addStringOption('encoding', 'UTF-8')
-}
-
-task checkstyle(type: Checkstyle) {
-    description 'Runs Checkstyle inspection against matisse sourcesets.'
-    group = 'Code Quality'
-    ignoreFailures = false
-    showViolations true
-    source 'src'
-    include '**/*.java'
-    exclude '**/gen/**'
-    exclude '**/R.java'
-    exclude '**/BuildConfig.java'
-    configFile rootProject.file('checkstyle.xml')
-    // empty classpath
-    classpath = files()
+publish {
+    userOrg = 'keep2iron'
+    groupId = 'io.github.keep2iron'
+    artifactId = 'pejoy-core'
+    publishVersion = '0.0.1'
+    desc = 'image picker,base on matisse'
+    website = 'https://keep2iron.github.io'
 }
