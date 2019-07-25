@@ -62,7 +62,7 @@ class SelectionCreator
  * @param pejoy     a requester context wrapper.
  * @param mimeTypes MIME type set to select.
  */
-internal constructor(private val mPejoy: Pejoy, mimeTypes: Set<MimeType>, mediaTypeExclusive: Boolean) {
+internal constructor(private val pejoy: Pejoy, mimeTypes: Set<MimeType>, mediaTypeExclusive: Boolean) {
     private val mSelectionSpec: SelectionSpec = SelectionSpec.getClearInstance()
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -302,8 +302,8 @@ internal constructor(private val mPejoy: Pejoy, mimeTypes: Set<MimeType>, mediaT
         fragmentManager.findFragmentByTag(HockFragment::class.java.simpleName) as HockFragment?
 
     fun toObservable(): Observable<Intent> {
-        val activity = mPejoy.getActivity() ?: return Observable.empty()
-        val fragment = mPejoy.getFragment()
+        val activity = pejoy.getActivity() ?: return Observable.empty()
+        val fragment = pejoy.getFragment()
 
         val fragmentManager = if (fragment != null) {
             val fragmentActivity = fragment.activity

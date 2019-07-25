@@ -18,7 +18,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import android.os.StrictMode
-import io.github.keep2iron.pejoy.utilities.extractStringPath
 
 
 class MainActivity : AppCompatActivity() {
@@ -56,12 +55,13 @@ class MainActivity : AppCompatActivity() {
             Pejoy.create(this)
                 .choose(MimeType.ofAll(), false)
                 .maxSelectable(3)
+                .theme(R.style.Pejoy_Dracula)
                 .countable(true)
                 .originalEnable(enable = true, originalSelectDefault = true)
                 .capture(true, enableInsertAlbum = true)
                 .imageEngine(FrescoImageEngine())
                 .setOnOriginCheckedListener { isChecked ->
-                    Log.d("keep2iron", "isChecked : ${isChecked}")
+                    Log.d("keep2iron", "isChecked : $isChecked")
                 }
                 .toObservable()
                 .weatherCompressImage(this)

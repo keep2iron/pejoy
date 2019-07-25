@@ -19,15 +19,10 @@ package io.github.keep2iron.pejoy
 import android.content.ContentResolver
 import android.net.Uri
 import android.text.TextUtils
-import android.support.v4.util.ArraySet
 import android.webkit.MimeTypeMap
-
-import java.util.Arrays
-import java.util.EnumSet
-import java.util.Locale
-
 import io.github.keep2iron.pejoy.utilities.PhotoMetadataUtils
 import java.io.File
+import java.util.*
 
 /**
  * MIME Type enumeration to restrict selectable media on the selection activity. Matisse only supports images and
@@ -37,7 +32,7 @@ import java.io.File
  * Good example of mime types Android supports:
  * https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/media/java/android/media/MediaFile.java
  */
-enum class MimeType private constructor(private val mMimeTypeName: String, private val mExtensions: Set<String>) {
+enum class MimeType(private val mMimeTypeName: String, private val mExtensions: Set<String>) {
 
     // ============== images ==============
     JPEG(

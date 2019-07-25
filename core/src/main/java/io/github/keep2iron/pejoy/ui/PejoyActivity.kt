@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.view.WindowManager
 import io.github.keep2iron.pejoy.R
 import io.github.keep2iron.pejoy.internal.entity.SelectionSpec
 import io.github.keep2iron.pejoy.utilities.getThemeColor
@@ -27,15 +28,15 @@ internal class PejoyActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val mSpec = SelectionSpec.instance
         setTheme(mSpec.themeId)
-        val navigationColor = getThemeColor(this, R.attr.colorPrimary, android.R.color.black)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.navigationBarColor = navigationColor
-        }
         super.onCreate(savedInstanceState)
         if (!mSpec.hasInited) {
             setResult(Activity.RESULT_CANCELED)
             finish()
             return
+        }
+
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         }
 
         setContentView(R.layout.pejoy_activity_pejoy)
@@ -47,7 +48,7 @@ internal class PejoyActivity : AppCompatActivity() {
 
     private fun setContainerFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.pejoyContainer, fragment)
+        transaction.replace(android.R.id.content, fragment)
         transaction.commit()
         currentShowFragment = fragment
     }

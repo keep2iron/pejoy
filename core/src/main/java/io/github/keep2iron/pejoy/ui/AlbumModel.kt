@@ -3,14 +3,13 @@ package io.github.keep2iron.pejoy.ui
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
-import android.content.Context
 import android.database.Cursor
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.support.v4.app.FragmentActivity
-import io.github.keep2iron.pejoy.adapter.AlbumMediaAdapter
 import io.github.keep2iron.pejoy.adapter.AlbumCategoryAdapter
+import io.github.keep2iron.pejoy.adapter.AlbumMediaAdapter
 import io.github.keep2iron.pejoy.internal.entity.Album
 import io.github.keep2iron.pejoy.internal.entity.SelectionSpec
 import io.github.keep2iron.pejoy.internal.model.AlbumCollection

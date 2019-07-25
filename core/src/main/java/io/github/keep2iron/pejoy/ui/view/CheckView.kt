@@ -16,24 +16,16 @@
 package io.github.keep2iron.pejoy.ui.view
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffXfermode
-import android.graphics.RadialGradient
-import android.graphics.Rect
-import android.graphics.Shader
-import android.graphics.Typeface
+import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.support.v4.content.res.ResourcesCompat
 import android.text.TextPaint
 import android.util.AttributeSet
 import android.view.View
-
 import io.github.keep2iron.pejoy.R
 
-class CheckView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : View(context, attrs, defStyleAttr) {
+class CheckView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
+    View(context, attrs, defStyleAttr) {
     private var mCountable: Boolean = false
     private var mChecked: Boolean = false
     private var mCheckedNum: Int = 0
@@ -48,7 +40,12 @@ class CheckView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
     // rect for drawing checked number or mark
     private val checkRect: Rect by lazy {
         val rectPadding = (SIZE * mDensity / 2 - CONTENT_SIZE * mDensity / 2).toInt()
-        return@lazy Rect(rectPadding, rectPadding, (SIZE * mDensity - rectPadding).toInt(), (SIZE * mDensity - rectPadding).toInt())
+        return@lazy Rect(
+            rectPadding,
+            rectPadding,
+            (SIZE * mDensity - rectPadding).toInt(),
+            (SIZE * mDensity - rectPadding).toInt()
+        )
     }
 
 
@@ -58,18 +55,21 @@ class CheckView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
         mStrokePaint = Paint()
         mStrokePaint!!.isAntiAlias = true
         mStrokePaint!!.style = Paint.Style.STROKE
-        mStrokePaint!!.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_OVER)
+//        mStrokePaint!!.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_OVER)
         mStrokePaint!!.strokeWidth = STROKE_WIDTH * mDensity
         val ta = getContext().theme.obtainStyledAttributes(intArrayOf(R.attr.pejoy_item_checkCircle_borderColor))
         val defaultColor = ResourcesCompat.getColor(
-                resources, R.color.pejoy_dracula_item_checkCircle_borderColor,
-                getContext().theme)
+            resources, R.color.pejoy_light_item_checkCircle_borderColor,
+            getContext().theme
+        )
         val color = ta.getColor(0, defaultColor)
         ta.recycle()
         mStrokePaint!!.color = color
 
-        mCheckDrawable = ResourcesCompat.getDrawable(context.resources,
-                R.drawable.pejoy_ic_check_white, context.theme)!!
+        mCheckDrawable = ResourcesCompat.getDrawable(
+            context.resources,
+            R.drawable.pejoy_ic_check_white, context.theme
+        )!!
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -114,19 +114,25 @@ class CheckView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
 
         // draw outer and inner shadow
         initShadowPaint()
-        canvas.drawCircle(SIZE.toFloat() * mDensity / 2, SIZE.toFloat() * mDensity / 2,
-                (STROKE_RADIUS + STROKE_WIDTH / 2 + SHADOW_WIDTH) * mDensity, mShadowPaint!!)
+        canvas.drawCircle(
+            SIZE.toFloat() * mDensity / 2, SIZE.toFloat() * mDensity / 2,
+            (STROKE_RADIUS + STROKE_WIDTH / 2 + SHADOW_WIDTH) * mDensity, mShadowPaint!!
+        )
 
         // draw white stroke
-        canvas.drawCircle(SIZE.toFloat() * mDensity / 2, SIZE.toFloat() * mDensity / 2,
-                STROKE_RADIUS * mDensity, mStrokePaint!!)
+        canvas.drawCircle(
+            SIZE.toFloat() * mDensity / 2, SIZE.toFloat() * mDensity / 2,
+            STROKE_RADIUS * mDensity, mStrokePaint!!
+        )
 
         // draw content
         if (mCountable) {
             if (mCheckedNum != UNCHECKED) {
                 initBackgroundPaint()
-                canvas.drawCircle(SIZE.toFloat() * mDensity / 2, SIZE.toFloat() * mDensity / 2,
-                        BG_RADIUS * mDensity, mBackgroundPaint!!)
+                canvas.drawCircle(
+                    SIZE.toFloat() * mDensity / 2, SIZE.toFloat() * mDensity / 2,
+                    BG_RADIUS * mDensity, mBackgroundPaint!!
+                )
                 initTextPaint()
                 val text = mCheckedNum.toString()
                 val baseX = (width - mTextPaint!!.measureText(text)).toInt() / 2
@@ -136,8 +142,10 @@ class CheckView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
         } else {
             if (mChecked) {
                 initBackgroundPaint()
-                canvas.drawCircle(SIZE.toFloat() * mDensity / 2, SIZE.toFloat() * mDensity / 2,
-                        BG_RADIUS * mDensity, mBackgroundPaint!!)
+                canvas.drawCircle(
+                    SIZE.toFloat() * mDensity / 2, SIZE.toFloat() * mDensity / 2,
+                    BG_RADIUS * mDensity, mBackgroundPaint!!
+                )
 
                 mCheckDrawable.bounds = checkRect
                 mCheckDrawable.draw(canvas)
@@ -160,12 +168,20 @@ class CheckView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
             val stop1 = innerRadius / gradientRadius
             val stop2 = outerRadius / gradientRadius
             val stop3 = 1.0f
-            mShadowPaint!!.shader = RadialGradient(SIZE.toFloat() * mDensity / 2,
-                    SIZE.toFloat() * mDensity / 2,
-                    gradientRadius * mDensity,
-                    intArrayOf(Color.parseColor("#00000000"), Color.parseColor("#0D000000"), Color.parseColor("#0D000000"), Color.parseColor("#00000000")),
-                    floatArrayOf(stop0, stop1, stop2, stop3),
-                    Shader.TileMode.CLAMP)
+            mShadowPaint!!.shader = RadialGradient(
+                SIZE.toFloat() * mDensity / 2,
+                SIZE.toFloat() * mDensity / 2,
+                gradientRadius * mDensity,
+                intArrayOf(
+                    Color.parseColor("#00000000"),
+                    Color.parseColor("#00000000"),
+                    Color.parseColor("#0D000000"),
+                    Color.parseColor("#0D000000"),
+                    Color.parseColor("#00000000")
+                ),
+                floatArrayOf(0f, stop0, stop1, stop2, stop3),
+                Shader.TileMode.CLAMP
+            )
         }
     }
 
@@ -175,10 +191,11 @@ class CheckView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
             mBackgroundPaint!!.isAntiAlias = true
             mBackgroundPaint!!.style = Paint.Style.FILL
             val ta = context.theme
-                    .obtainStyledAttributes(intArrayOf(R.attr.pejoy_item_checkCircle_backgroundColor))
+                .obtainStyledAttributes(intArrayOf(R.attr.pejoy_item_checkCircle_backgroundColor))
             val defaultColor = ResourcesCompat.getColor(
-                    resources, R.color.pejoy_dracula_item_checkCircle_backgroundColor,
-                    context.theme)
+                resources, R.color.pejoy_dracula_item_checkCircle_backgroundColor,
+                context.theme
+            )
             val color = ta.getColor(0, defaultColor)
             ta.recycle()
             mBackgroundPaint!!.color = color

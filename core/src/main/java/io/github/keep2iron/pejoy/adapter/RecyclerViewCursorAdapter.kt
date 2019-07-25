@@ -18,10 +18,7 @@ package io.github.keep2iron.pejoy.adapter
 import android.content.Context
 import android.database.Cursor
 import android.provider.MediaStore
-import android.support.annotation.LayoutRes
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.ViewGroup
 
 /**
  * @author keep2iron

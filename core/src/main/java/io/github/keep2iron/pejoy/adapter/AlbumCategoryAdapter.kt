@@ -17,9 +17,6 @@ package io.github.keep2iron.pejoy.adapter
 
 import android.content.Context
 import android.database.Cursor
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -33,8 +30,7 @@ import io.github.keep2iron.pejoy.R
 import io.github.keep2iron.pejoy.internal.entity.Album
 import io.github.keep2iron.pejoy.internal.entity.SelectionSpec
 import io.github.keep2iron.pejoy.ui.AlbumModel
-import io.github.keep2iron.pejoy.ui.view.CheckRadioView
-import io.github.keep2iron.pejoy.ui.view.CheckView
+import io.github.keep2iron.pejoy.ui.view.PejoyCheckRadioView
 import io.github.keep2iron.pejoy.utilities.getThemeDrawable
 
 /**
@@ -70,7 +66,7 @@ class AlbumCategoryAdapter(context: Context, c: Cursor?, autoRequery: Boolean, p
                 R.dimen.pejoy_media_grid_size
             ), mPlaceholder, (view as ViewGroup).getChildAt(0), Uri.fromFile(File(album.coverPath))
         )
-        view.findViewById<CheckRadioView>(R.id.checkRadioView).setChecked(model.currentAlbum.value?.id == album.id)
+        view.findViewById<PejoyCheckRadioView>(R.id.checkRadioView).setChecked(model.currentAlbum.value?.id == album.id)
     }
 
 }

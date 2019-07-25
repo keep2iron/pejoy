@@ -51,14 +51,14 @@ abstract class Filter {
         /**
          * Convenient constant for a minimum value.
          */
-        val MIN = 0
+        const val MIN = 0
         /**
          * Convenient constant for a maximum value.
          */
-        val MAX = Integer.MAX_VALUE
+        const val MAX = Integer.MAX_VALUE
         /**
          * Convenient constant for 1024.
          */
-        val K = 1024
+        const val K = 1024
     }
 }

@@ -19,7 +19,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.pm.ResolveInfo
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -27,27 +26,21 @@ import android.provider.MediaStore
 import android.support.v4.app.Fragment
 import android.support.v4.content.FileProvider
 import android.support.v4.os.EnvironmentCompat
-import io.github.keep2iron.pejoy.BuildConfig
-
+import io.github.keep2iron.pejoy.internal.entity.CaptureStrategy
 import java.io.File
 import java.lang.ref.WeakReference
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import java.util.*
 
-import io.github.keep2iron.pejoy.internal.entity.CaptureStrategy
+class MediaStoreCompat(activity: Activity, fragment: Fragment? = null) {
 
-class MediaStoreCompat {
-
-    private val mContext: WeakReference<Activity>
+    private val mContext: WeakReference<Activity> = WeakReference(activity)
     private var mFragment: WeakReference<Fragment>? = null
     private var mCaptureStrategy: CaptureStrategy? = null
     private lateinit var currentPhotoUri: Uri
     private lateinit var currentPhotoPath: String
 
-    constructor(activity: Activity, fragment: Fragment? = null) {
-        mContext = WeakReference(activity)
-
+    init {
         if (fragment != null) {
             mFragment = WeakReference(fragment)
         }

@@ -57,7 +57,7 @@ class PhotoMetadataUtils private constructor() {
             val imageSize = getBitmapBound(resolver, uri)
             var w = imageSize.x
             var h = imageSize.y
-            if (PhotoMetadataUtils.shouldRotate(resolver, uri)) {
+            if (shouldRotate(resolver, uri)) {
                 w = imageSize.y
                 h = imageSize.x
             }

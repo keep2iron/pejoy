@@ -20,10 +20,8 @@ import android.content.Context
 import android.database.Cursor
 import android.database.MatrixCursor
 import android.database.MergeCursor
-import android.net.Uri
 import android.provider.MediaStore
 import android.support.v4.content.CursorLoader
-
 import io.github.keep2iron.pejoy.internal.entity.Album
 import io.github.keep2iron.pejoy.internal.entity.SelectionSpec
 

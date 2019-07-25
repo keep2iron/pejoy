@@ -27,4 +27,9 @@
     <attr name="pejoy_file_provider" format="string"/>
 
     <attr name="pejoy_background" format="reference|color"/>
+
+    <declare-styleable name="PejoyCheckRadioView">
+        <attr name="pejoy_check_radio_on_color" format="color|reference"/>
+        <attr name="pejoy_check_radio_off_color" format="color|reference"/>
+    </declare-styleable>
 </resources>

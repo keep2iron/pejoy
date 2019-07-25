@@ -3,6 +3,7 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
              android:background="@android:color/black"
              android:orientation="vertical">
 
@@ -37,10 +38,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:background="@drawable/pejoy_shape_apply_background"
                 android:text="@string/pejoy_button_apply"
                 android:textSize="16sp"
-                android:textColor="?attr/pejoy_bottom_toolbar.lintColor"
+                android:textColor="?attr/pejoy_toolbar.text_color"
                 tools:targetApi="m"/>
     </FrameLayout>
 
@@ -67,12 +67,14 @@
                     android:visibility="gone"
                     tools:targetApi="m">
 
-                <io.github.keep2iron.pejoy.ui.view.CheckRadioView
+                <io.github.keep2iron.pejoy.ui.view.PejoyCheckRadioView
+                        app:pejoy_check_radio_on_color="@android:color/white"
+                        app:pejoy_check_radio_off_color="@android:color/white"
                         android:id="@+id/original"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_gravity="center_vertical"
-                        android:tint="#ffffff"/>
+   />
 
                 <TextView
                         android:layout_width="wrap_content"

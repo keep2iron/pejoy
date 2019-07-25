@@ -10,6 +10,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.PorterDuff
+import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -24,7 +25,7 @@ import android.widget.*
 import io.github.keep2iron.pejoy.R
 import io.github.keep2iron.pejoy.adapter.AlbumMediaAdapter
 import io.github.keep2iron.pejoy.adapter.AlbumCategoryAdapter
-import io.github.keep2iron.pejoy.ui.view.CheckRadioView
+import io.github.keep2iron.pejoy.ui.view.PejoyCheckRadioView
 import io.github.keep2iron.pejoy.Pejoy
 import io.github.keep2iron.pejoy.internal.entity.CaptureStrategy
 import io.github.keep2iron.pejoy.internal.entity.Item
@@ -61,7 +62,7 @@ class AlbumFragment : Fragment(), View.OnClickListener {
 
     lateinit var originalLayout: LinearLayout
 
-    lateinit var original: CheckRadioView
+    lateinit var original: PejoyCheckRadioView
 
     lateinit var buttonApply: TextView
 
@@ -112,7 +113,7 @@ class AlbumFragment : Fragment(), View.OnClickListener {
             mediaStoreCompat.setCaptureStrategy(spec.captureStrategy!!)
         } else {
             val value = TypedValue()
-            requireContext().theme.resolveAttribute(R.attr.pejoy_file_provider, value, true);
+            requireContext().theme.resolveAttribute(R.attr.pejoy_file_provider, value, true)
 
             mediaStoreCompat.setCaptureStrategy(
                 CaptureStrategy(
@@ -132,10 +133,25 @@ class AlbumFragment : Fragment(), View.OnClickListener {
 
         subscribeOnUI()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 0x01)
         } else {
             model.loadAlbum(requireActivity(), albumsAdapter, albumMediaAdapter, savedInstanceState)
+        }
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            buttonApply.setBackgroundDrawable(GradientDrawable().apply {
+                setColor(
+                    getThemeColor(
+                        requireContext(),
+                        R.attr.colorPrimaryDark,
+                        R.color.pejoy_light_primary_dark
+                    )
+                )
+                cornerRadius = resources.displayMetrics.density * 8
+            })
+        } else {
+            buttonApply.setBackgroundResource(R.drawable.pejoy_shape_apply_background)
         }
 
         if (spec.originalable && spec.originEnabledDefault) {

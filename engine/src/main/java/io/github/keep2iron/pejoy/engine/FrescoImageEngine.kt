@@ -3,25 +3,18 @@ package io.github.keep2iron.pejoy.engine
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.Animatable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.view.View
+import com.facebook.drawee.backends.pipeline.Fresco
+import com.facebook.drawee.controller.BaseControllerListener
+import com.facebook.imagepipeline.image.ImageInfo
 import io.github.keep2iron.pineapple.ImageLoader
 import io.github.keep2iron.pineapple.ImageLoaderManager
 import io.github.keep2iron.pineapple.ImageLoaderOptions
 import io.github.keep2iron.pineapple.MiddlewareView
 import me.relex.photodraweeview.PhotoDraweeView
-import android.opengl.ETC1.getHeight
-import android.opengl.ETC1.getWidth
-import android.provider.SyncStateContract.Helpers.update
-import android.graphics.drawable.Animatable
-import android.util.Log
-import com.facebook.drawee.controller.BaseControllerListener
-import com.facebook.drawee.backends.pipeline.Fresco
-import com.facebook.drawee.backends.pipeline.PipelineDraweeControllerBuilder
-import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder
-import com.facebook.drawee.view.SimpleDraweeView
-import com.facebook.imagepipeline.image.ImageInfo
 
 
 /**

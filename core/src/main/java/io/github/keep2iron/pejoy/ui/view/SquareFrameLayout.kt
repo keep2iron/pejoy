@@ -17,7 +17,6 @@ package io.github.keep2iron.pejoy.ui.view
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.MotionEvent
 import android.widget.FrameLayout
 
 open class SquareFrameLayout @JvmOverloads constructor(

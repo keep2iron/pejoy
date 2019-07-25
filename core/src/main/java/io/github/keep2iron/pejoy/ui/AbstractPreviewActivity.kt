@@ -3,6 +3,8 @@ package io.github.keep2iron.pejoy.ui
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -12,28 +14,33 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
-import io.github.keep2iron.pejoy.R
 import io.github.keep2iron.pejoy.adapter.PreviewFragmentAdapter
 import io.github.keep2iron.pejoy.internal.entity.IncapableCause
 import io.github.keep2iron.pejoy.internal.entity.Item
 import io.github.keep2iron.pejoy.internal.entity.SelectionSpec
 import io.github.keep2iron.pejoy.internal.model.SelectedItemCollection
-import io.github.keep2iron.pejoy.ui.view.CheckRadioView
+import io.github.keep2iron.pejoy.ui.view.PejoyCheckRadioView
 import io.github.keep2iron.pejoy.ui.view.CheckView
 import io.github.keep2iron.pejoy.ui.view.PreviewViewPager
 import io.github.keep2iron.pejoy.utilities.PhotoMetadataUtils
 import io.github.keep2iron.pejoy.utilities.Platform
+import io.github.keep2iron.pejoy.utilities.getThemeColor
+import android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+import android.view.WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS
+import android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION
+import io.github.keep2iron.pejoy.R
+
 
 abstract class AbstractPreviewActivity : AppCompatActivity(), View.OnClickListener, ViewPager.OnPageChangeListener {
-    protected val viewPager: PreviewViewPager by lazy { findViewById<PreviewViewPager>(R.id.viewPager) }
-    protected val checkView: CheckView by lazy { findViewById<CheckView>(R.id.checkView) }
-    private val imageBack: View by lazy { findViewById<View>(R.id.imageBack) }
-    private val original: CheckRadioView by lazy { findViewById<CheckRadioView>(R.id.original) }
-    private val buttonApply: TextView by lazy { findViewById<TextView>(R.id.buttonApply) }
-    private val originalLayout: View by lazy { findViewById<View>(R.id.originalLayout) }
-    private val topToolbar: View by lazy { findViewById<View>(R.id.topToolbar) }
-    private val bottomToolbar: View by lazy { findViewById<View>(R.id.bottomToolbar) }
-    private val size: TextView by lazy { findViewById<TextView>(R.id.size) }
+    protected val viewPager by lazy { findViewById<PreviewViewPager>(R.id.viewPager) }
+    protected val checkView by lazy { findViewById<CheckView>(R.id.checkView) }
+    private val imageBack by lazy { findViewById<View>(R.id.imageBack) }
+    private val original by lazy { findViewById<PejoyCheckRadioView>(R.id.original) }
+    private val buttonApply by lazy { findViewById<TextView>(R.id.buttonApply) }
+    private val originalLayout by lazy { findViewById<View>(R.id.originalLayout) }
+    private val topToolbar by lazy { findViewById<View>(R.id.topToolbar) }
+    private val bottomToolbar by lazy { findViewById<View>(R.id.bottomToolbar) }
+    private val size by lazy { findViewById<TextView>(R.id.size) }
 
     protected lateinit var adapter: PreviewFragmentAdapter
 
@@ -50,13 +57,34 @@ abstract class AbstractPreviewActivity : AppCompatActivity(), View.OnClickListen
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(selectionSpec.themeId)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.pejoy_activity_preview)
+
         if (Platform.hasKitKat()) {
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         }
+
+        setContentView(R.layout.pejoy_activity_preview)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.navigationBarColor = ContextCompat.getColor(this, android.R.color.black)
+            window.navigationBarColor = Color.BLACK
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val decorView = window.decorView
+            decorView.systemUiVisibility = decorView.systemUiVisibility and SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR.inv()
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            buttonApply.setBackgroundResource(R.drawable.pejoy_shape_apply_background)
+        } else {
+            buttonApply.setBackgroundDrawable(GradientDrawable().apply {
+                setColor(
+                    getThemeColor(
+                        this@AbstractPreviewActivity,
+                        R.attr.colorPrimaryDark,
+                        R.color.pejoy_light_primary_dark
+                    )
+                )
+                cornerRadius = resources.displayMetrics.density * 8
+            })
+        }
+
         originEnable = if (savedInstanceState == null) {
             selectedCollection.onCreate(intent.getBundleExtra(EXTRA_BUNDLE_ITEMS))
             intent.getBooleanExtra(EXTRA_BOOLEAN_ORIGIN_ENABLE, false)
@@ -229,10 +257,6 @@ abstract class AbstractPreviewActivity : AppCompatActivity(), View.OnClickListen
         val cause = selectedCollection.isAcceptable(item)
         IncapableCause.handleCause(context, cause)
         return cause == null
-    }
-
-    override fun finish() {
-        super.finish()
     }
 
     companion object {

@@ -30,7 +30,7 @@ import java.util.TimeZone
  */
 internal object ExifInterfaceCompat {
     private val TAG = ExifInterfaceCompat::class.java.simpleName
-    private val EXIF_DEGREE_FALLBACK_VALUE = -1
+    private const val EXIF_DEGREE_FALLBACK_VALUE = -1
 
     /**
      * Creates new instance of [ExifInterface].
@@ -112,11 +112,11 @@ internal object ExifInterfaceCompat {
             return 0
         }
         // We only recognize a subset of orientation tag values.
-        when (orientation) {
-            ExifInterface.ORIENTATION_ROTATE_90 -> return 90
-            ExifInterface.ORIENTATION_ROTATE_180 -> return 180
-            ExifInterface.ORIENTATION_ROTATE_270 -> return 270
-            else -> return 0
+        return when (orientation) {
+            ExifInterface.ORIENTATION_ROTATE_90 -> 90
+            ExifInterface.ORIENTATION_ROTATE_180 -> 180
+            ExifInterface.ORIENTATION_ROTATE_270 -> 270
+            else -> 0
         }
     }
 }

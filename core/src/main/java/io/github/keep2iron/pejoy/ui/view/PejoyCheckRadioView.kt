@@ -8,7 +8,11 @@ import android.util.AttributeSet
 import io.github.keep2iron.pejoy.R
 import io.github.keep2iron.pejoy.utilities.getThemeColor
 
-class CheckRadioView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
+class PejoyCheckRadioView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) :
     AppCompatImageView(context, attrs, defStyleAttr) {
 
     private var mDrawable: Drawable? = null
@@ -17,17 +21,25 @@ class CheckRadioView @JvmOverloads constructor(context: Context, attrs: Attribut
     private var mUnSelectUdColor: Int = 0
 
     init {
-        mSelectedColor = getThemeColor(
-            context,
-            R.attr.pejoy_bottom_toolbar_preview_radioOnColor,
-            R.color.pejoy_dracula_item_checkCircle_backgroundColor
+        val array = resources.obtainAttributes(attrs, R.styleable.PejoyCheckRadioView)
+        mSelectedColor = array.getColor(
+            R.styleable.PejoyCheckRadioView_pejoy_check_radio_on_color,
+            getThemeColor(
+                context,
+                R.attr.pejoy_bottom_toolbar_preview_radioOnColor,
+                R.color.pejoy_dracula_item_checkCircle_backgroundColor
+            )
         )
-        mUnSelectUdColor = getThemeColor(
-            context,
-            R.attr.pejoy_bottom_toolbar_preview_radioOffColor,
-            R.color.pejoy_dracula_check_original_radio_disable
+        mUnSelectUdColor = array.getColor(
+            R.styleable.PejoyCheckRadioView_pejoy_check_radio_off_color,
+            getThemeColor(
+                context,
+                R.attr.pejoy_bottom_toolbar_preview_radioOffColor,
+                R.color.pejoy_dracula_check_original_radio_disable
+            )
         )
         setChecked(false)
+        array.recycle()
     }
 
 

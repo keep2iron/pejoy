@@ -1,7 +1,7 @@
 ![Image](/image/banner.png)
 
 # Pejoy
-[![Release](https://jitpack.io/v/keep2iron/pejoy.svg)](https://jitpack.io/v/#keep2iron/pejoy) ![BuildStatus](https://travis-ci.org/keep2iron/pejoy.svg?branch=master)
+![Release](https://api.bintray.com/packages/keep2iron/maven/pejoy-core/images/download.svg) ![BuildStatus](https://travis-ci.org/keep2iron/pejoy.svg?branch=master)
 
 Pejoy is a well-designed local image and video selector for Android and base on [Matisse](https://github.com/zhihu/Matisse). You can  
 - Use it in Activity or Fragment
@@ -12,7 +12,7 @@ Pejoy is a well-designed local image and video selector for Android and base on 
 - More to find out yourself
 
 ## Preview
-|Album							 |Album Category				     |Album Preview						|                                  
+|Album							 |Album Category				     |Album Preview						|
 |:------------------------------:|:---------------------------------:|:--------------------------------:|
 |![](image/Screenshot1.png)      | ![](image/Screenshot2.png)        |![](image/Screenshot3.png)        |
 
@@ -20,16 +20,13 @@ Pejoy is a well-designed local image and video selector for Android and base on 
 
 gradle:
 ```groovy
-repositories {
-	maven { url 'https://jitpack.io' }
-}
 dependencies {
-    implementation 'com.github.keep2iron.pejoy:core:$latest_version'
+    implementation 'io.github.keep2iron.pejoy:core:$latest_version'
 	//provide imageloader engine
-    implementation 'com.github.keep2iron.pejoy:engine:$latest_version'
+    implementation 'io.github.keep2iron.pejoy:engine:$latest_version'
 
     //optional compress image use Luban compress lib
-    implementation 'com.github.keep2iron.pejoy:compress:$latest_version'
+    implementation 'io.github.keep2iron.pejoy:compress:$latest_version'
 }
 ```
 

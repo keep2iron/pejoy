@@ -4,7 +4,10 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
+import android.os.Build
 import android.support.v4.view.animation.FastOutSlowInInterpolator
+import android.support.v7.content.res.AppCompatResources
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
@@ -60,7 +63,31 @@ class AlbumContentView @JvmOverloads constructor(
             0,
             0
         )
-        listView.setBackgroundResource(R.drawable.pejoy_shape_album_category_background)
+
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+            listView.background =
+                AppCompatResources.getDrawable(context, R.drawable.pejoy_shape_album_category_background)
+        } else {
+            listView.setBackgroundDrawable(GradientDrawable().apply {
+                cornerRadii = floatArrayOf(
+                    resources.displayMetrics.density * 16,
+                    resources.displayMetrics.density * 16,
+                    resources.displayMetrics.density * 16,
+                    resources.displayMetrics.density * 16,
+                    0f,
+                    0f,
+                    0f,
+                    0f
+                )
+                setColor(
+                    getThemeColor(
+                        context,
+                        R.attr.pejoy_background,
+                        R.color.pejoy_light_background
+                    )
+                )
+            })
+        }
         listView.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {
             gravity = Gravity.BOTTOM
         }
