@@ -12,9 +12,10 @@ Pejoy is a well-designed local image and video selector for Android and base on 
 - More to find out yourself
 
 ## Preview
-|Album							 |Album Category				     |Album Preview						|
-|:------------------------------:|:---------------------------------:|:--------------------------------:|
-|![](image/Screenshot1.png)      | ![](image/Screenshot2.png)        |![](image/Screenshot3.png)        |
+|Mode							 |Album							 |Album Category				     |Album Preview						|
+|:------------------------------:|:---------------------------------:|:--------------------------------:|--------------------------------|
+|**Dracula**      |![](image/dark1.png)      | ![](image/dark2.png)   |![](image/dark3.png)        |
+|**Light** |![](image/light1.png) | ![](image/light2.png) |![](image/light3.png) |
 
 ## Download
 
