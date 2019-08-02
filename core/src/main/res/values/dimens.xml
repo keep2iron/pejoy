@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="pejoy_media_grid_spacing">4dp</dimen>
+  <dimen name="pejoy_media_grid_spacing">4dp</dimen>
 
-    <dimen name="pejoy_media_grid_size">48dp</dimen>
+  <dimen name="pejoy_media_grid_size">48dp</dimen>
 
 </resources>

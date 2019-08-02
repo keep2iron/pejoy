@@ -1,22 +1,22 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="io.github.keep2iron.pejoy">
+    package="io.github.keep2iron.pejoy">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
-    <application>
-        <activity android:name=".ui.PejoyActivity" />
-        <activity android:name=".ui.AlbumPreviewActivity"/>
-        <activity android:name=".ui.SelectedAlbumPreviewActivity"/>
+  <application>
+    <activity android:name=".ui.PejoyActivity"/>
+    <activity android:name=".ui.AlbumPreviewActivity"/>
+    <activity android:name=".ui.SelectedAlbumPreviewActivity"/>
 
-        <provider
-                android:name="io.github.keep2iron.pejoy.provider.PejoyProvider"
-                android:authorities="io.github.keep2iron.pejoy.provider.PejoyProvider"
-                android:exported="false"
-                android:grantUriPermissions="true">
-            <meta-data
-                    android:name="android.support.FILE_PROVIDER_PATHS"
-                    android:resource="@xml/pejoy_file_paths_public"/>
-        </provider>
-    </application>
+    <provider
+        android:name="io.github.keep2iron.pejoy.provider.PejoyProvider"
+        android:authorities="${applicationId}.provider.PejoyProvider"
+        android:exported="false"
+        android:grantUriPermissions="true">
+      <meta-data
+          android:name="android.support.FILE_PROVIDER_PATHS"
+          android:resource="@xml/pejoy_file_paths_public"/>
+    </provider>
+  </application>
 </manifest>

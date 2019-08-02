@@ -15,22 +15,24 @@
   limitations under the License.
   -->
 <io.github.keep2iron.pejoy.ui.view.SquareFrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/pejoy_item.placeholder"
-        android:foreground="?android:attr/selectableItemBackground">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/pejoy_item.placeholder"
+    android:foreground="?android:attr/selectableItemBackground"
+    >
 
-    <TextView
-            android:id="@+id/hint"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:drawablePadding="8dp"
-            android:drawableTop="@drawable/pejoy_ic_baseline_photo_camera"
-            android:gravity="center"
-            android:text="@string/pejoy_photo_grid_capture"
-            android:textColor="?attr/pejoy_capture.text_color"
-            android:textSize="14sp"/>
+  <TextView
+      android:id="@+id/hint"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:drawablePadding="8dp"
+      android:drawableTop="@drawable/pejoy_ic_baseline_photo_camera"
+      android:gravity="center"
+      android:text="@string/pejoy_photo_grid_capture"
+      android:textColor="?attr/pejoy_capture.text_color"
+      android:textSize="14sp"
+      />
 
 </io.github.keep2iron.pejoy.ui.view.SquareFrameLayout>

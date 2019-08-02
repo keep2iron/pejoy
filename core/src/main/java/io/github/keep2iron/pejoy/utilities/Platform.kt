@@ -7,7 +7,7 @@ import android.os.Build
  */
 object Platform {
 
-    fun hasKitKat(): Boolean {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
-    }
+  fun hasKitKat(): Boolean {
+    return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
+  }
 }

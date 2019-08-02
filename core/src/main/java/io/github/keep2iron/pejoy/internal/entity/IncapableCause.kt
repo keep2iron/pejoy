@@ -16,40 +16,42 @@
 package io.github.keep2iron.pejoy.internal.entity
 
 import android.content.Context
-import android.support.annotation.IntDef
 import android.widget.Toast
+import androidx.annotation.IntDef
 
 class IncapableCause @JvmOverloads constructor(
-    @Form val form: Int? = TOAST, val title: String? = null,
-    val message: String
+  @Form val form: Int? = TOAST, val title: String? = null,
+  val message: String
 ) {
 
-    @Retention(AnnotationRetention.SOURCE)
-    @IntDef(TOAST, DIALOG, NONE)
-    annotation class Form
+  @Retention(AnnotationRetention.SOURCE)
+  @IntDef(TOAST, DIALOG, NONE)
+  annotation class Form
 
+  companion object {
+    const val TOAST = 0x00
+    const val DIALOG = 0x01
+    const val NONE = 0x02
 
-    companion object {
-        const val TOAST = 0x00
-        const val DIALOG = 0x01
-        const val NONE = 0x02
+    fun handleCause(
+      context: Context,
+      cause: IncapableCause?
+    ) {
+      if (cause == null) {
+        return
+      }
 
-        fun handleCause(context: Context, cause: IncapableCause?) {
-            if (cause == null) {
-                return
-            }
-
-            when (cause.form) {
-                NONE -> {
-                }
-                DIALOG -> {
-                }
-                TOAST -> Toast.makeText(context, cause.message, Toast.LENGTH_SHORT).show()
-                else -> Toast.makeText(context, cause.message, Toast.LENGTH_SHORT).show()
-            }// do nothing.
-            //                IncapableDialog incapableDialog = IncapableDialog.newInstance(cause.title, cause.message);
-            //                incapableDialog.show(((FragmentActivity) context).getSupportFragmentManager(),
-            //                        IncapableDialog.class.getName());
+      when (cause.form) {
+        NONE -> {
         }
+        DIALOG -> {
+        }
+        TOAST -> Toast.makeText(context, cause.message, Toast.LENGTH_SHORT).show()
+        else -> Toast.makeText(context, cause.message, Toast.LENGTH_SHORT).show()
+      }// do nothing.
+      //                IncapableDialog incapableDialog = IncapableDialog.newInstance(cause.title, cause.message);
+      //                incapableDialog.show(((FragmentActivity) context).getSupportFragmentManager(),
+      //                        IncapableDialog.class.getName());
     }
+  }
 }

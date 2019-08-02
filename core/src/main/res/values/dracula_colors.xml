@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--<color name="pejoy_light_bottom_toolbar_preview_text">#DE000000</color>-->
+  <!--<color name="pejoy_light_bottom_toolbar_preview_text">#DE000000</color>-->
 
-    <color name="pejoy_dracula_bottom_toolbar_background">@color/pejoy_dracula_primary</color>
+  <color name="pejoy_dracula_bottom_toolbar_background">@color/pejoy_dracula_primary</color>
 
-    <color name="pejoy_dracula_item_checkCircle_backgroundColor">@color/pejoy_dracula_primary</color>
+  <color name="pejoy_dracula_item_checkCircle_backgroundColor">@color/pejoy_dracula_primary</color>
 
-    <color name="pejoy_dracula_item_checkCircle_borderColor">#FFFFFF</color>
+  <color name="pejoy_dracula_item_checkCircle_borderColor">#FFFFFF</color>
 
-    <color name="pejoy_dracula_item_place_holder">#37474F</color>
+  <color name="pejoy_dracula_item_place_holder">#37474F</color>
 
-    <color name="pejoy_dracula_check_original_radio_disable">#808080</color>
+  <color name="pejoy_dracula_check_original_radio_disable">#808080</color>
 
-    <color name="pejoy_dracula_check_apply_text_color">#ffffff</color>
+  <color name="pejoy_dracula_check_apply_text_color">#ffffff</color>
 
-    <color name="pejoy_dracula_primary">#47555e</color>
+  <color name="pejoy_dracula_primary">#47555e</color>
 
-    <color name="pejoy_dracula_primary_dark">#1f2c34</color>
+  <color name="pejoy_dracula_primary_dark">#1f2c34</color>
 
-    <color name="pejoy_dracula_toolbar_text_color">#ffffff</color>
+  <color name="pejoy_dracula_toolbar_text_color">#ffffff</color>
 
-    <color name="pejoy_dracula_capture">#FFFFFF</color>
+  <color name="pejoy_dracula_capture">#FFFFFF</color>
 
-    <color name="pejoy_dracula_background">@color/pejoy_dracula_primary_dark</color>
+  <color name="pejoy_dracula_background">@color/pejoy_dracula_primary_dark</color>
 </resources>

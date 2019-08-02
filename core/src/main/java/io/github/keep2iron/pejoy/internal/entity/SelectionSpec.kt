@@ -17,109 +17,108 @@
 package io.github.keep2iron.pejoy.internal.entity
 
 import android.content.pm.ActivityInfo
-import android.support.annotation.StyleRes
+import androidx.annotation.StyleRes
 import io.github.keep2iron.pejoy.MimeType
 import io.github.keep2iron.pejoy.R
 import io.github.keep2iron.pejoy.engine.ImageEngine
 import io.github.keep2iron.pejoy.filter.Filter
 import io.github.keep2iron.pejoy.listener.OnOriginCheckedListener
-import java.lang.IllegalArgumentException
 
 class SelectionSpec private constructor() {
 
-    var mimeTypeSet: Set<MimeType>? = null
-    @StyleRes
-    var themeId = R.style.Pejoy_Dracula
-    var mediaTypeExclusive: Boolean = false
-    var showSingleMediaType: Boolean = false
-    var orientation: Int = 0
-    var countable: Boolean = false
-    var maxSelectable: Int = 0
-    var maxImageSelectable: Int = 0
-    var maxVideoSelectable: Int = 0
-    var filters: MutableList<Filter>? = null
-    var capture: Boolean = false
-    var captureInsertAlbum: Boolean = false
-    var captureStrategy: CaptureStrategy? = null
-    var spanCount: Int = 0
-    var gridExpectedSize: Int = 0
-    var thumbnailScale: Float = 0.75f
-    var imageEngine: ImageEngine? = null
-    var hasInited: Boolean = false
-    //    public OnSelectedListener onSelectedListener;
-    var originalable: Boolean = false
-    var originEnabledDefault: Boolean = false
-    var originalMaxSize: Int = 0
-    var onOriginCheckedListener: OnOriginCheckedListener? = null
-    var autoHideToolbar: Boolean = true
+  var mimeTypeSet: Set<MimeType>? = null
+  @StyleRes
+  var themeId = R.style.Pejoy_Dracula
+  var mediaTypeExclusive: Boolean = false
+  var showSingleMediaType: Boolean = false
+  var orientation: Int = 0
+  var countable: Boolean = false
+  var maxSelectable: Int = 0
+  var maxImageSelectable: Int = 0
+  var maxVideoSelectable: Int = 0
+  var filters: MutableList<Filter>? = null
+  var capture: Boolean = false
+  var captureInsertAlbum: Boolean = false
+  var captureStrategy: CaptureStrategy? = null
+  var spanCount: Int = 0
+  var gridExpectedSize: Int = 0
+  var thumbnailScale: Float = 0.75f
+  var imageEngine: ImageEngine? = null
+  var hasInited: Boolean = false
+  //    public OnSelectedListener onSelectedListener;
+  var originalable: Boolean = false
+  var originEnabledDefault: Boolean = false
+  var originalMaxSize: Int = 0
+  var onOriginCheckedListener: OnOriginCheckedListener? = null
+  var autoHideToolbar: Boolean = true
 
-    private fun reset() {
-        mimeTypeSet = null
-        mediaTypeExclusive = true
-        showSingleMediaType = false
-        orientation = 0
-        countable = false
-        maxSelectable = 1
-        maxImageSelectable = 0
-        maxVideoSelectable = 0
-        themeId = R.style.Pejoy_Dracula
-        filters = null
-        capture = false
-        captureStrategy = null
-        spanCount = 3
-        gridExpectedSize = 0
-        thumbnailScale = 0.75f
-        imageEngine = null
-        hasInited = true
-        originalable = false
-        originEnabledDefault = false
-        autoHideToolbar = true
-        originalMaxSize = Integer.MAX_VALUE
+  private fun reset() {
+    mimeTypeSet = null
+    mediaTypeExclusive = true
+    showSingleMediaType = false
+    orientation = 0
+    countable = false
+    maxSelectable = 1
+    maxImageSelectable = 0
+    maxVideoSelectable = 0
+    themeId = R.style.Pejoy_Dracula
+    filters = null
+    capture = false
+    captureStrategy = null
+    spanCount = 3
+    gridExpectedSize = 0
+    thumbnailScale = 0.75f
+    imageEngine = null
+    hasInited = true
+    originalable = false
+    originEnabledDefault = false
+    autoHideToolbar = true
+    originalMaxSize = Integer.MAX_VALUE
+  }
+
+  fun requireImageEngine(): ImageEngine {
+    if (imageEngine == null) {
+      throw IllegalArgumentException("imageEngine is null,do you forget set ImageEngine?")
     }
 
-    fun requireImageEngine(): ImageEngine {
-        if (imageEngine == null) {
-            throw IllegalArgumentException("imageEngine is null,do you forget set ImageEngine?")
-        }
+    return imageEngine!!
+  }
 
-        return imageEngine!!
+  fun requireMinmeType(): Set<MimeType> {
+    if (mimeTypeSet == null) {
+      throw IllegalArgumentException("mimeTypeSet is null,do you forget set mimeTypeSet?")
     }
 
-    fun requireMinmeType(): Set<MimeType> {
-        if (mimeTypeSet == null) {
-            throw IllegalArgumentException("mimeTypeSet is null,do you forget set mimeTypeSet?")
-        }
+    return mimeTypeSet!!
+  }
 
-        return mimeTypeSet!!
+  fun singleSelectionModeEnabled(): Boolean {
+    return !countable && (maxSelectable == 1 || maxImageSelectable == 1 && maxVideoSelectable == 1)
+  }
+
+  fun needOrientationRestriction(): Boolean {
+    return orientation != ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+  }
+
+  fun onlyShowImages(): Boolean {
+    return showSingleMediaType && MimeType.ofImage().containsAll(mimeTypeSet!!)
+  }
+
+  fun onlyShowVideos(): Boolean {
+    return showSingleMediaType && MimeType.ofVideo().containsAll(mimeTypeSet!!)
+  }
+
+  companion object {
+
+    val instance: SelectionSpec by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
+      SelectionSpec()
     }
 
-    fun singleSelectionModeEnabled(): Boolean {
-        return !countable && (maxSelectable == 1 || maxImageSelectable == 1 && maxVideoSelectable == 1)
+    fun getClearInstance(): SelectionSpec {
+      val selectionSpec = instance
+      selectionSpec.reset()
+      return selectionSpec
     }
 
-    fun needOrientationRestriction(): Boolean {
-        return orientation != ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-    }
-
-    fun onlyShowImages(): Boolean {
-        return showSingleMediaType && MimeType.ofImage().containsAll(mimeTypeSet!!)
-    }
-
-    fun onlyShowVideos(): Boolean {
-        return showSingleMediaType && MimeType.ofVideo().containsAll(mimeTypeSet!!)
-    }
-
-    companion object {
-
-        val instance: SelectionSpec by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
-            SelectionSpec()
-        }
-
-        fun getClearInstance(): SelectionSpec {
-            val selectionSpec = instance
-            selectionSpec.reset()
-            return selectionSpec
-        }
-
-    }
+  }
 }

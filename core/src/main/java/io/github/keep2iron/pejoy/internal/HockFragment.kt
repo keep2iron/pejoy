@@ -3,10 +3,10 @@ package io.github.keep2iron.pejoy.internal
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import io.github.keep2iron.pejoy.ui.PejoyActivity
 import io.reactivex.subjects.PublishSubject
 
@@ -17,58 +17,66 @@ import io.reactivex.subjects.PublishSubject
  * @since 2018/07/20 21:19
  */
 class HockFragment : Fragment() {
-    private var subject: PublishSubject<Intent>? = null
-    private var requestCode = 0
+  private var subject: PublishSubject<Intent>? = null
+  private var requestCode = 0
 
-    companion object {
-        @JvmStatic
-        fun newInstance(requestCode: Int): HockFragment {
-            val hockFragment = HockFragment()
-            val arguments = Bundle()
-            arguments.putInt("requestCode", requestCode)
-            hockFragment.arguments = arguments
+  companion object {
+    @JvmStatic
+    fun newInstance(requestCode: Int): HockFragment {
+      val hockFragment = HockFragment()
+      val arguments = Bundle()
+      arguments.putInt("requestCode", requestCode)
+      hockFragment.arguments = arguments
 
-            return hockFragment
-        }
+      return hockFragment
+    }
+  }
+
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View? {
+
+    arguments?.apply {
+      requestCode = getInt("requestCode")
+    }
+    val isOnCreateView = arguments?.getBoolean("onCreateView") ?: false
+    if (!isOnCreateView) {
+      startActivityForResult()
+      arguments?.putBoolean("onCreateView", true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    return super.onCreateView(inflater, container, savedInstanceState)
+  }
 
-        arguments?.apply {
-            requestCode = getInt("requestCode")
-        }
-        val isOnCreateView = arguments?.getBoolean("onCreateView") ?: false
-        if (!isOnCreateView) {
-            startActivityForResult()
-            arguments?.putBoolean("onCreateView", true)
-        }
+  fun startActivityForResult() {
+    val intent = Intent(activity, PejoyActivity::class.java)
+    startActivityForResult(intent, requestCode)
+  }
 
-        return super.onCreateView(inflater, container, savedInstanceState)
+  override fun onActivityResult(
+    requestCode: Int,
+    resultCode: Int,
+    data: Intent?
+  ) {
+    if (requestCode == this.requestCode && resultCode == Activity.RESULT_OK) {
+      if (data != null) {
+        subject!!.onNext(data)
+      } else {
+        subject!!.onNext(Intent())
+      }
+      subject!!.onComplete()
     }
 
-    fun startActivityForResult() {
-        val intent = Intent(activity, PejoyActivity::class.java)
-        startActivityForResult(intent, requestCode)
-    }
+    subject = null
+  }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == this.requestCode && resultCode == Activity.RESULT_OK) {
-            if (data != null) {
-                subject!!.onNext(data)
-            } else {
-                subject!!.onNext(Intent())
-            }
-            subject!!.onComplete()
-        }
+  fun restoreObservable() {
+    subject = PublishSubject.create()
+  }
 
-        subject = null
-    }
-
-    fun restoreObservable() {
-        subject = PublishSubject.create()
-    }
-
-    fun toObservable(): PublishSubject<Intent> {
-        return subject!!
-    }
+  fun toObservable(): PublishSubject<Intent> {
+    return subject!!
+  }
 }

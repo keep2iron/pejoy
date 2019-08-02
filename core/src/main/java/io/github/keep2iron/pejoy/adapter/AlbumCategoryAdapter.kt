@@ -25,48 +25,63 @@ import android.view.ViewGroup
 import android.widget.CursorAdapter
 import android.widget.LinearLayout
 import android.widget.TextView
-import java.io.File
 import io.github.keep2iron.pejoy.R
 import io.github.keep2iron.pejoy.internal.entity.Album
 import io.github.keep2iron.pejoy.internal.entity.SelectionSpec
 import io.github.keep2iron.pejoy.ui.AlbumModel
 import io.github.keep2iron.pejoy.ui.view.PejoyCheckRadioView
 import io.github.keep2iron.pejoy.utilities.getThemeDrawable
+import java.io.File
 
 /**
  * 相册分类
  */
-class AlbumCategoryAdapter(context: Context, c: Cursor?, autoRequery: Boolean, private val model: AlbumModel) :
+class AlbumCategoryAdapter(
+  context: Context,
+  c: Cursor?,
+  autoRequery: Boolean,
+  private val model: AlbumModel
+) :
     CursorAdapter(context, c, autoRequery) {
 
-    private val mPlaceholder = getThemeDrawable(context, R.attr.pejoy_item_placeholder)
+  private val mPlaceholder = getThemeDrawable(context, R.attr.pejoy_item_placeholder)
 
+  override fun newView(
+    context: Context,
+    cursor: Cursor,
+    parent: ViewGroup
+  ): View {
+    val dp = (context.resources.displayMetrics.density * 80).toInt()
+    val parentView =
+      LayoutInflater.from(context).inflate(
+          R.layout.pejoy_item_album_category, parent, false
+      ) as LinearLayout
+    val provideImageView = SelectionSpec.instance.imageEngine!!.provideImageView(context)
+    parentView.addView(provideImageView, 0, LinearLayout.LayoutParams(dp, dp).apply {
+      leftMargin = (context.resources.displayMetrics.density * 16).toInt()
+      rightMargin = (context.resources.displayMetrics.density * 16).toInt()
+      gravity = Gravity.CENTER_VERTICAL
+    })
 
-    override fun newView(context: Context, cursor: Cursor, parent: ViewGroup): View {
-        val dp = (context.resources.displayMetrics.density * 80).toInt()
-        val parentView =
-            LayoutInflater.from(context).inflate(R.layout.pejoy_item_album_category, parent, false) as LinearLayout
-        val provideImageView = SelectionSpec.instance.imageEngine!!.provideImageView(context)
-        parentView.addView(provideImageView, 0, LinearLayout.LayoutParams(dp, dp).apply {
-            leftMargin = (context.resources.displayMetrics.density * 16).toInt()
-            rightMargin = (context.resources.displayMetrics.density * 16).toInt()
-            gravity = Gravity.CENTER_VERTICAL
-        })
+    return parentView
+  }
 
-        return parentView
-    }
-
-    override fun bindView(view: View, context: Context, cursor: Cursor) {
-        val album = Album.valueOf(cursor)
-        (view.findViewById<View>(R.id.tvAlbumTitle) as TextView).text = album.getDisplayName(context)
-        (view.findViewById<View>(R.id.tvAlbumCount) as TextView).text = album.count.toString()
-        // do not need to load animated Gif
-        SelectionSpec.instance.imageEngine!!.loadThumbnail(
-            context, context.resources.getDimensionPixelSize(
-                R.dimen.pejoy_media_grid_size
-            ), mPlaceholder, (view as ViewGroup).getChildAt(0), Uri.fromFile(File(album.coverPath))
-        )
-        view.findViewById<PejoyCheckRadioView>(R.id.checkRadioView).setChecked(model.currentAlbum.value?.id == album.id)
-    }
+  override fun bindView(
+    view: View,
+    context: Context,
+    cursor: Cursor
+  ) {
+    val album = Album.valueOf(cursor)
+    (view.findViewById<View>(R.id.tvAlbumTitle) as TextView).text = album.getDisplayName(context)
+    (view.findViewById<View>(R.id.tvAlbumCount) as TextView).text = album.count.toString()
+    // do not need to load animated Gif
+    SelectionSpec.instance.imageEngine!!.loadThumbnail(
+        context, context.resources.getDimensionPixelSize(
+        R.dimen.pejoy_media_grid_size
+    ), mPlaceholder, (view as ViewGroup).getChildAt(0), Uri.fromFile(File(album.coverPath))
+    )
+    view.findViewById<PejoyCheckRadioView>(R.id.checkRadioView)
+        .setChecked(model.currentAlbum.value?.id == album.id)
+  }
 
 }

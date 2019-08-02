@@ -19,82 +19,90 @@ package io.github.keep2iron.pejoy.internal.model
 import android.content.Context
 import android.database.Cursor
 import android.os.Bundle
-import android.support.v4.app.FragmentActivity
-import android.support.v4.app.LoaderManager
-import android.support.v4.content.Loader
+import androidx.fragment.app.FragmentActivity
+import androidx.loader.app.LoaderManager
+import androidx.loader.content.Loader
 import io.github.keep2iron.pejoy.internal.loader.AlbumLoader
-import java.lang.IllegalArgumentException
 import java.lang.ref.WeakReference
 
 class AlbumCollection : LoaderManager.LoaderCallbacks<Cursor> {
-    private lateinit var mContext: WeakReference<Context>
-    private var mLoaderManager: LoaderManager? = null
-    private var mCallbacks: AlbumCallbacks? = null
-    var currentSelection: Int = 0
-        private set
-    private var mLoadFinished: Boolean = false
+  private lateinit var mContext: WeakReference<Context>
+  private var mLoaderManager: LoaderManager? = null
+  private var mCallbacks: AlbumCallbacks? = null
+  var currentSelection: Int = 0
+    private set
+  private var mLoadFinished: Boolean = false
 
-    override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
-        val context = mContext.get() ?: throw  IllegalArgumentException("context is null")
-        mLoadFinished = false
-        return AlbumLoader.newInstance(context)
+  override fun onCreateLoader(
+    id: Int,
+    args: Bundle?
+  ): Loader<Cursor> {
+    val context = mContext.get() ?: throw  IllegalArgumentException("context is null")
+    mLoadFinished = false
+    return AlbumLoader.newInstance(context)
+  }
+
+  override fun onLoadFinished(
+    loader: Loader<Cursor>,
+    data: Cursor
+  ) {
+    mContext.get() ?: return
+
+    if (!mLoadFinished) {
+      mLoadFinished = true
+      mCallbacks!!.onAlbumLoad(data)
+    }
+  }
+
+  override fun onLoaderReset(loader: Loader<Cursor>) {
+    mContext.get() ?: return
+
+    mCallbacks!!.onAlbumReset()
+  }
+
+  fun onCreate(
+    activity: FragmentActivity,
+    callbacks: AlbumCallbacks
+  ) {
+    mContext = WeakReference(activity)
+    mLoaderManager = activity.supportLoaderManager
+    mCallbacks = callbacks
+  }
+
+  fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+    if (savedInstanceState == null) {
+      return
     }
 
-    override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor) {
-        mContext.get() ?: return
+    currentSelection = savedInstanceState.getInt(STATE_CURRENT_SELECTION)
+  }
 
-        if (!mLoadFinished) {
-            mLoadFinished = true
-            mCallbacks!!.onAlbumLoad(data)
-        }
-    }
+  fun onSaveInstanceState(outState: Bundle) {
+    outState.putInt(STATE_CURRENT_SELECTION, currentSelection)
+  }
 
-    override fun onLoaderReset(loader: Loader<Cursor>) {
-        mContext.get() ?: return
+  fun onDestroy() {
+    mLoaderManager?.destroyLoader(LOADER_ID)
+    mLoaderManager = null
+    mCallbacks = null
+  }
 
-        mCallbacks!!.onAlbumReset()
-    }
+  fun loadAlbums() {
+    mLoaderManager?.initLoader(LOADER_ID, null, this)
+  }
 
-    fun onCreate(activity: FragmentActivity, callbacks: AlbumCallbacks) {
-        mContext = WeakReference(activity)
-        mLoaderManager = activity.supportLoaderManager
-        mCallbacks = callbacks
-    }
+  fun setStateCurrentSelection(currentSelection: Int) {
+    this.currentSelection = currentSelection
+  }
 
-    fun onRestoreInstanceState(savedInstanceState: Bundle?) {
-        if (savedInstanceState == null) {
-            return
-        }
+  interface AlbumCallbacks {
+    fun onAlbumLoad(cursor: Cursor)
 
-        currentSelection = savedInstanceState.getInt(STATE_CURRENT_SELECTION)
-    }
+    fun onAlbumReset()
+  }
 
-    fun onSaveInstanceState(outState: Bundle) {
-        outState.putInt(STATE_CURRENT_SELECTION, currentSelection)
-    }
-
-    fun onDestroy() {
-        mLoaderManager?.destroyLoader(LOADER_ID)
-        mLoaderManager = null
-        mCallbacks = null
-    }
-
-    fun loadAlbums() {
-        mLoaderManager?.initLoader(LOADER_ID, null, this)
-    }
-
-    fun setStateCurrentSelection(currentSelection: Int) {
-        this.currentSelection = currentSelection
-    }
-
-    interface AlbumCallbacks {
-        fun onAlbumLoad(cursor: Cursor)
-
-        fun onAlbumReset()
-    }
-
-    companion object {
-        private const val LOADER_ID = 1
-        private const val STATE_CURRENT_SELECTION = "state_current_selection"
-    }
+  companion object {
+    private const val LOADER_ID = 1
+    private const val STATE_CURRENT_SELECTION = "state_current_selection"
+  }
 }

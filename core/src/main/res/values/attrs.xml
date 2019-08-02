@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingDefaultResource">
 
-    <!--底部背景-->
-    <attr name="pejoy_bottom_toolbar.preview.textColor" format="reference|color"/>
+  <!--底部背景-->
+  <attr name="pejoy_bottom_toolbar.preview.textColor" format="reference|color"/>
 
-    <attr name="pejoy_bottom_toolbar.preview.radioOnColor" format="reference|color"/>
+  <attr name="pejoy_bottom_toolbar.preview.radioOnColor" format="reference|color"/>
 
-    <attr name="pejoy_bottom_toolbar.preview.radioOffColor" format="reference|color"/>
+  <attr name="pejoy_bottom_toolbar.preview.radioOffColor" format="reference|color"/>
 
-    <attr name="pejoy_bottom_toolbar.lintColor" format="reference|color"/>
+  <attr name="pejoy_bottom_toolbar.lintColor" format="reference|color"/>
 
-    <attr name="pejoy_bottom_toolbar.background" format="reference|color"/>
+  <attr name="pejoy_bottom_toolbar.background" format="reference|color"/>
 
-    <attr name="pejoy_item.checkCircle.backgroundColor" format="reference|color"/>
+  <attr name="pejoy_item.checkCircle.backgroundColor" format="reference|color"/>
 
-    <attr name="pejoy_item.checkCircle.borderColor" format="reference|color"/>
+  <attr name="pejoy_item.checkCircle.borderColor" format="reference|color"/>
 
-    <attr name="pejoy_item.placeholder" format="reference|color"/>
+  <attr name="pejoy_item.placeholder" format="reference|color"/>
 
-    <attr name="pejoy_toolbar.text_color" format="reference|color"/>
+  <attr name="pejoy_toolbar.text_color" format="reference|color"/>
 
-    <attr name="pejoy_capture.text_color" format="reference|color"/>
+  <attr name="pejoy_capture.text_color" format="reference|color"/>
 
-    <attr name="pejoy_player_action" format="string"/>
+  <attr name="pejoy_player_action" format="string"/>
 
-    <attr name="pejoy_file_provider" format="string"/>
+  <attr name="pejoy_file_provider" format="string"/>
 
-    <attr name="pejoy_background" format="reference|color"/>
+  <attr name="pejoy_background" format="reference|color"/>
 
-    <declare-styleable name="PejoyCheckRadioView">
-        <attr name="pejoy_check_radio_on_color" format="color|reference"/>
-        <attr name="pejoy_check_radio_off_color" format="color|reference"/>
-    </declare-styleable>
+  <declare-styleable name="PejoyCheckRadioView">
+    <attr name="pejoy_check_radio_on_color" format="color|reference"/>
+    <attr name="pejoy_check_radio_off_color" format="color|reference"/>
+  </declare-styleable>
 </resources>

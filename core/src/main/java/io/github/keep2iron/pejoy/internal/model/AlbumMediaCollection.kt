@@ -19,77 +19,89 @@ package io.github.keep2iron.pejoy.internal.model
 import android.content.Context
 import android.database.Cursor
 import android.os.Bundle
-import android.support.v4.app.FragmentActivity
-import android.support.v4.app.LoaderManager
-import android.support.v4.content.Loader
-import java.lang.ref.WeakReference
+import androidx.fragment.app.FragmentActivity
+import androidx.loader.app.LoaderManager
+import androidx.loader.content.Loader
 import io.github.keep2iron.pejoy.internal.entity.Album
 import io.github.keep2iron.pejoy.internal.loader.AlbumMediaLoader
-import java.lang.IllegalArgumentException
+import java.lang.ref.WeakReference
 
 class AlbumMediaCollection : LoaderManager.LoaderCallbacks<Cursor> {
-    private lateinit var mContext: WeakReference<Context>
-    private var mLoaderManager: LoaderManager? = null
-    private var mCallbacks: AlbumMediaCallbacks? = null
+  private lateinit var mContext: WeakReference<Context>
+  private var mLoaderManager: LoaderManager? = null
+  private var mCallbacks: AlbumMediaCallbacks? = null
 
-    var isLoadComplete = false
+  var isLoadComplete = false
 
-    override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
-        val context = mContext.get() ?: throw IllegalArgumentException("context is null")
+  override fun onCreateLoader(
+    id: Int,
+    args: Bundle?
+  ): Loader<Cursor> {
+    val context = mContext.get() ?: throw IllegalArgumentException("context is null")
 
-        val album = args?.getParcelable<Album>(ARGS_ALBUM) ?: throw IllegalArgumentException("album is null")
+    val album =
+      args?.getParcelable<Album>(ARGS_ALBUM) ?: throw IllegalArgumentException("album is null")
 
-        return AlbumMediaLoader.newInstance(
-            context, album,
-            album.isAll && args.getBoolean(ARGS_ENABLE_CAPTURE, false)
-        )
-    }
+    return AlbumMediaLoader.newInstance(
+        context, album,
+        album.isAll && args.getBoolean(ARGS_ENABLE_CAPTURE, false)
+    )
+  }
 
-    override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor) {
-        mContext.get() ?: return
+  override fun onLoadFinished(
+    loader: Loader<Cursor>,
+    data: Cursor
+  ) {
+    mContext.get() ?: return
 
-        mCallbacks?.onAlbumMediaLoad(data)
-    }
+    mCallbacks?.onAlbumMediaLoad(data)
+  }
 
-    override fun onLoaderReset(loader: Loader<Cursor>) {
-        mContext.get() ?: return
+  override fun onLoaderReset(loader: Loader<Cursor>) {
+    mContext.get() ?: return
 
-        mCallbacks?.onAlbumMediaReset()
-    }
+    mCallbacks?.onAlbumMediaReset()
+  }
 
-    fun onCreate(context: FragmentActivity, callbacks: AlbumMediaCallbacks) {
-        mContext = WeakReference(context)
-        mLoaderManager = context.supportLoaderManager
-        mCallbacks = callbacks
-    }
+  fun onCreate(
+    context: FragmentActivity,
+    callbacks: AlbumMediaCallbacks
+  ) {
+    mContext = WeakReference(context)
+    mLoaderManager = LoaderManager.getInstance(context)
+    mCallbacks = callbacks
+  }
 
-    fun onDestroy() {
-        mLoaderManager?.destroyLoader(LOADER_ID)
-        mLoaderManager = null
-        mCallbacks = null
-        isLoadComplete = true
-    }
+  fun onDestroy() {
+    mLoaderManager?.destroyLoader(LOADER_ID)
+    mLoaderManager = null
+    mCallbacks = null
+    isLoadComplete = true
+  }
 
-    @JvmOverloads
-    fun load(target: Album?, enableCapture: Boolean = false) {
-        isLoadComplete = true
+  @JvmOverloads
+  fun load(
+    target: Album?,
+    enableCapture: Boolean = false
+  ) {
+    isLoadComplete = true
 
-        val args = Bundle()
-        args.putParcelable(ARGS_ALBUM, target)
-        args.putBoolean(ARGS_ENABLE_CAPTURE, enableCapture)
-        mLoaderManager?.initLoader(LOADER_ID, args, this)
-    }
+    val args = Bundle()
+    args.putParcelable(ARGS_ALBUM, target)
+    args.putBoolean(ARGS_ENABLE_CAPTURE, enableCapture)
+    mLoaderManager?.initLoader(LOADER_ID, args, this)
+  }
 
-    interface AlbumMediaCallbacks {
+  interface AlbumMediaCallbacks {
 
-        fun onAlbumMediaLoad(cursor: Cursor)
+    fun onAlbumMediaLoad(cursor: Cursor)
 
-        fun onAlbumMediaReset()
-    }
+    fun onAlbumMediaReset()
+  }
 
-    companion object {
-        private const val LOADER_ID = 2
-        private const val ARGS_ALBUM = "args_album"
-        private const val ARGS_ENABLE_CAPTURE = "args_enable_capture"
-    }
+  companion object {
+    private const val LOADER_ID = 2
+    private const val ARGS_ALBUM = "args_album"
+    private const val ARGS_ENABLE_CAPTURE = "args_enable_capture"
+  }
 }

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="pejoy_light_primary">#008de4</color>
-    <color name="pejoy_light_primary_dark">#0071b5</color>
-    <color name="pejoy_light_item_checkCircle_backgroundColor">@color/pejoy_light_primary</color>
-    <color name="pejoy_light_item_checkCircle_borderColor">@android:color/white</color>
-    <color name="pejoy_light_check_apply_text_color">@android:color/white</color>
+  <color name="pejoy_light_primary">#008de4</color>
+  <color name="pejoy_light_primary_dark">#0071b5</color>
+  <color name="pejoy_light_item_checkCircle_backgroundColor">@color/pejoy_light_primary</color>
+  <color name="pejoy_light_item_checkCircle_borderColor">@android:color/white</color>
+  <color name="pejoy_light_check_apply_text_color">@android:color/white</color>
 
-    <color name="pejoy_light_item_place_holder">#eeeeee</color>
-    <color name="pejoy_light_background">@android:color/white</color>
+  <color name="pejoy_light_item_place_holder">#eeeeee</color>
+  <color name="pejoy_light_background">@android:color/white</color>
 
-    <color name="pejoy_light_toolbar_text_color">@android:color/white</color>
-    <color name="pejoy_light_capture">#414144</color>
-    <color name="pejoy_light_bottom_toolbar_background">#ffffff</color>
+  <color name="pejoy_light_toolbar_text_color">@android:color/white</color>
+  <color name="pejoy_light_capture">#414144</color>
+  <color name="pejoy_light_bottom_toolbar_background">#ffffff</color>
 
-    <color name="pejoy_light_text_color">#333333</color>
+  <color name="pejoy_light_text_color">#333333</color>
 </resources>

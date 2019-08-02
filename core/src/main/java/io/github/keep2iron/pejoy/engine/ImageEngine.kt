@@ -27,81 +27,110 @@ import android.view.View
  */
 interface ImageEngine {
 
-    /**
-     * Load thumbnail of a static image resource.
-     *
-     * @param context     Context
-     * @param resize      Desired size of the origin image
-     * @param placeholder Placeholder drawable when image is not loaded yet
-     * @param imageView   ImageView widget
-     * @param uri         Uri of the loaded image
-     */
-    fun loadThumbnail(context: Context, resize: Int, placeholder: Drawable?, imageView: View, uri: Uri)
+  /**
+   * Load thumbnail of a static image resource.
+   *
+   * @param context     Context
+   * @param resize      Desired size of the origin image
+   * @param placeholder Placeholder drawable when image is not loaded yet
+   * @param imageView   ImageView widget
+   * @param uri         Uri of the loaded image
+   */
+  fun loadThumbnail(
+    context: Context,
+    resize: Int,
+    placeholder: Drawable?,
+    imageView: View,
+    uri: Uri
+  )
 
-    /**
-     * Load thumbnail of a gif image resource. You don't have to load an animated gif when it's only
-     * a thumbnail tile.
-     *
-     * @param context     Context
-     * @param resize      Desired size of the origin image
-     * @param placeholder Placeholder drawable when image is not loaded yet
-     * @param imageView   ImageView widget
-     * @param uri         Uri of the loaded image
-     */
-    fun loadGifThumbnail(context: Context, resize: Int, placeholder: Drawable?, imageView: View, uri: Uri)
+  /**
+   * Load thumbnail of a gif image resource. You don't have to load an animated gif when it's only
+   * a thumbnail tile.
+   *
+   * @param context     Context
+   * @param resize      Desired size of the origin image
+   * @param placeholder Placeholder drawable when image is not loaded yet
+   * @param imageView   ImageView widget
+   * @param uri         Uri of the loaded image
+   */
+  fun loadGifThumbnail(
+    context: Context,
+    resize: Int,
+    placeholder: Drawable?,
+    imageView: View,
+    uri: Uri
+  )
 
-    /**
-     * Load a static image resource.
-     *
-     * @param context   Context
-     * @param resizeX   Desired x-size of the origin image
-     * @param resizeY   Desired y-size of the origin image
-     * @param imageView ImageView widget
-     * @param uri       Uri of the loaded image
-     */
-    fun loadImage(context: Context, resizeX: Int, resizeY: Int, placeholder: Drawable?, imageView: View, uri: Uri)
+  /**
+   * Load a static image resource.
+   *
+   * @param context   Context
+   * @param resizeX   Desired x-size of the origin image
+   * @param resizeY   Desired y-size of the origin image
+   * @param imageView ImageView widget
+   * @param uri       Uri of the loaded image
+   */
+  fun loadImage(
+    context: Context,
+    resizeX: Int,
+    resizeY: Int,
+    placeholder: Drawable?,
+    imageView: View,
+    uri: Uri
+  )
 
-    /**
-     * Load a gif image resource.
-     *
-     * @param context   Context
-     * @param resizeX   Desired x-size of the origin image
-     * @param resizeY   Desired y-size of the origin image
-     * @param imageView ImageView widget
-     * @param uri       Uri of the loaded image
-     */
-    fun loadGifImage(context: Context, resizeX: Int, resizeY: Int, placeholder: Drawable?, imageView: View, uri: Uri)
+  /**
+   * Load a gif image resource.
+   *
+   * @param context   Context
+   * @param resizeX   Desired x-size of the origin image
+   * @param resizeY   Desired y-size of the origin image
+   * @param imageView ImageView widget
+   * @param uri       Uri of the loaded image
+   */
+  fun loadGifImage(
+    context: Context,
+    resizeX: Int,
+    resizeY: Int,
+    placeholder: Drawable?,
+    imageView: View,
+    uri: Uri
+  )
 
-    /**
-     * Whether this implementation supports animated gif.
-     * Just knowledge of it, convenient for users.
-     *
-     * @return true support animated gif, false do not support animated gif.
-     */
-    fun supportAnimatedGif(): Boolean
+  /**
+   * Whether this implementation supports animated gif.
+   * Just knowledge of it, convenient for users.
+   *
+   * @return true support animated gif, false do not support animated gif.
+   */
+  fun supportAnimatedGif(): Boolean
 
-    /**
-     * 该方法可能会引发OOM
-     *
-     * @param context 上下文对象
-     * @param path    图片的保存地址
-     * @return 根据参数返回一张bitmap
-     */
-    fun loadBitmapByPath(context: Context, path: String): Bitmap
+  /**
+   * 该方法可能会引发OOM
+   *
+   * @param context 上下文对象
+   * @param path    图片的保存地址
+   * @return 根据参数返回一张bitmap
+   */
+  fun loadBitmapByPath(
+    context: Context,
+    path: String
+  ): Bitmap
 
-    /**
-     * @return 返回列表中的图片控件
-     */
-    fun provideImageView(context: Context): View
+  /**
+   * @return 返回列表中的图片控件
+   */
+  fun provideImageView(context: Context): View
 
-    /**
-     * create a touch scale imageView
-     * @return
-     */
-    fun provideScaleImageView(context: Context): View
+  /**
+   * create a touch scale imageView
+   * @return
+   */
+  fun provideScaleImageView(context: Context): View
 
-    /**
-     * reset view matrix
-     */
-    fun resetViewMatrix(view: View)
+  /**
+   * reset view matrix
+   */
+  fun resetViewMatrix(view: View)
 }

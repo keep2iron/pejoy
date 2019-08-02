@@ -1,10 +1,13 @@
 package io.github.keep2iron.pejoy.adapter
 
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 
-class ViewHolder(resId: Int, viewParent: ViewGroup) :
+internal class ViewHolder(
+  resId: Int,
+  viewParent: ViewGroup
+) :
     RecyclerView.ViewHolder(
         LayoutInflater.from(viewParent.context).inflate(
             resId,

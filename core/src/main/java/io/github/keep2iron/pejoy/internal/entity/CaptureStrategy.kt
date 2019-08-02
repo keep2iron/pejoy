@@ -15,4 +15,7 @@
  */
 package io.github.keep2iron.pejoy.internal.entity
 
-class CaptureStrategy(val isPublic: Boolean, val authority: String)
+class CaptureStrategy(
+  val isPublic: Boolean,
+  val authority: String
+)

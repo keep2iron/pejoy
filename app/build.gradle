@@ -2,48 +2,48 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion versions.build.target_sdk
-    buildToolsVersion versions.build.build_tools
+  compileSdkVersion versions.build.target_sdk
+  buildToolsVersion versions.build.build_tools
 
-    defaultConfig {
-        applicationId "io.github.keep2iron.pejoy.app"
-        minSdkVersion 15
-        targetSdkVersion versions.build.target_sdk
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-    }
+  defaultConfig {
+    applicationId "io.github.keep2iron.pejoy.app"
+    minSdkVersion 15
+    targetSdkVersion versions.build.target_sdk
+    versionCode 1
+    versionName "1.0"
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+  }
 
-    buildTypes {
-        release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
+  buildTypes {
+    release {
+      minifyEnabled true
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
+  }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation deps.kotlin.stdlib_jdk7
-    implementation deps.kotlin.coroutines_android
-    implementation deps.support.app_compat
-    implementation deps.support.constraint_layout
+  implementation fileTree(dir: 'libs', include: ['*.jar'])
+  implementation deps.kotlin.stdlib_jdk7
+  implementation deps.kotlin.coroutines_android
+  implementation deps.support.app_compat
+  implementation deps.support.constraint_layout
 
-    implementation deps.rxjava2
+  implementation deps.rxjava2
 
-    implementation 'io.github.keep2iron:pineapple:0.0.1'
-    implementation deps.fresco
+  implementation 'io.github.keep2iron:pineapple:0.0.1'
+  implementation deps.fresco
 
-    implementation project(':core')
-    implementation project(':engine')
-    implementation project(':compress')
+  implementation project(':core')
+  implementation project(':engine')
+  implementation project(':compress')
 
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+  testImplementation 'junit:junit:4.12'
+  androidTestImplementation 'androidx.test:runner:1.1.0'
+  androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
 }

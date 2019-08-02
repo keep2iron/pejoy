@@ -10,36 +10,41 @@ import io.reactivex.schedulers.Schedulers
 import top.zibin.luban.Luban
 
 fun Observable<Intent>.weatherCompressImage(
-    context: Context,
-    compressDir: String = context.cacheDir.absolutePath
+  context: Context,
+  compressDir: String = context.cacheDir.absolutePath
 ): Observable<List<String>> {
-    return observeOn(Schedulers.io())
-        .map {
-            val originEnable = it.getBooleanExtra(Pejoy.EXTRA_RESULT_ORIGIN_ENABLE, false)
-            val list = it.getStringArrayListExtra(Pejoy.EXTRA_RESULT_SELECTION_PATH)
+  return observeOn(Schedulers.io())
+      .map {
+        val originEnable = it.getBooleanExtra(Pejoy.EXTRA_RESULT_ORIGIN_ENABLE, false)
+        val list = it.getStringArrayListExtra(Pejoy.EXTRA_RESULT_SELECTION_PATH)
 
-            if (originEnable) {
-                list
-            } else {
-                val indexList = mutableListOf<Int>()
-                val images = list.filterIndexed { index, filePath ->
-                    MimeType.ofImage().forEach { mimeType ->
-                        if (mimeType.checkType(filePath)) {
-                            indexList.add(index)
-                            return@filterIndexed true
-                        }
-                    }
-                    return@filterIndexed false
+        if (originEnable) {
+          list
+        } else {
+          val indexList = mutableListOf<Int>()
+          val images = list.filterIndexed { index, filePath ->
+            MimeType.ofImage()
+                .forEach { mimeType ->
+                  if (mimeType.checkType(filePath)) {
+                    indexList.add(index)
+                    return@filterIndexed true
+                  }
                 }
+            return@filterIndexed false
+          }
 
-                val files = Luban.with(context).load(images).setTargetDir(compressDir).get()
+          val files = Luban.with(context)
+              .load(images)
+              .setTargetDir(compressDir)
+              .get()
 
-                indexList.forEachIndexed { i, index ->
-                    list.removeAt(index)
-                    list.add(index, files[i].absolutePath)
-                }
+          indexList.forEachIndexed { i, index ->
+            list.removeAt(index)
+            list.add(index, files[i].absolutePath)
+          }
 
-                list.toList()
-            }
-        }.observeOn(AndroidSchedulers.mainThread())
+          list.toList()
+        }
+      }
+      .observeOn(AndroidSchedulers.mainThread())
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="pejoy_preview_bottom_toolbar_bg">#44000000</color>
-    <color name="pejoy_preview_bottom_size">#61FFFFFF</color>
+  <color name="pejoy_preview_bottom_toolbar_bg">#44000000</color>
+  <color name="pejoy_preview_bottom_size">#61FFFFFF</color>
 
 </resources>

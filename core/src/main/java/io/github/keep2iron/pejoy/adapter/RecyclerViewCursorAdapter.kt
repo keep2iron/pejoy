@@ -18,14 +18,17 @@ package io.github.keep2iron.pejoy.adapter
 import android.content.Context
 import android.database.Cursor
 import android.provider.MediaStore
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 
 /**
  * @author keep2iron
  */
-abstract class RecyclerViewCursorAdapter constructor(val context: Context, protected var cursor: Cursor?) :
+abstract class RecyclerViewCursorAdapter constructor(
+  val context: Context,
+  protected var cursor: Cursor?
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private var mRowIDColumn: Int = 0
+  private var mRowIDColumn: Int = 0
 
 //    /**
 //     * 获取布局的layout id
@@ -39,90 +42,97 @@ abstract class RecyclerViewCursorAdapter constructor(val context: Context, prote
 //        return ViewHolder(getLayoutId(), parent)
 //    }
 
+  /**
+   * @param holder
+   * @param position
+   */
+  abstract fun render(
+    holder: RecyclerView.ViewHolder,
+    cursor: Cursor,
+    position: Int
+  )
 
-    /**
-     * @param holder
-     * @param position
-     */
-    abstract fun render(holder: RecyclerView.ViewHolder, cursor: Cursor, position: Int)
+  init {
+    this.setHasStableIds(true)
+    swapCursor(cursor)
+  }
 
-
-    init {
-        this.setHasStableIds(true)
-        swapCursor(cursor)
+  override fun onBindViewHolder(
+    holder: RecyclerView.ViewHolder,
+    position: Int
+  ) {
+    if (!isDataValid(cursor)) {
+      throw IllegalStateException("Cannot bind view holder when cursor is in invalid state.")
     }
 
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (!isDataValid(cursor)) {
-            throw IllegalStateException("Cannot bind view holder when cursor is in invalid state.")
-        }
-
-        if (!cursor!!.moveToPosition(position)) {
-            throw IllegalStateException(
-                "Could not move cursor to position " + position
-                        + " when trying to bind view holder"
-            )
-        }
-
-        render(holder, cursor!!, position)
+    if (!cursor!!.moveToPosition(position)) {
+      throw IllegalStateException(
+          "Could not move cursor to position " + position
+              + " when trying to bind view holder"
+      )
     }
 
-    override fun getItemViewType(position: Int): Int {
-        if (!cursor!!.moveToPosition(position)) {
-            throw IllegalStateException(
-                "Could not move cursor to position " + position
-                        + " when trying to get item view type."
-            )
-        }
-        return getItemViewType(position, cursor!!)
+    render(holder, cursor!!, position)
+  }
+
+  override fun getItemViewType(position: Int): Int {
+    if (!cursor!!.moveToPosition(position)) {
+      throw IllegalStateException(
+          "Could not move cursor to position " + position
+              + " when trying to get item view type."
+      )
+    }
+    return getItemViewType(position, cursor!!)
+  }
+
+  protected abstract fun getItemViewType(
+    position: Int,
+    cursor: Cursor
+  ): Int
+
+  override fun getItemCount(): Int {
+    return if (isDataValid(cursor)) {
+      cursor?.count ?: 0
+    } else {
+      0
+    }
+  }
+
+  override fun getItemId(position: Int): Long {
+    if (!isDataValid(cursor)) {
+      throw IllegalStateException("Cannot lookup item id when cursor is in invalid state.")
     }
 
-    protected abstract fun getItemViewType(position: Int, cursor: Cursor): Int
-
-    override fun getItemCount(): Int {
-        return if (isDataValid(cursor)) {
-            cursor?.count ?: 0
-        } else {
-            0
-        }
+    cursor?.let { cursor ->
+      if (!cursor.moveToPosition(position)) {
+        throw IllegalStateException(
+            "Could not move cursor to position " + position
+                + " when trying to get an item id"
+        )
+      }
     }
 
-    override fun getItemId(position: Int): Long {
-        if (!isDataValid(cursor)) {
-            throw IllegalStateException("Cannot lookup item id when cursor is in invalid state.")
-        }
+    return cursor!!.getLong(mRowIDColumn)
+  }
 
-        cursor?.let { cursor ->
-            if (!cursor.moveToPosition(position)) {
-                throw IllegalStateException(
-                    "Could not move cursor to position " + position
-                            + " when trying to get an item id"
-                )
-            }
-        }
-
-        return cursor!!.getLong(mRowIDColumn)
+  fun swapCursor(newCursor: Cursor?) {
+    if (newCursor === cursor) {
+      return
     }
 
-    fun swapCursor(newCursor: Cursor?) {
-        if (newCursor === cursor) {
-            return
-        }
-
-        if (newCursor != null) {
-            cursor = newCursor
-            mRowIDColumn = cursor!!.getColumnIndexOrThrow(MediaStore.Files.FileColumns._ID)
-            // notify the observers about the new cursor
-            notifyDataSetChanged()
-        } else {
-            notifyItemRangeRemoved(0, itemCount)
-            mRowIDColumn = -1
-            cursor = null
-        }
+    if (newCursor != null) {
+      cursor = newCursor
+      mRowIDColumn = cursor!!.getColumnIndexOrThrow(MediaStore.Files.FileColumns._ID)
+      // notify the observers about the new cursor
+      notifyDataSetChanged()
+    } else {
+      notifyItemRangeRemoved(0, itemCount)
+      mRowIDColumn = -1
+      cursor = null
     }
+  }
 
-    protected fun isDataValid(cursor: Cursor?): Boolean {
-        return cursor != null && !cursor.isClosed
-    }
+  protected fun isDataValid(cursor: Cursor?): Boolean {
+    return cursor != null && !cursor.isClosed
+  }
 }
