@@ -22,12 +22,12 @@ Pejoy is a well-designed local image and video selector for Android and base on 
 gradle:
 ```groovy
 dependencies {
-    implementation 'io.github.keep2iron.pejoy:core:$latest_version'
+    implementation 'io.github.keep2iron:pejoy-core:$latest_version'
 	//provide imageloader engine
-    implementation 'io.github.keep2iron.pejoy:engine:$latest_version'
+    implementation 'io.github.keep2iron:pejoy-engine:$latest_version'
 
     //optional compress image use Luban compress lib
-    implementation 'io.github.keep2iron.pejoy:compress:$latest_version'
+    implementation 'io.github.keep2iron:pejoy-compress:$latest_version'
 }
 ```
 
