@@ -17,4 +17,5 @@ notifications:
 script:
   - chmod +x gradlew
   - ./gradlew assemble check
+  - ./gradlew core:clean core:build core:bintrayUpload -PbintrayUser=keep2iron -PbintrayKey=5c5aea5cc5ffe8722479da1ea7592336564ffee1 -PdryRun=false
 #  - ./gradlew checkstyle
