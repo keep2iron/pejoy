@@ -45,6 +45,8 @@ import io.github.keep2iron.pejoy.internal.HockFragment
 import io.github.keep2iron.pejoy.internal.entity.CaptureStrategy
 import io.github.keep2iron.pejoy.internal.entity.SelectionSpec
 import io.github.keep2iron.pejoy.listener.OnOriginCheckedListener
+import io.github.keep2iron.pejoy.ui.PejoyActivity
+import io.github.keep2iron.rxresult.RxResult
 import io.reactivex.Observable
 import java.util.ArrayList
 
@@ -67,22 +69,22 @@ internal constructor(
 
   @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
   @IntDef(
-      SCREEN_ORIENTATION_UNSPECIFIED,
-      SCREEN_ORIENTATION_LANDSCAPE,
-      SCREEN_ORIENTATION_PORTRAIT,
-      SCREEN_ORIENTATION_USER,
-      SCREEN_ORIENTATION_BEHIND,
-      SCREEN_ORIENTATION_SENSOR,
-      SCREEN_ORIENTATION_NOSENSOR,
-      SCREEN_ORIENTATION_SENSOR_LANDSCAPE,
-      SCREEN_ORIENTATION_SENSOR_PORTRAIT,
-      SCREEN_ORIENTATION_REVERSE_LANDSCAPE,
-      SCREEN_ORIENTATION_REVERSE_PORTRAIT,
-      SCREEN_ORIENTATION_FULL_SENSOR,
-      SCREEN_ORIENTATION_USER_LANDSCAPE,
-      SCREEN_ORIENTATION_USER_PORTRAIT,
-      SCREEN_ORIENTATION_FULL_USER,
-      SCREEN_ORIENTATION_LOCKED
+    SCREEN_ORIENTATION_UNSPECIFIED,
+    SCREEN_ORIENTATION_LANDSCAPE,
+    SCREEN_ORIENTATION_PORTRAIT,
+    SCREEN_ORIENTATION_USER,
+    SCREEN_ORIENTATION_BEHIND,
+    SCREEN_ORIENTATION_SENSOR,
+    SCREEN_ORIENTATION_NOSENSOR,
+    SCREEN_ORIENTATION_SENSOR_LANDSCAPE,
+    SCREEN_ORIENTATION_SENSOR_PORTRAIT,
+    SCREEN_ORIENTATION_REVERSE_LANDSCAPE,
+    SCREEN_ORIENTATION_REVERSE_PORTRAIT,
+    SCREEN_ORIENTATION_FULL_SENSOR,
+    SCREEN_ORIENTATION_USER_LANDSCAPE,
+    SCREEN_ORIENTATION_USER_PORTRAIT,
+    SCREEN_ORIENTATION_FULL_USER,
+    SCREEN_ORIENTATION_LOCKED
   )
   @Retention(AnnotationRetention.SOURCE)
   internal annotation class ScreenOrientation
@@ -309,36 +311,52 @@ internal constructor(
     fragmentManager.findFragmentByTag(HockFragment::class.java.simpleName) as HockFragment?
 
   fun toObservable(): Observable<Intent> {
-    val activity = pejoy.getActivity() ?: return Observable.empty()
-    val fragment = pejoy.getFragment()
+    val requestActivity = pejoy.getActivity()
+    val requestFragment = pejoy.getFragment()
 
-    val fragmentManager = if (fragment != null) {
-      val fragmentActivity = fragment.activity
-      if (fragmentActivity == null) {
-        return Observable.error(IllegalArgumentException("activity is null!!"))
-      } else {
-        fragmentActivity.supportFragmentManager
+    return when {
+      requestActivity != null -> RxResult(requestActivity)
+      requestFragment != null -> RxResult(requestFragment)
+      else -> throw IllegalArgumentException("activity or fragment is not null")
+    }.prepare<PejoyActivity>()
+      .requestForResult()
+      .filter {
+        it.result
       }
-    } else {
-      activity.supportFragmentManager
-    }
+      .map {
+        it.data
+      }
 
-    hockFragment = findFragmentByTag(fragmentManager)
-    val newInstance = hockFragment == null
-
-    if (newInstance) {
-      hockFragment = HockFragment.newInstance(
-          Pejoy.REQUEST_CODE
-      )
-
-      val transaction = fragmentManager.beginTransaction()
-      transaction.add(hockFragment!!, HockFragment::class.java.simpleName)
-      transaction.commitNow()
-    } else {
-      hockFragment!!.startActivityForResult()
-    }
-    hockFragment!!.restoreObservable()
-
-    return hockFragment!!.toObservable()
+//    val activity = pejoy.getActivity() ?: return Observable.empty()
+//    val fragment = pejoy.getFragment()
+//
+//    val fragmentManager = if (fragment != null) {
+//      val fragmentActivity = fragment.activity
+//      if (fragmentActivity == null) {
+//        return Observable.error(IllegalArgumentException("activity is null!!"))
+//      } else {
+//        fragmentActivity.supportFragmentManager
+//      }
+//    } else {
+//      activity.supportFragmentManager
+//    }
+//
+//    hockFragment = findFragmentByTag(fragmentManager)
+//    val newInstance = hockFragment == null
+//
+//    if (newInstance) {
+//      hockFragment = HockFragment.newInstance(
+//        Pejoy.REQUEST_CODE
+//      )
+//
+//      val transaction = fragmentManager.beginTransaction()
+//      transaction.add(hockFragment!!, HockFragment::class.java.simpleName)
+//      transaction.commitNow()
+//    } else {
+//      hockFragment!!.startActivityForResult()
+//    }
+//    hockFragment!!.restoreObservable()
+//
+//    return hockFragment!!.toObservable()
   }
 }

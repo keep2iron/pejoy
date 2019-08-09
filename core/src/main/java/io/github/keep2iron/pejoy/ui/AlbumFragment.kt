@@ -26,6 +26,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import io.github.keep2iron.pejoy.BuildConfig
 import io.github.keep2iron.pejoy.Pejoy
 import io.github.keep2iron.pejoy.R
 import io.github.keep2iron.pejoy.adapter.AlbumCategoryAdapter
@@ -128,7 +129,7 @@ open class AlbumFragment : Fragment(), View.OnClickListener {
       mediaStoreCompat.setCaptureStrategy(
           CaptureStrategy(
               true,
-              value.string.toString()
+            requireContext().applicationContext.packageName + ".provider.PejoyProvider"
           )
       )
     }
