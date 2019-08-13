@@ -30,7 +30,7 @@ dependencies {
   implementation fileTree(dir: 'libs', include: ['*.jar'])
 
   compileOnly project(':core')
-  implementation 'io.github.keep2iron:pineapple:0.0.2'
+  implementation 'io.github.keep2iron:pineapple:0.0.3'
   implementation deps.fresco
   implementation deps.fresco_gif
   implementation deps.kotlin.stdlib_jdk7

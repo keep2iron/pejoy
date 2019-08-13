@@ -11,6 +11,7 @@ import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -26,7 +27,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import io.github.keep2iron.pejoy.BuildConfig
 import io.github.keep2iron.pejoy.Pejoy
 import io.github.keep2iron.pejoy.R
 import io.github.keep2iron.pejoy.adapter.AlbumCategoryAdapter
@@ -111,12 +111,12 @@ open class AlbumFragment : Fragment(), View.OnClickListener {
     this.savedInstanceState = savedInstanceState
 
     model = ViewModelProviders.of(
-        this,
-        ViewModelProvider.AndroidViewModelFactory.getInstance(
-            requireContext().applicationContext as Application
-        )
+      this,
+      ViewModelProvider.AndroidViewModelFactory.getInstance(
+        requireContext().applicationContext as Application
+      )
     )
-        .get(AlbumModel::class.java)
+      .get(AlbumModel::class.java)
 
     model.onCreateViewFragment(savedInstanceState)
 
@@ -127,10 +127,10 @@ open class AlbumFragment : Fragment(), View.OnClickListener {
       requireContext().theme.resolveAttribute(R.attr.pejoy_file_provider, value, true)
 
       mediaStoreCompat.setCaptureStrategy(
-          CaptureStrategy(
-              true,
-            requireContext().applicationContext.packageName + ".provider.PejoyProvider"
-          )
+        CaptureStrategy(
+          true,
+          requireContext().applicationContext.packageName + ".provider.PejoyProvider"
+        )
       )
     }
 
@@ -154,11 +154,11 @@ open class AlbumFragment : Fragment(), View.OnClickListener {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
       buttonApply.setBackgroundDrawable(GradientDrawable().apply {
         setColor(
-            getThemeColor(
-                requireContext(),
-                R.attr.colorPrimaryDark,
-                R.color.pejoy_light_primary_dark
-            )
+          getThemeColor(
+            requireContext(),
+            R.attr.colorPrimaryDark,
+            R.color.pejoy_light_primary_dark
+          )
         )
         cornerRadius = resources.displayMetrics.density * 8
       })
@@ -178,9 +178,9 @@ open class AlbumFragment : Fragment(), View.OnClickListener {
   private fun initAlbumCategory() {
     val drawables = buttonAlbumCategory.compoundDrawables
     val captureColor = getThemeColor(
-        requireContext(),
-        R.attr.pejoy_bottom_toolbar_lintColor,
-        R.color.pejoy_dracula_check_apply_text_color
+      requireContext(),
+      R.attr.pejoy_bottom_toolbar_lintColor,
+      R.color.pejoy_dracula_check_apply_text_color
     )
     drawables.indices.forEach {
       val drawable = drawables[it]
@@ -188,7 +188,7 @@ open class AlbumFragment : Fragment(), View.OnClickListener {
         val state = drawable.constantState!!
 
         val newDrawable = state.newDrawable()
-            .mutate()
+          .mutate()
         newDrawable.setColorFilter(captureColor, PorterDuff.Mode.SRC_IN)
         newDrawable.bounds = drawable.bounds
         drawables[it] = newDrawable
@@ -219,11 +219,11 @@ open class AlbumFragment : Fragment(), View.OnClickListener {
       } else {
         model.emptyData.postValue(true)
         Toast.makeText(
-            requireContext(),
-            R.string.pejoy_error_read_external_storage_permission,
-            Toast.LENGTH_SHORT
+          requireContext(),
+          R.string.pejoy_error_read_external_storage_permission,
+          Toast.LENGTH_SHORT
         )
-            .show()
+          .show()
       }
     }
 
@@ -237,11 +237,10 @@ open class AlbumFragment : Fragment(), View.OnClickListener {
         mediaStoreCompat.dispatchCaptureIntent(requireContext(), Pejoy.REQUEST_CODE_CAPTURE)
       } else {
         Toast.makeText(
-            requireContext(),
-            R.string.pejoy_error_read_external_storage_permission,
-            Toast.LENGTH_SHORT
-        )
-            .show()
+          requireContext(),
+          R.string.pejoy_error_read_external_storage_permission,
+          Toast.LENGTH_SHORT
+        ).show()
       }
     }
 
@@ -250,18 +249,31 @@ open class AlbumFragment : Fragment(), View.OnClickListener {
   private fun initRecyclerView() {
     recyclerView.layoutManager = GridLayoutManager(requireContext(), spec.spanCount)
     recyclerView.setHasFixedSize(true)
-
     recyclerView.addItemDecoration(
-        MediaGridInset(
-            3,
-            resources.getDimensionPixelOffset(R.dimen.pejoy_media_grid_spacing),
-            false
-        )
+      MediaGridInset(
+        3,
+        resources.getDimensionPixelOffset(R.dimen.pejoy_media_grid_spacing),
+        false
+      )
     )
+    albumMediaAdapter.setHasStableIds(true)
     recyclerView.adapter = albumMediaAdapter
     albumMediaAdapter.setOnCheckedViewStateChangeListener {
       updateBottomToolbar()
     }
+    recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+      override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+        Log.d("tag","newState : ${newState}")
+        when (newState) {
+          RecyclerView.SCROLL_STATE_IDLE -> {
+            SelectionSpec.instance.requireImageEngine().resume(requireContext().applicationContext)
+          }
+          else -> {
+            SelectionSpec.instance.requireImageEngine().pause(requireContext().applicationContext)
+          }
+        }
+      }
+    })
   }
 
   private fun subscribeOnUI() {
@@ -289,8 +301,8 @@ open class AlbumFragment : Fragment(), View.OnClickListener {
     val selectedPaths = model.selectedItemCollection.asListOfString() as ArrayList<String>
     result.putStringArrayListExtra(Pejoy.EXTRA_RESULT_SELECTION_PATH, selectedPaths)
     result.putParcelableArrayListExtra(
-        Pejoy.EXTRA_RESULT_SELECTION,
-        model.selectedItemCollection.asListOfUri() as ArrayList<Uri>
+      Pejoy.EXTRA_RESULT_SELECTION,
+      model.selectedItemCollection.asListOfUri() as ArrayList<Uri>
     )
     result.putExtra(Pejoy.EXTRA_RESULT_ORIGIN_ENABLE, model.originEnabled)
 
@@ -315,7 +327,7 @@ open class AlbumFragment : Fragment(), View.OnClickListener {
       R.id.buttonPreview -> {
         val intent = Intent(requireContext(), SelectedAlbumPreviewActivity::class.java)
         intent.putExtra(
-            AbstractPreviewActivity.EXTRA_BUNDLE_ITEMS, model.selectedItemCollection.dataWithBundle
+          AbstractPreviewActivity.EXTRA_BUNDLE_ITEMS, model.selectedItemCollection.dataWithBundle
         )
         intent.putExtra(AbstractPreviewActivity.EXTRA_BOOLEAN_ORIGIN_ENABLE, model.originEnabled)
         startActivityForResult(intent, AbstractPreviewActivity.REQUEST_CODE)
@@ -385,8 +397,8 @@ open class AlbumFragment : Fragment(), View.OnClickListener {
 
       val bundle = data.getBundleExtra(AbstractPreviewActivity.EXTRA_BUNDLE_ITEMS)
       val collectionType = bundle.getInt(
-          SelectedItemCollection.STATE_COLLECTION_TYPE,
-          SelectedItemCollection.COLLECTION_UNDEFINED
+        SelectedItemCollection.STATE_COLLECTION_TYPE,
+        SelectedItemCollection.COLLECTION_UNDEFINED
       )
       val selected = bundle.getParcelableArrayList<Item>(SelectedItemCollection.STATE_SELECTION)
 
@@ -418,8 +430,8 @@ open class AlbumFragment : Fragment(), View.OnClickListener {
 
       if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
         activity.revokeUriPermission(
-            contentUri,
-            Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION
+          contentUri,
+          Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION
         )
       }
 
@@ -434,7 +446,7 @@ open class AlbumFragment : Fragment(), View.OnClickListener {
 
   fun capture() {
     requestPermissions(
-        arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE), 0x2
+      arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE), 0x2
     )
   }
 }

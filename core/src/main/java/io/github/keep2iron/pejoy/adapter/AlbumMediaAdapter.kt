@@ -270,4 +270,9 @@ class AlbumMediaAdapter(
     return mImageResize
   }
 
+  override fun getItemId(position: Int): Long {
+    cursor!!.moveToPosition(position)
+    val item = Item.valueOf(cursor!!)
+    return item.id
+  }
 }

@@ -133,4 +133,8 @@ interface ImageEngine {
    * reset view matrix
    */
   fun resetViewMatrix(view: View)
+
+  fun pause(context: Context)
+
+  fun resume(context: Context)
 }

@@ -305,11 +305,6 @@ internal constructor(
     return this
   }
 
-  private var hockFragment: HockFragment? = null
-
-  private fun findFragmentByTag(fragmentManager: FragmentManager): HockFragment? =
-    fragmentManager.findFragmentByTag(HockFragment::class.java.simpleName) as HockFragment?
-
   fun toObservable(): Observable<Intent> {
     val requestActivity = pejoy.getActivity()
     val requestFragment = pejoy.getFragment()

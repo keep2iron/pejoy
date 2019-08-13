@@ -52,6 +52,7 @@ class FrescoImageEngine : ImageEngine {
       scaleType = ImageLoaderOptions.ScaleType.CENTER_CROP
       placeHolderRes = 0
       placeHolder = placeholder
+      isLoadGif = false
     }
   }
 
@@ -62,7 +63,6 @@ class FrescoImageEngine : ImageEngine {
     imageView: View,
     uri: Uri
   ) {
-//        (imageView as SimpleDraweeView).setImageURI(uri, context)
     imageLoader.showImageView(
         imageView as MiddlewareView, uri
     ) {
@@ -163,5 +163,13 @@ class FrescoImageEngine : ImageEngine {
       it.checkMatrixBounds()
       it.draweeView?.invalidate()
     }
+  }
+
+  override fun resume(context: Context) {
+    imageLoader.resume(context)
+  }
+
+  override fun pause(context: Context) {
+    imageLoader.pause(context)
   }
 }
