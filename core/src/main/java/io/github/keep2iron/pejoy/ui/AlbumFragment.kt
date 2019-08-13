@@ -40,6 +40,7 @@ import io.github.keep2iron.pejoy.ui.view.PejoyCheckRadioView
 import io.github.keep2iron.pejoy.utilities.MediaStoreCompat
 import io.github.keep2iron.pejoy.utilities.getThemeColor
 import java.util.ArrayList
+import kotlin.LazyThreadSafetyMode.NONE
 
 /**
  *
@@ -80,7 +81,7 @@ open class AlbumFragment : Fragment(), View.OnClickListener {
 
   private val spec = SelectionSpec.instance
 
-  private val mediaStoreCompat: MediaStoreCompat by lazy {
+  private val mediaStoreCompat: MediaStoreCompat by lazy(NONE) {
     MediaStoreCompat(requireActivity(), this)
   }
 
@@ -120,6 +121,7 @@ open class AlbumFragment : Fragment(), View.OnClickListener {
 
     model.onCreateViewFragment(savedInstanceState)
 
+    mediaStoreCompat.onCreate(savedInstanceState)
     if (spec.captureStrategy != null) {
       mediaStoreCompat.setCaptureStrategy(spec.captureStrategy!!)
     } else {
@@ -263,7 +265,7 @@ open class AlbumFragment : Fragment(), View.OnClickListener {
     }
     recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
       override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-        Log.d("tag","newState : ${newState}")
+        Log.d("tag", "newState : ${newState}")
         when (newState) {
           RecyclerView.SCROLL_STATE_IDLE -> {
             SelectionSpec.instance.requireImageEngine().resume(requireContext().applicationContext)
@@ -341,6 +343,7 @@ open class AlbumFragment : Fragment(), View.OnClickListener {
   override fun onSaveInstanceState(outState: Bundle) {
     super.onSaveInstanceState(outState)
     model.onSaveInstanceState(outState)
+    mediaStoreCompat.onSaveInstanceState(outState)
   }
 
   override fun onDestroy() {

@@ -21,6 +21,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
+import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import androidx.core.content.FileProvider
@@ -65,22 +66,22 @@ class MediaStoreCompat(
       if (photoFile != null) {
         currentPhotoPath = photoFile.absolutePath
         currentPhotoUri = FileProvider.getUriForFile(
-            context,
-            mCaptureStrategy!!.authority,
-            photoFile
+          context,
+          mCaptureStrategy!!.authority,
+          photoFile
         )
         captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, currentPhotoUri)
         captureIntent.addFlags(
-            Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+          Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
         )
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
           val resInfoList = context.packageManager
-              .queryIntentActivities(captureIntent, PackageManager.MATCH_DEFAULT_ONLY)
+            .queryIntentActivities(captureIntent, PackageManager.MATCH_DEFAULT_ONLY)
           for (resolveInfo in resInfoList) {
             val packageName = resolveInfo.activityInfo.packageName
             context.grantUriPermission(
-                packageName, currentPhotoUri,
-                Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION
+              packageName, currentPhotoUri,
+              Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION
             )
           }
         }
@@ -90,7 +91,7 @@ class MediaStoreCompat(
           fragment.startActivityForResult(captureIntent, requestCode)
         } else {
           mContext.get()
-              ?.startActivityForResult(captureIntent, requestCode)
+            ?.startActivityForResult(captureIntent, requestCode)
         }
       }
     }
@@ -103,14 +104,14 @@ class MediaStoreCompat(
     val storageDir: File?
     if (mCaptureStrategy!!.isPublic) {
       storageDir = Environment.getExternalStoragePublicDirectory(
-          Environment.DIRECTORY_PICTURES
+        Environment.DIRECTORY_PICTURES
       )
       if (!storageDir!!.exists()) {
         storageDir.mkdirs()
       }
     } else {
       storageDir = mContext.get()
-          ?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        ?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
     }
 
     // Avoid joining path components manually
@@ -134,18 +135,33 @@ class MediaStoreCompat(
   fun insertAlbum(
     context: Context,
     imagePath: String,
-    onScanerComplete: (() -> Unit)? = null
+    onScannerComplete: (() -> Unit)? = null
   ) {
     val file = File(imagePath)
     MediaStore.Images.Media.insertImage(
-        context.contentResolver,
-        file.absolutePath, file.nameWithoutExtension,
-        null
+      context.contentResolver,
+      file.absolutePath, file.nameWithoutExtension,
+      null
     )
-    CaptureMediaScanner(context, imagePath, onScanerComplete)
+    CaptureMediaScanner(context, imagePath, onScannerComplete)
+  }
+
+  fun onSaveInstanceState(outState: Bundle) {
+    outState.putParcelable(STATE_PHOTO_URI, currentPhotoUri)
+    outState.putString(STATE_PHOTO_PATH, currentPhotoPath)
+  }
+
+  fun onCreate(bundle: Bundle?){
+    if(bundle != null){
+      currentPhotoUri = bundle.getParcelable(STATE_PHOTO_URI)
+      currentPhotoPath = bundle.getString(STATE_PHOTO_PATH)!!
+    }
   }
 
   companion object {
+    const val STATE_PHOTO_URI = "photo_uri"
+
+    const val STATE_PHOTO_PATH = "photo_path"
 
     /**
      * Checks whether the device has a camera feature or not.
