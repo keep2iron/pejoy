@@ -1,4 +1,4 @@
-![Image](/image/banner.png)
+![Image](image/banner.png)
 
 # Pejoy
 ![Release](https://api.bintray.com/packages/keep2iron/maven/pejoy-core/images/download.svg) ![BuildStatus](https://travis-ci.org/keep2iron/pejoy.svg?branch=master)
@@ -90,6 +90,31 @@ Pejoy.create(this)
     .toObservable()
     .weatherCompressImage(this) // when original not checked.compress will execute.
     .subscribe { paths->
+    }
+````
+
+##### Capture
+
+````kotlin
+Pejoy.create(this)
+    .capture()
+    .originalEnable(true)
+    .toObservable()
+    .weatherCompressImage(requireContext())
+    .subscribe {
+        imageResultBuilder.append("[\n")
+        	it.forEach { uri ->
+        		imageResultBuilder.apply {
+        		append(uri)
+        		if (uri != it.last()) {
+        			append("\n")
+        		} else {
+        			append("\n]\n")
+        		}
+       		}
+        }
+        tvImageResult.text = imageResultBuilder.toString()
+        Log.d("keep2iron", it.toString() + "this : " + this.hashCode())
     }
 ````
 

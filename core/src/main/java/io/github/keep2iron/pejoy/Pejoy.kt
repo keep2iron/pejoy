@@ -90,6 +90,10 @@ class Pejoy {
     return SelectionCreator(this, mimeTypes.toSet(), mediaTypeExclusive)
   }
 
+  fun capture(): CaptureSelectionCreator {
+    return CaptureSelectionCreator(this)
+  }
+
   fun getActivity(): FragmentActivity? {
     return mActivity?.get()
   }

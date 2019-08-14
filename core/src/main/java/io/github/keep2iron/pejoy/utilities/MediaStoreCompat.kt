@@ -55,6 +55,40 @@ class MediaStoreCompat(
     mCaptureStrategy = strategy
   }
 
+  internal fun buildCaptureIntent(
+    context: Context
+  ): Intent {
+    val captureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+    if (captureIntent.resolveActivity(context.packageManager) != null) {
+      val photoFile: File? = createImageFile()
+
+      if (photoFile != null) {
+        currentPhotoPath = photoFile.absolutePath
+        currentPhotoUri = FileProvider.getUriForFile(
+          context,
+          mCaptureStrategy!!.authority,
+          photoFile
+        )
+        captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, currentPhotoUri)
+        captureIntent.addFlags(
+          Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+        )
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+          val resInfoList = context.packageManager
+            .queryIntentActivities(captureIntent, PackageManager.MATCH_DEFAULT_ONLY)
+          for (resolveInfo in resInfoList) {
+            val packageName = resolveInfo.activityInfo.packageName
+            context.grantUriPermission(
+              packageName, currentPhotoUri,
+              Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION
+            )
+          }
+        }
+      }
+    }
+    return captureIntent
+  }
+
   fun dispatchCaptureIntent(
     context: Context,
     requestCode: Int
@@ -151,8 +185,8 @@ class MediaStoreCompat(
     outState.putString(STATE_PHOTO_PATH, currentPhotoPath)
   }
 
-  fun onCreate(bundle: Bundle?){
-    if(bundle != null){
+  fun onCreate(bundle: Bundle?) {
+    if (bundle != null) {
       currentPhotoUri = bundle.getParcelable(STATE_PHOTO_URI)
       currentPhotoPath = bundle.getString(STATE_PHOTO_PATH)!!
     }

@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import io.github.keep2iron.pejoy.MimeType
 import io.github.keep2iron.pejoy.Pejoy
 import io.github.keep2iron.pejoy.engine.FrescoImageEngine
+import io.github.keep2iron.pejoy.utilities.extractStringPath
 import keep2iron.github.io.compress.weatherCompressImage
 
 class ChildFragment : Fragment() {
@@ -42,6 +43,28 @@ class ChildFragment : Fragment() {
         .setOnOriginCheckedListener { isChecked ->
           Log.d("keep2iron", "isChecked : $isChecked")
         }
+        .toObservable()
+        .weatherCompressImage(requireContext())
+        .subscribe {
+          imageResultBuilder.append("[\n")
+          it.forEach { uri ->
+            imageResultBuilder.apply {
+              append(uri)
+              if (uri != it.last()) {
+                append("\n")
+              } else {
+                append("\n]\n")
+              }
+            }
+          }
+          tvImageResult.text = imageResultBuilder.toString()
+          Log.d("keep2iron", it.toString() + "this : " + this.hashCode())
+        }
+    }
+    view.findViewById<View>(R.id.btnTakPhoto).setOnClickListener {
+      Pejoy.create(this)
+        .capture()
+        .originalEnable(true)
         .toObservable()
         .weatherCompressImage(requireContext())
         .subscribe {

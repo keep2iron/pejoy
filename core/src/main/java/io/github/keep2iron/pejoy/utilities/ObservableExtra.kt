@@ -5,7 +5,7 @@ import android.net.Uri
 import io.github.keep2iron.pejoy.Pejoy
 import io.reactivex.Observable
 
-fun Observable<Intent>.extractStringPath(): Observable<List<String>> {
+fun Observable<Intent>.extractStringPath(): Observable<ArrayList<String>> {
   return map {
     it.getStringArrayListExtra(Pejoy.EXTRA_RESULT_SELECTION_PATH)
   }

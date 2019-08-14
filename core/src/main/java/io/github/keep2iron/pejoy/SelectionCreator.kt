@@ -321,37 +321,5 @@ internal constructor(
       .map {
         it.data
       }
-
-//    val activity = pejoy.getActivity() ?: return Observable.empty()
-//    val fragment = pejoy.getFragment()
-//
-//    val fragmentManager = if (fragment != null) {
-//      val fragmentActivity = fragment.activity
-//      if (fragmentActivity == null) {
-//        return Observable.error(IllegalArgumentException("activity is null!!"))
-//      } else {
-//        fragmentActivity.supportFragmentManager
-//      }
-//    } else {
-//      activity.supportFragmentManager
-//    }
-//
-//    hockFragment = findFragmentByTag(fragmentManager)
-//    val newInstance = hockFragment == null
-//
-//    if (newInstance) {
-//      hockFragment = HockFragment.newInstance(
-//        Pejoy.REQUEST_CODE
-//      )
-//
-//      val transaction = fragmentManager.beginTransaction()
-//      transaction.add(hockFragment!!, HockFragment::class.java.simpleName)
-//      transaction.commitNow()
-//    } else {
-//      hockFragment!!.startActivityForResult()
-//    }
-//    hockFragment!!.restoreObservable()
-//
-//    return hockFragment!!.toObservable()
   }
 }

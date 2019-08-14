@@ -37,7 +37,7 @@ dependencies {
   implementation deps.kotlin.stdlib_jdk7
 
   implementation deps.rxjava2
-  implementation 'io.github.keep2iron:rx-result:0.0.1'
+  implementation 'io.github.keep2iron:rx-result:0.0.2'
 
   testImplementation deps.test.junit
   androidTestImplementation deps.test.runner
@@ -58,7 +58,7 @@ publish {
   userOrg = 'keep2iron'
   groupId = 'io.github.keep2iron'
   artifactId = 'pejoy-core'
-  publishVersion = '0.0.2'
+  publishVersion = '0.0.3'
   desc = 'image picker,base on matisse'
   website = 'https://keep2iron.github.io'
 }
