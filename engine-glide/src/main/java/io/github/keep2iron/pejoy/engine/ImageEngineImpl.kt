@@ -61,9 +61,14 @@ class ImageEngineImpl : ImageEngine {
     imageView: View,
     uri: Uri
   ) {
-    val photoView = imageView as PhotoView
-    photoView.setImageURI(uri)
-    photoView.setImageDrawable(placeholder)
+    imageLoader.showImageView(
+      imageView, uri
+    ) {
+      scaleType = ImageLoaderOptions.ScaleType.CENTER_CROP
+      placeHolderRes = 0
+      placeHolder = placeholder
+      isLoadGif = true
+    }
   }
 
   override fun loadGifImage(
