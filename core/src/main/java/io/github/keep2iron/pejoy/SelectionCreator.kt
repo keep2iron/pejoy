@@ -309,6 +309,11 @@ internal constructor(
     val requestActivity = pejoy.getActivity()
     val requestFragment = pejoy.getFragment()
 
+    if (mSelectionSpec.imageEngine == null) {
+      val imageEngineImpl = Class.forName("io.github.keep2iron.pejoy.engine.ImageEngineImpl")
+      mSelectionSpec.imageEngine = imageEngineImpl.newInstance() as ImageEngine
+    }
+
     return when {
       requestActivity != null -> RxResult(requestActivity)
       requestFragment != null -> RxResult(requestFragment)

@@ -22,7 +22,7 @@ import me.relex.photodraweeview.PhotoDraweeView
  * @version 1.0
  * @since 2018/07/16 14:43
  */
-class FrescoImageEngine : ImageEngine {
+class ImageEngineImpl : ImageEngine {
   private val imageLoader: ImageLoader = ImageLoaderManager.getInstance()
 
   override fun provideImageView(context: Context): View {

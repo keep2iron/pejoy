@@ -35,7 +35,7 @@ class CheckView @JvmOverloads constructor(
   attrs: AttributeSet? = null,
   defStyleAttr: Int = 0
 ) :
-    View(context, attrs, defStyleAttr) {
+  View(context, attrs, defStyleAttr) {
   private var mCountable: Boolean = false
   private var mChecked: Boolean = false
   private var mCheckedNum: Int = 0
@@ -51,10 +51,10 @@ class CheckView @JvmOverloads constructor(
   private val checkRect: Rect by lazy {
     val rectPadding = (SIZE * mDensity / 2 - CONTENT_SIZE * mDensity / 2).toInt()
     return@lazy Rect(
-        rectPadding,
-        rectPadding,
-        (SIZE * mDensity - rectPadding).toInt(),
-        (SIZE * mDensity - rectPadding).toInt()
+      rectPadding,
+      rectPadding,
+      (SIZE * mDensity - rectPadding).toInt(),
+      (SIZE * mDensity - rectPadding).toInt()
     )
   }
 
@@ -67,19 +67,19 @@ class CheckView @JvmOverloads constructor(
 //        mStrokePaint!!.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_OVER)
     mStrokePaint!!.strokeWidth = STROKE_WIDTH * mDensity
     val ta = getContext().theme.obtainStyledAttributes(
-        intArrayOf(R.attr.pejoy_item_checkCircle_borderColor)
+      intArrayOf(R.attr.pejoy_item_checkCircle_borderColor)
     )
     val defaultColor = ResourcesCompat.getColor(
-        resources, R.color.pejoy_light_item_checkCircle_borderColor,
-        getContext().theme
+      resources, R.color.pejoy_light_item_checkCircle_borderColor,
+      getContext().theme
     )
     val color = ta.getColor(0, defaultColor)
     ta.recycle()
     mStrokePaint!!.color = color
 
     mCheckDrawable = ResourcesCompat.getDrawable(
-        context.resources,
-        R.drawable.pejoy_ic_check_white, context.theme
+      context.resources,
+      R.drawable.pejoy_ic_check_white, context.theme
     )!!
   }
 
@@ -128,14 +128,14 @@ class CheckView @JvmOverloads constructor(
     // draw outer and inner shadow
     initShadowPaint()
     canvas.drawCircle(
-        SIZE.toFloat() * mDensity / 2, SIZE.toFloat() * mDensity / 2,
-        (STROKE_RADIUS + STROKE_WIDTH / 2 + SHADOW_WIDTH) * mDensity, mShadowPaint!!
+      SIZE.toFloat() * mDensity / 2, SIZE.toFloat() * mDensity / 2,
+      (STROKE_RADIUS + STROKE_WIDTH / 2 + SHADOW_WIDTH) * mDensity, mShadowPaint!!
     )
 
     // draw white stroke
     canvas.drawCircle(
-        SIZE.toFloat() * mDensity / 2, SIZE.toFloat() * mDensity / 2,
-        STROKE_RADIUS * mDensity, mStrokePaint!!
+      SIZE.toFloat() * mDensity / 2, SIZE.toFloat() * mDensity / 2,
+      STROKE_RADIUS * mDensity, mStrokePaint!!
     )
 
     // draw content
@@ -143,8 +143,8 @@ class CheckView @JvmOverloads constructor(
       if (mCheckedNum != UNCHECKED) {
         initBackgroundPaint()
         canvas.drawCircle(
-            SIZE.toFloat() * mDensity / 2, SIZE.toFloat() * mDensity / 2,
-            BG_RADIUS * mDensity, mBackgroundPaint!!
+          SIZE.toFloat() * mDensity / 2, SIZE.toFloat() * mDensity / 2,
+          BG_RADIUS * mDensity, mBackgroundPaint!!
         )
         initTextPaint()
         val text = mCheckedNum.toString()
@@ -156,8 +156,8 @@ class CheckView @JvmOverloads constructor(
       if (mChecked) {
         initBackgroundPaint()
         canvas.drawCircle(
-            SIZE.toFloat() * mDensity / 2, SIZE.toFloat() * mDensity / 2,
-            BG_RADIUS * mDensity, mBackgroundPaint!!
+          SIZE.toFloat() * mDensity / 2, SIZE.toFloat() * mDensity / 2,
+          BG_RADIUS * mDensity, mBackgroundPaint!!
         )
 
         mCheckDrawable.bounds = checkRect
@@ -182,18 +182,18 @@ class CheckView @JvmOverloads constructor(
       val stop2 = outerRadius / gradientRadius
       val stop3 = 1.0f
       mShadowPaint!!.shader = RadialGradient(
-          SIZE.toFloat() * mDensity / 2,
-          SIZE.toFloat() * mDensity / 2,
-          gradientRadius * mDensity,
-          intArrayOf(
-              Color.parseColor("#00000000"),
-              Color.parseColor("#00000000"),
-              Color.parseColor("#0D000000"),
-              Color.parseColor("#0D000000"),
-              Color.parseColor("#00000000")
-          ),
-          floatArrayOf(0f, stop0, stop1, stop2, stop3),
-          Shader.TileMode.CLAMP
+        SIZE.toFloat() * mDensity / 2,
+        SIZE.toFloat() * mDensity / 2,
+        gradientRadius * mDensity,
+        intArrayOf(
+          Color.parseColor("#00000000"),
+          Color.parseColor("#00000000"),
+          Color.parseColor("#0D000000"),
+          Color.parseColor("#0D000000"),
+          Color.parseColor("#00000000")
+        ),
+        floatArrayOf(0f, stop0, stop1, stop2, stop3),
+        Shader.TileMode.CLAMP
       )
     }
   }
@@ -204,12 +204,12 @@ class CheckView @JvmOverloads constructor(
       mBackgroundPaint!!.isAntiAlias = true
       mBackgroundPaint!!.style = Paint.Style.FILL
       val ta = context.theme
-          .obtainStyledAttributes(intArrayOf(R.attr.pejoy_item_checkCircle_backgroundColor))
-      val defaultColor = ResourcesCompat.getColor(
-          resources, R.color.pejoy_dracula_item_checkCircle_backgroundColor,
-          context.theme
-      )
-      val color = ta.getColor(0, defaultColor)
+        .obtainStyledAttributes(intArrayOf(R.attr.pejoy_item_checkCircle_backgroundColor))
+//      val defaultColor = ResourcesCompat.getColor(
+//        resources, R.color.pejoy_light_item_checkCircle_backgroundColor,
+//        context.theme
+//      )
+      val color = ta.getColor(0, Color.WHITE)
       ta.recycle()
       mBackgroundPaint!!.color = color
     }

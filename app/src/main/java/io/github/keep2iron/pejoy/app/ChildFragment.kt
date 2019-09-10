@@ -9,8 +9,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import io.github.keep2iron.pejoy.MimeType
 import io.github.keep2iron.pejoy.Pejoy
-import io.github.keep2iron.pejoy.engine.FrescoImageEngine
-import io.github.keep2iron.pejoy.utilities.extractStringPath
+import io.github.keep2iron.pejoy.engine.ImageEngineImpl
 import keep2iron.github.io.compress.weatherCompressImage
 
 class ChildFragment : Fragment() {
@@ -34,12 +33,11 @@ class ChildFragment : Fragment() {
     view.findViewById<View>(R.id.btnGetImages).setOnClickListener {
       Pejoy.create(this)
         .choose(MimeType.ofAll(), false)
+        .theme(R.style.Pejoy_Light_Custom)
         .maxSelectable(3)
-        .theme(R.style.Pejoy_Dracula)
         .countable(true)
         .originalEnable(enable = true, originalSelectDefault = true)
         .capture(true, enableInsertAlbum = true)
-        .imageEngine(FrescoImageEngine())
         .setOnOriginCheckedListener { isChecked ->
           Log.d("keep2iron", "isChecked : $isChecked")
         }

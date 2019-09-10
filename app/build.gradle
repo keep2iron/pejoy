@@ -36,11 +36,17 @@ dependencies {
 
   implementation deps.rxjava2
 
-  implementation 'io.github.keep2iron:pineapple:0.0.1'
-  implementation deps.fresco
 
   implementation project(':core')
-  implementation project(':engine')
+
+  implementation 'com.github.bumptech.glide:glide:4.9.0'
+  implementation project(':engine-glide')
+  implementation 'io.github.keep2iron:pineapple-glide:0.0.1'
+
+//  implementation deps.fresco
+//  implementation project(':engine-fresco')
+//  implementation 'io.github.keep2iron:pineapple-fresco:0.0.1-fix2'
+
   implementation project(':compress')
 
   testImplementation 'junit:junit:4.12'

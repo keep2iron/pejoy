@@ -11,7 +11,8 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/compress" />
             <option value="$PROJECT_DIR$/core" />
-            <option value="$PROJECT_DIR$/engine" />
+            <option value="$PROJECT_DIR$/engine-fresco" />
+            <option value="$PROJECT_DIR$/engine-glide" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

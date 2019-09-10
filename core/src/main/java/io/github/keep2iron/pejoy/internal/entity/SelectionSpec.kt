@@ -28,7 +28,7 @@ class SelectionSpec private constructor() {
 
   var mimeTypeSet: Set<MimeType>? = null
   @StyleRes
-  var themeId = R.style.Pejoy_Dracula
+  var themeId = R.style.Pejoy_Light
   var mediaTypeExclusive: Boolean = false
   var showSingleMediaType: Boolean = false
   var orientation: Int = 0
@@ -61,7 +61,7 @@ class SelectionSpec private constructor() {
     maxSelectable = 1
     maxImageSelectable = 0
     maxVideoSelectable = 0
-    themeId = R.style.Pejoy_Dracula
+    themeId = R.style.Pejoy_Light
     filters = null
     capture = false
     captureStrategy = null
@@ -77,9 +77,7 @@ class SelectionSpec private constructor() {
   }
 
   fun requireImageEngine(): ImageEngine {
-    if (imageEngine == null) {
-      throw IllegalArgumentException("imageEngine is null,do you forget set ImageEngine?")
-    }
+    requireNotNull(imageEngine) { "imageEngine is null,do you forget set ImageEngine?" }
 
     return imageEngine!!
   }

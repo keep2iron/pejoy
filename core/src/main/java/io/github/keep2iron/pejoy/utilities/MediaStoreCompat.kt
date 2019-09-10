@@ -42,8 +42,8 @@ class MediaStoreCompat(
   private val mContext: WeakReference<Activity> = WeakReference(activity)
   private var mFragment: WeakReference<Fragment>? = null
   private var mCaptureStrategy: CaptureStrategy? = null
-  private lateinit var currentPhotoUri: Uri
-  private lateinit var currentPhotoPath: String
+  private var currentPhotoUri: Uri? = null
+  private var currentPhotoPath: String? = null
 
   init {
     if (fragment != null) {
@@ -159,11 +159,11 @@ class MediaStoreCompat(
   }
 
   fun getCurrentPhotoUri(): Uri {
-    return currentPhotoUri
+    return currentPhotoUri!!
   }
 
   fun getCurrentPhotoPath(): String {
-    return currentPhotoPath
+    return currentPhotoPath!!
   }
 
   fun insertAlbum(
@@ -181,8 +181,10 @@ class MediaStoreCompat(
   }
 
   fun onSaveInstanceState(outState: Bundle) {
-    outState.putParcelable(STATE_PHOTO_URI, currentPhotoUri)
-    outState.putString(STATE_PHOTO_PATH, currentPhotoPath)
+    if (currentPhotoUri != null)
+      outState.putParcelable(STATE_PHOTO_URI, currentPhotoUri)
+    if (currentPhotoPath != null)
+      outState.putString(STATE_PHOTO_PATH, currentPhotoPath)
   }
 
   fun onCreate(bundle: Bundle?) {

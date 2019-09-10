@@ -28,38 +28,38 @@ import io.github.keep2iron.pejoy.utilities.Platform
 import io.github.keep2iron.pejoy.utilities.getThemeColor
 
 abstract class AbstractPreviewActivity : AppCompatActivity(),
-    View.OnClickListener,
-    ViewPager.OnPageChangeListener {
+  View.OnClickListener,
+  ViewPager.OnPageChangeListener {
   protected val viewPager: PreviewViewPager by lazy(LazyThreadSafetyMode.NONE) {
     findViewById<PreviewViewPager>(
-        R.id.viewPager
+      R.id.viewPager
     )
   }
   protected val checkView: CheckView by lazy(LazyThreadSafetyMode.NONE) {
     findViewById<CheckView>(
-        R.id.checkView
+      R.id.checkView
     )
   }
   private val imageBack by lazy(LazyThreadSafetyMode.NONE) { findViewById<View>(R.id.imageBack) }
   private val original by lazy(LazyThreadSafetyMode.NONE) {
     findViewById<PejoyCheckRadioView>(
-        R.id.original
+      R.id.original
     )
   }
   private val buttonApply by lazy(LazyThreadSafetyMode.NONE) {
     findViewById<TextView>(
-        R.id.buttonApply
+      R.id.buttonApply
     )
   }
   private val originalLayout by lazy(LazyThreadSafetyMode.NONE) {
     findViewById<View>(
-        R.id.originalLayout
+      R.id.originalLayout
     )
   }
   private val topToolbar by lazy(LazyThreadSafetyMode.NONE) { findViewById<View>(R.id.topToolbar) }
   private val bottomToolbar by lazy(LazyThreadSafetyMode.NONE) {
     findViewById<View>(
-        R.id.bottomToolbar
+      R.id.bottomToolbar
     )
   }
   private val size by lazy(LazyThreadSafetyMode.NONE) { findViewById<TextView>(R.id.size) }
@@ -94,15 +94,15 @@ abstract class AbstractPreviewActivity : AppCompatActivity(),
         decorView.systemUiVisibility and SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR.inv()
     }
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      buttonApply.setBackgroundResource(R.drawable.pejoy_shape_apply_background)
+      buttonApply.setBackgroundResource(R.drawable.pejoy_shape_preview_apply_background)
     } else {
       buttonApply.setBackgroundDrawable(GradientDrawable().apply {
         setColor(
-            getThemeColor(
-                this@AbstractPreviewActivity,
-                R.attr.colorPrimaryDark,
-                R.color.pejoy_light_primary_dark
-            )
+          getThemeColor(
+            this@AbstractPreviewActivity,
+            R.attr.colorPrimary,
+            R.color.pejoy_light_primary
+          )
         )
         cornerRadius = resources.displayMetrics.density * 8
       })
@@ -168,13 +168,13 @@ abstract class AbstractPreviewActivity : AppCompatActivity(),
           -1
         }
         topToolbar.animate()
-            .setInterpolator(FastOutSlowInInterpolator())
-            .translationYBy(factor * topToolbar.measuredHeight.toFloat())
-            .start()
+          .setInterpolator(FastOutSlowInInterpolator())
+          .translationYBy(factor * topToolbar.measuredHeight.toFloat())
+          .start()
         bottomToolbar.animate()
-            .setInterpolator(FastOutSlowInInterpolator())
-            .translationYBy(-1 * factor * bottomToolbar.measuredHeight.toFloat())
-            .start()
+          .setInterpolator(FastOutSlowInInterpolator())
+          .translationYBy(-1 * factor * bottomToolbar.measuredHeight.toFloat())
+          .start()
         hidden = !hidden
       }
       R.id.original -> {

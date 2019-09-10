@@ -2,7 +2,6 @@
 <resources>
   <color name="pejoy_light_primary">#008de4</color>
   <color name="pejoy_light_primary_dark">#0071b5</color>
-  <color name="pejoy_light_item_checkCircle_backgroundColor">@color/pejoy_light_primary</color>
   <color name="pejoy_light_item_checkCircle_borderColor">@android:color/white</color>
   <color name="pejoy_light_check_apply_text_color">@android:color/white</color>
 

@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-  <!--<color name="pejoy_light_bottom_toolbar_preview_text">#DE000000</color>-->
-
   <color name="pejoy_dracula_bottom_toolbar_background">@color/pejoy_dracula_primary</color>
-
-  <color name="pejoy_dracula_item_checkCircle_backgroundColor">@color/pejoy_dracula_primary</color>
 
   <color name="pejoy_dracula_item_checkCircle_borderColor">#FFFFFF</color>
 

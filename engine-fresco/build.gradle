@@ -21,7 +21,7 @@ android {
   buildTypes {
     release {
       minifyEnabled false
-      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
   }
 }
@@ -29,11 +29,11 @@ android {
 dependencies {
   implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-  implementation 'top.zibin:Luban:1.1.8'
   compileOnly project(':core')
-  implementation deps.rxjava2
-  implementation deps.rx_android
+  compileOnly 'io.github.keep2iron:pineapple-fresco:0.0.1-fix2'
+  compileOnly deps.fresco
   implementation deps.kotlin.stdlib_jdk7
+  implementation 'me.relex:photodraweeview:1.1.3'
 
   testImplementation deps.test.junit
   androidTestImplementation deps.test.runner
@@ -53,8 +53,14 @@ dependencies {
 publish {
   userOrg = 'keep2iron'
   groupId = 'io.github.keep2iron'
-  artifactId = 'pejoy-compress'
-  publishVersion = '0.0.3'
+  artifactId = 'pejoy-fresco'
+  publishVersion = '0.0.1'
   desc = 'image picker,base on matisse'
   website = 'https://keep2iron.github.io'
+}
+
+repositories{
+  maven {
+    url 'https://dl.bintray.com/keep2iron/maven'
+  }
 }
