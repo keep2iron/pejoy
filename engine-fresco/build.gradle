@@ -54,13 +54,7 @@ publish {
   userOrg = 'keep2iron'
   groupId = 'io.github.keep2iron'
   artifactId = 'pejoy-fresco'
-  publishVersion = '0.0.2-beta'
+  publishVersion = '0.0.1-beta'
   desc = 'image picker,base on matisse'
   website = 'https://keep2iron.github.io'
-}
-
-repositories{
-  maven {
-    url 'https://dl.bintray.com/keep2iron/maven'
-  }
 }

@@ -58,7 +58,7 @@ publish {
   userOrg = 'keep2iron'
   groupId = 'io.github.keep2iron'
   artifactId = 'pejoy-core'
-  publishVersion = '0.0.3'
+  publishVersion = '0.0.4-beta'
   desc = 'image picker,base on matisse'
   website = 'https://keep2iron.github.io'
 }

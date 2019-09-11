@@ -1,35 +1,33 @@
-# Pejoy
-
 ![Image](images/banner.png)
 
-[中文](README.zh-cn.md) ![BuildStatus](https://travis-ci.org/keep2iron/pejoy.svg?branch=master)
+# Pejoy
+ ![BuildStatus](https://travis-ci.org/keep2iron/pejoy.svg?branch=master)
 
-|     Name     |                           Version                            |       Description       |
+|     名称     |                           版本                            |       描述       |
 | :----------: | :----------------------------------------------------------: | :---------------------: |
-|     core     | ![Release](https://api.bintray.com/packages/keep2iron/maven/pejoy-core/images/download.svg) | image selector core lib |
-| pejoy-fresco | ![Release](https://api.bintray.com/packages/keep2iron/maven/pejoy-fresco/images/download.svg) |    image load engine    |
-| pejoy-glide  | ![Release](https://api.bintray.com/packages/keep2iron/maven/pejoy-fresco/images/download.svg) |    image load engine    |
+|     core     | ![Release](https://api.bintray.com/packages/keep2iron/maven/pejoy-core/images/download.svg) | 图片选择核心lib |
+| pejoy-fresco | ![Release](https://api.bintray.com/packages/keep2iron/maven/pejoy-fresco/images/download.svg) |    图片选择引擎    |
+| pejoy-glide  | ![Release](https://api.bintray.com/packages/keep2iron/maven/pejoy-fresco/images/download.svg) |    图片选择引擎    |
 |   compress   | ![Release](https://api.bintray.com/packages/keep2iron/maven/pejoy-compress/images/download.svg) |     image compress      |
 
 
+**Pejoy**是一个设计良好的Android本地图片选择和视频选择框架，基于[Matisse](https://github.com/zhihu/Matisse).
 
-Pejoy is a well-designed local image and video selector for Android and base on [Matisse](https://github.com/zhihu/Matisse). You can  
-
-- Use it in Activity or Fragment
-- Select images including JPEG, PNG, GIF and videos including MPEG, MP4 
-- Apply different themes, including two built-in themes and custom themes
-- Different image loaders
-- Define custom filter rules
-- More to find out yourself
+- 在Activity或Fragment随意使用
+- 选择图片包括JPEG,PNG,GIF,视频包括MEPG，MP4
+- 通过不同的主题来进行呈现，默认包含两种主题，支持自定义
+- 可使用不同的图片加载器
+- 可使用多种的过滤器
+- 还有更多等着你发现
 
 ## Preview
-|Mode							 |Album							 |Album Category				     |Album Preview						|
+|主题							 |相册							 |相册分类				     |相册预览						|
 |:------------------------------:|:---------------------------------:|:--------------------------------:|--------------------------------|
 |**Dracula**      |![](images/dark1.png)      | ![](images/dark2.png)   |![](images/dark3.png)        |
 |**Light** |![](images/light1.png) | ![](images/light2.png) |![](images/light3.png) |
 |**Custom** | ![](images/custom1.png) | ![](images/custom2.png) | ![](images/custom3.png) |
 
-## Download
+## 下载
 
 gradle:
 ```groovy
@@ -43,17 +41,17 @@ dependencies {
 }
 ```
 
-## Simple usage snippet
-Two usages
-- [Basic](#Basic)
-  Only choose images
+## 简单使用
+两种使用方法
+- [基础](#Basic)
+  仅仅只是选择图片或视频
 
-- [Expanded](#Expanded)
-  choose images and compress them 
+- [扩展](#Expanded)
+  选择图片并且压缩他们 
 
-##### Init ImageLoaderManger
+##### 初始化ImageLoaderManger[可选]
 
-Since fresco is used to load images by default,so use [Pineapple](https://github.com/keep2iron/pineapple) lib load image.
+由于使用了[Pineapple](https://github.com/keep2iron/pineapple) 所以需要在application onCreate的方法中添加如下代码.
 
 ```kotlin
 ImageLoaderManager.init(
