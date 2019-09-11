@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.novoda.bintray-release'
-apply from: '../versions/klint.gradle'
+apply from: '../gradle/klint.gradle'
 
 android {
   resourcePrefix "pejoy"
