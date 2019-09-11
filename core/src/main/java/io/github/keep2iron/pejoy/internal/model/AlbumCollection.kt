@@ -37,7 +37,7 @@ class AlbumCollection : LoaderManager.LoaderCallbacks<Cursor> {
     id: Int,
     args: Bundle?
   ): Loader<Cursor> {
-    val context = mContext.get() ?: throw  IllegalArgumentException("context is null")
+    val context = mContext.get() ?: throw IllegalArgumentException("context is null")
     mLoadFinished = false
     return AlbumLoader.newInstance(context)
   }

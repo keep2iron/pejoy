@@ -48,5 +48,4 @@ class MainActivity : AppCompatActivity() {
       .replace(android.R.id.content, ChildFragment())
       .commit()
   }
-
 }

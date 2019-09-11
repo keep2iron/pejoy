@@ -5,10 +5,10 @@
 
 |     名称     |                           版本                            |       描述       |
 | :----------: | :----------------------------------------------------------: | :---------------------: |
-|     core     | ![Release](https://api.bintray.com/packages/keep2iron/maven/pejoy-core/images/download.svg) | 图片选择核心lib |
+|     pejoy-core     | ![Release](https://api.bintray.com/packages/keep2iron/maven/pejoy-core/images/download.svg) | 图片选择核心lib |
 | pejoy-fresco | ![Release](https://api.bintray.com/packages/keep2iron/maven/pejoy-fresco/images/download.svg) |    图片选择引擎    |
 | pejoy-glide  | ![Release](https://api.bintray.com/packages/keep2iron/maven/pejoy-fresco/images/download.svg) |    图片选择引擎    |
-|   compress   | ![Release](https://api.bintray.com/packages/keep2iron/maven/pejoy-compress/images/download.svg) |     image compress      |
+|   pejoy-compress   | ![Release](https://api.bintray.com/packages/keep2iron/maven/pejoy-compress/images/download.svg) |     image compress      |
 
 
 **Pejoy**是一个设计良好的Android本地图片选择和视频选择框架，基于[Matisse](https://github.com/zhihu/Matisse).
@@ -30,6 +30,9 @@
 ## 下载
 
 gradle:
+
+步骤一: 添加core lib
+
 ```groovy
 dependencies {
     implementation 'io.github.keep2iron:pejoy-core:$latest_version'
@@ -41,6 +44,36 @@ dependencies {
 }
 ```
 
+步骤二：添加image lib 两者选则其一即可
+
+Glide version
+
+```groovy
+dependencies {
+  implementation 'com.github.bumptech.glide:glide:$latest_version'
+  implementation 'io.github.keep2iron:pejoy-glide:$latest_version'
+  implementation 'io.github.keep2iron:pineapple-glide:$latest_version'
+}
+```
+
+Fresco version
+
+```groovy
+dependencies {
+  implementation 'com.facebook.fresco:fresco:$latest_version'
+  implementation 'io.github.keep2iron:pejoy-fresco:$latest_version'
+  implementation 'io.github.keep2iron:pineapple-fresco:$latest_version'
+}
+```
+
+可选：添加压缩图片组件
+
+````groovy
+dependencies {
+    implementation 'io.github.keep2iron:pejoy-compress:$latest_version'
+}
+````
+
 ## 简单使用
 两种使用方法
 - [基础](#Basic)
@@ -49,29 +82,15 @@ dependencies {
 - [扩展](#Expanded)
   选择图片并且压缩他们 
 
-##### 初始化ImageLoaderManger[可选]
+##### 初始化ImageLoaderManger
 
 由于使用了[Pineapple](https://github.com/keep2iron/pineapple) 所以需要在application onCreate的方法中添加如下代码.
 
 ```kotlin
-ImageLoaderManager.init(
-    application,
-    ImageLoaderConfig(
-        applicationContext,
-        maxCacheCount = 300,									
-        maxCacheSize = (400 * ByteConstants.MB).toLong(),
-		cacheDirName = "cache_images",
-		cacheDirPath =  context.cacheDir
-    ),
-    defaultImageLoaderOptions = ImageLoaderOptions(
-        isCircleImage = true,
-        scaleType = ImageLoaderOptions.ScaleType.FIT_CENTER,
-        placeHolderRes = R.drawable.ic_launcher_background
-    )
-)
+ImageLoaderManager.init(application)
 ```
 
-##### Basic
+##### 基础
 
 ```kotlin
 Pejoy.create(this)
@@ -86,7 +105,7 @@ Pejoy.create(this)
     }
 ```
 
-##### Expanded
+##### 压缩图片
 
 ````kotlin
 Pejoy.create(this)
@@ -101,7 +120,7 @@ Pejoy.create(this)
     }
 ````
 
-##### Capture
+##### 拍照
 
 ````kotlin
 Pejoy.create(this)

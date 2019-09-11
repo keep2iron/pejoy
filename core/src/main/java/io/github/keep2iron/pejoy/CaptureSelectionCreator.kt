@@ -3,9 +3,7 @@ package io.github.keep2iron.pejoy
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import io.github.keep2iron.pejoy.engine.ImageEngine
 import io.github.keep2iron.pejoy.internal.entity.CaptureStrategy
-import io.github.keep2iron.pejoy.internal.entity.SelectionSpec
 import io.github.keep2iron.pejoy.utilities.MediaStoreCompat
 import io.github.keep2iron.rxresult.RxResult
 import io.reactivex.Observable
@@ -87,5 +85,4 @@ internal constructor(
         result
       }
   }
-
 }

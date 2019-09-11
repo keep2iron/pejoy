@@ -155,7 +155,6 @@ class MediaStoreCompat(
     return if (Environment.MEDIA_MOUNTED != EnvironmentCompat.getStorageState(tempFile)) {
       null
     } else tempFile
-
   }
 
   fun getCurrentPhotoUri(): Uri {

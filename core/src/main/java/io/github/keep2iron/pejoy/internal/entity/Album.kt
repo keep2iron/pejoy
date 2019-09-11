@@ -110,5 +110,4 @@ class Album : Parcelable {
       )
     }
   }
-
 }

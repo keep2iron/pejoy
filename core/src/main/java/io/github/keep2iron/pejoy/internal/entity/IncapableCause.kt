@@ -20,7 +20,8 @@ import android.widget.Toast
 import androidx.annotation.IntDef
 
 class IncapableCause @JvmOverloads constructor(
-  @Form val form: Int? = TOAST, val title: String? = null,
+  @Form val form: Int? = TOAST,
+  val title: String? = null,
   val message: String
 ) {
 
@@ -48,10 +49,7 @@ class IncapableCause @JvmOverloads constructor(
         }
         TOAST -> Toast.makeText(context, cause.message, Toast.LENGTH_SHORT).show()
         else -> Toast.makeText(context, cause.message, Toast.LENGTH_SHORT).show()
-      }// do nothing.
-      //                IncapableDialog incapableDialog = IncapableDialog.newInstance(cause.title, cause.message);
-      //                incapableDialog.show(((FragmentActivity) context).getSupportFragmentManager(),
-      //                        IncapableDialog.class.getName());
+      }
     }
   }
 }

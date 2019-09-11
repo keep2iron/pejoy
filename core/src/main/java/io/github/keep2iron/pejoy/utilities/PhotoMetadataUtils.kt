@@ -102,7 +102,6 @@ class PhotoMetadataUtils private constructor() {
           } catch (e: IOException) {
             e.printStackTrace()
           }
-
         }
       }
     }

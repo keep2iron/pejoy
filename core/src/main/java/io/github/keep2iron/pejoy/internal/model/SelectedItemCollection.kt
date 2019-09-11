@@ -168,8 +168,6 @@ class SelectedItemCollection(private val mContext: Context) {
           R.string.pejoy_error_over_count,
           maxSelectable
       )
-
-
       return IncapableCause(message = cause)
     } else if (typeConflict(item)) {
       return IncapableCause(message = mContext.getString(R.string.pejoy_error_type_conflict))

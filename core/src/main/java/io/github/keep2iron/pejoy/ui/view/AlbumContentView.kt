@@ -169,5 +169,4 @@ class AlbumContentView @JvmOverloads constructor(
   override fun onClick(view: View) {
     hidden()
   }
-
 }

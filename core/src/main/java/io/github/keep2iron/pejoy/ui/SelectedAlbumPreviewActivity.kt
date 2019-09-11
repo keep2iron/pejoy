@@ -29,5 +29,4 @@ class SelectedAlbumPreviewActivity : AbstractPreviewActivity() {
 
     updateToolbar(selected[0])
   }
-
 }

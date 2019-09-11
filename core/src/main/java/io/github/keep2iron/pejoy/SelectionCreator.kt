@@ -38,10 +38,8 @@ import android.os.Build
 import androidx.annotation.IntDef
 import androidx.annotation.RequiresApi
 import androidx.annotation.StyleRes
-import androidx.fragment.app.FragmentManager
 import io.github.keep2iron.pejoy.engine.ImageEngine
 import io.github.keep2iron.pejoy.filter.Filter
-import io.github.keep2iron.pejoy.internal.HockFragment
 import io.github.keep2iron.pejoy.internal.entity.CaptureStrategy
 import io.github.keep2iron.pejoy.internal.entity.SelectionSpec
 import io.github.keep2iron.pejoy.listener.OnOriginCheckedListener
@@ -56,8 +54,7 @@ import java.util.ArrayList
 class SelectionCreator
 /**
  * Constructs a new specification builder on the context.
- *
- * @param pejoy     a requester context wrapper.
+ * @param pejoy a requester context wrapper.
  * @param mimeTypes MIME type set to select.
  */
 internal constructor(

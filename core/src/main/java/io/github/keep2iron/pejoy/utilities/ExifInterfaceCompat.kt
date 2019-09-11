@@ -18,7 +18,6 @@ package io.github.keep2iron.pejoy.utilities
 import android.media.ExifInterface
 import android.text.TextUtils
 import android.util.Log
-
 import java.io.IOException
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -121,6 +120,3 @@ internal object ExifInterfaceCompat {
     }
   }
 }
-/**
- * Do not instantiate this class.
- */

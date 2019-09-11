@@ -16,4 +16,3 @@ fun Observable<Intent>.extractUriPath(): Observable<ArrayList<Uri>> {
     it.getParcelableArrayListExtra<Uri>(Pejoy.EXTRA_RESULT_SELECTION)
   }
 }
-

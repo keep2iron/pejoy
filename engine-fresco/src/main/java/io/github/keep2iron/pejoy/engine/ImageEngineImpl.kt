@@ -34,7 +34,6 @@ class ImageEngineImpl : ImageEngine {
     path: String
   ): Bitmap {
     return BitmapFactory.decodeFile(path)
-
   }
 
   override fun loadThumbnail(

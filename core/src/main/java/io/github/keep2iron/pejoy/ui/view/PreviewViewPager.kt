@@ -35,5 +35,4 @@ class PreviewViewPager @JvmOverloads constructor(
   override fun setOnClickListener(onClickListener: OnClickListener?) {
     this.onClickListener = onClickListener
   }
-
 }

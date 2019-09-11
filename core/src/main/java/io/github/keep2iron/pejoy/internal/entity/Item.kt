@@ -22,7 +22,6 @@ import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
 import android.provider.MediaStore
-
 import io.github.keep2iron.pejoy.MimeType
 
 class Item : Parcelable {
@@ -30,29 +29,25 @@ class Item : Parcelable {
   val mimeType: String
   val contentUri: Uri
   val size: Long
-  var duration: Long = 0L// only for video, in ms
-
+  var duration: Long = 0L // only for video, in ms
   val isImage: Boolean
-    get() = (mimeType == MimeType.JPEG.toString()
-        || mimeType == MimeType.PNG.toString()
-        || mimeType == MimeType.GIF.toString()
-        || mimeType == MimeType.BMP.toString()
-        || mimeType == MimeType.WEBP.toString())
-
+    get() = (mimeType == MimeType.JPEG.toString() ||
+      mimeType == MimeType.PNG.toString() ||
+      mimeType == MimeType.GIF.toString() ||
+      mimeType == MimeType.BMP.toString() ||
+      mimeType == MimeType.WEBP.toString())
   val isVideo: Boolean
-    get() = (mimeType == MimeType.MPEG.toString()
-        || mimeType == MimeType.MP4.toString()
-        || mimeType == MimeType.QUICKTIME.toString()
-        || mimeType == MimeType.THREEGPP.toString()
-        || mimeType == MimeType.THREEGPP2.toString()
-        || mimeType == MimeType.MKV.toString()
-        || mimeType == MimeType.WEBM.toString()
-        || mimeType == MimeType.TS.toString()
-        || mimeType == MimeType.AVI.toString())
-
+    get() = (mimeType == MimeType.MPEG.toString() ||
+      mimeType == MimeType.MP4.toString() ||
+      mimeType == MimeType.QUICKTIME.toString() ||
+      mimeType == MimeType.THREEGPP.toString() ||
+      mimeType == MimeType.THREEGPP2.toString() ||
+      mimeType == MimeType.MKV.toString() ||
+      mimeType == MimeType.WEBM.toString() ||
+      mimeType == MimeType.TS.toString() ||
+      mimeType == MimeType.AVI.toString())
   val isCapture: Boolean
     get() = id == ITEM_ID_CAPTURE
-
   val isGif: Boolean
     get() = mimeType == MimeType.GIF.toString()
 
@@ -127,13 +122,14 @@ class Item : Parcelable {
     if (other !is Item) {
       return false
     }
-
     val otherItem = other as Item?
-    return (id == otherItem?.id
-        && (mimeType == otherItem.mimeType)
-        && (contentUri == otherItem.contentUri)
-        && size == otherItem.size
-        && duration == otherItem.duration)
+    return (
+      id == otherItem?.id &&
+        mimeType == otherItem.mimeType &&
+        contentUri == otherItem.contentUri &&
+        size == otherItem.size &&
+        duration == otherItem.duration
+      )
   }
 
   companion object {
@@ -149,7 +145,6 @@ class Item : Parcelable {
     }
     const val ITEM_ID_CAPTURE: Long = -1
     const val ITEM_DISPLAY_NAME_CAPTURE = "Capture"
-
     fun valueOf(cursor: Cursor): Item {
       return Item(
         cursor.getLong(cursor.getColumnIndex(MediaStore.Files.FileColumns._ID)),

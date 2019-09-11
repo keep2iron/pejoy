@@ -83,5 +83,4 @@ class AlbumCategoryAdapter(
     view.findViewById<PejoyCheckRadioView>(R.id.checkRadioView)
         .setChecked(model.currentAlbum.value?.id == album.id)
   }
-
 }

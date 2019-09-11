@@ -16,7 +16,6 @@
 package io.github.keep2iron.pejoy.filter
 
 import android.content.Context
-
 import io.github.keep2iron.pejoy.MimeType
 import io.github.keep2iron.pejoy.internal.entity.IncapableCause
 import io.github.keep2iron.pejoy.internal.entity.Item

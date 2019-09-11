@@ -4,12 +4,12 @@
 
 [中文](README.zh-cn.md) ![BuildStatus](https://travis-ci.org/keep2iron/pejoy.svg?branch=master)
 
-|     Name     |                           Version                            |       Description       |
-| :----------: | :----------------------------------------------------------: | :---------------------: |
-|     core     | ![Release](https://api.bintray.com/packages/keep2iron/maven/pejoy-core/images/download.svg) | image selector core lib |
-| pejoy-fresco | ![Release](https://api.bintray.com/packages/keep2iron/maven/pejoy-fresco/images/download.svg) |    image load engine    |
-| pejoy-glide  | ![Release](https://api.bintray.com/packages/keep2iron/maven/pejoy-fresco/images/download.svg) |    image load engine    |
-|   compress   | ![Release](https://api.bintray.com/packages/keep2iron/maven/pejoy-compress/images/download.svg) |     image compress      |
+|      Name      |                           Version                            |       Description       |
+| :------------: | :----------------------------------------------------------: | :---------------------: |
+|   pejoy-core   | ![Release](https://api.bintray.com/packages/keep2iron/maven/pejoy-core/images/download.svg) | image selector core lib |
+|  pejoy-fresco  | ![Release](https://api.bintray.com/packages/keep2iron/maven/pejoy-fresco/images/download.svg) |    image load engine    |
+|  pejoy-glide   | ![Release](https://api.bintray.com/packages/keep2iron/maven/pejoy-fresco/images/download.svg) |    image load engine    |
+| pejoy-compress | ![Release](https://api.bintray.com/packages/keep2iron/maven/pejoy-compress/images/download.svg) |     image compress      |
 
 
 
@@ -32,6 +32,9 @@ Pejoy is a well-designed local image and video selector for Android and base on 
 ## Download
 
 gradle:
+
+setp1: add core lib
+
 ```groovy
 dependencies {
     implementation 'io.github.keep2iron:pejoy-core:$latest_version'
@@ -43,7 +46,38 @@ dependencies {
 }
 ```
 
+setp2:add image lib
+
+Glide version
+
+````groovy
+dependencies {
+  implementation 'com.github.bumptech.glide:glide:$latest_version'
+  implementation 'io.github.keep2iron:pejoy-glide:$latest_version'
+  implementation 'io.github.keep2iron:pineapple-glide:$latest_version'
+}
+````
+
+Fresco version
+
+````groovy
+dependencies {
+  implementation 'com.facebook.fresco:fresco:$latest_version'
+  implementation 'io.github.keep2iron:pejoy-fresco:$latest_version'
+  implementation 'io.github.keep2iron:pineapple-fresco:$latest_version'
+}
+````
+
+optional:add compress image lib
+
+````groovy
+dependencies {
+    implementation 'io.github.keep2iron:pejoy-compress:$latest_version'
+}
+````
+
 ## Simple usage snippet
+
 Two usages
 - [Basic](#Basic)
   Only choose images
@@ -56,21 +90,7 @@ Two usages
 Since fresco is used to load images by default,so use [Pineapple](https://github.com/keep2iron/pineapple) lib load image.
 
 ```kotlin
-ImageLoaderManager.init(
-    application,
-    ImageLoaderConfig(
-        applicationContext,
-        maxCacheCount = 300,									
-        maxCacheSize = (400 * ByteConstants.MB).toLong(),
-		cacheDirName = "cache_images",
-		cacheDirPath =  context.cacheDir
-    ),
-    defaultImageLoaderOptions = ImageLoaderOptions(
-        isCircleImage = true,
-        scaleType = ImageLoaderOptions.ScaleType.FIT_CENTER,
-        placeHolderRes = R.drawable.ic_launcher_background
-    )
-)
+ImageLoaderManager.init(application)
 ```
 
 ##### Basic

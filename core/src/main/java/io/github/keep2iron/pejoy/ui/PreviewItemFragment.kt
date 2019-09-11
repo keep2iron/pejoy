@@ -74,7 +74,6 @@ class PreviewItemFragment : Fragment(), View.OnClickListener {
         Toast.makeText(context, R.string.pejoy_error_no_video_activity, Toast.LENGTH_SHORT)
             .show()
       }
-
     }
   }
 

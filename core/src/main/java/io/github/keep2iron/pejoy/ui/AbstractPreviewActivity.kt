@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.Bundle
@@ -79,6 +80,7 @@ abstract class AbstractPreviewActivity : AppCompatActivity(),
   override fun onCreate(savedInstanceState: Bundle?) {
     setTheme(selectionSpec.themeId)
     super.onCreate(savedInstanceState)
+    window.setBackgroundDrawable(ColorDrawable(Color.BLACK))
 
     if (Platform.hasKitKat()) {
       window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
@@ -277,7 +279,6 @@ abstract class AbstractPreviewActivity : AppCompatActivity(),
         buttonApply.text = getString(R.string.pejoy_button_apply, selectCount)
       }
     }
-
   }
 
   private fun assertAddSelection(

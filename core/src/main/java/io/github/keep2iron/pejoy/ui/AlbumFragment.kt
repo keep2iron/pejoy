@@ -11,7 +11,6 @@ import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -245,7 +244,6 @@ open class AlbumFragment : Fragment(), View.OnClickListener {
         ).show()
       }
     }
-
   }
 
   private fun initRecyclerView() {
@@ -265,7 +263,6 @@ open class AlbumFragment : Fragment(), View.OnClickListener {
     }
     recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
       override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-        Log.d("tag", "newState : ${newState}")
         when (newState) {
           RecyclerView.SCROLL_STATE_IDLE -> {
             SelectionSpec.instance.requireImageEngine().resume(requireContext().applicationContext)

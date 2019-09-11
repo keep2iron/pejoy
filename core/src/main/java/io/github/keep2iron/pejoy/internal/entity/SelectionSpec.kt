@@ -117,6 +117,5 @@ class SelectionSpec private constructor() {
       selectionSpec.reset()
       return selectionSpec
     }
-
   }
 }

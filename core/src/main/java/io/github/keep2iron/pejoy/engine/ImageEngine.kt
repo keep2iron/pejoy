@@ -30,11 +30,11 @@ interface ImageEngine {
   /**
    * Load thumbnail of a static image resource.
    *
-   * @param context     Context
-   * @param resize      Desired size of the origin image
+   * @param context Context
+   * @param resize Desired size of the origin image
    * @param placeholder Placeholder drawable when image is not loaded yet
-   * @param imageView   ImageView widget
-   * @param uri         Uri of the loaded image
+   * @param imageView ImageView widget
+   * @param uri Uri of the loaded image
    */
   fun loadThumbnail(
     context: Context,
@@ -48,11 +48,11 @@ interface ImageEngine {
    * Load thumbnail of a gif image resource. You don't have to load an animated gif when it's only
    * a thumbnail tile.
    *
-   * @param context     Context
-   * @param resize      Desired size of the origin image
+   * @param context Context
+   * @param resize Desired size of the origin image
    * @param placeholder Placeholder drawable when image is not loaded yet
-   * @param imageView   ImageView widget
-   * @param uri         Uri of the loaded image
+   * @param imageView ImageView widget
+   * @param uri Uri of the loaded image
    */
   fun loadGifThumbnail(
     context: Context,
@@ -64,12 +64,11 @@ interface ImageEngine {
 
   /**
    * Load a static image resource.
-   *
-   * @param context   Context
-   * @param resizeX   Desired x-size of the origin image
-   * @param resizeY   Desired y-size of the origin image
+   * @param context Context
+   * @param resizeX Desired x-size of the origin image
+   * @param resizeY Desired y-size of the origin image
    * @param imageView ImageView widget
-   * @param uri       Uri of the loaded image
+   * @param uri Uri of the loaded image
    */
   fun loadImage(
     context: Context,
@@ -83,11 +82,11 @@ interface ImageEngine {
   /**
    * Load a gif image resource.
    *
-   * @param context   Context
-   * @param resizeX   Desired x-size of the origin image
-   * @param resizeY   Desired y-size of the origin image
+   * @param context Context
+   * @param resizeX Desired x-size of the origin image
+   * @param resizeY Desired y-size of the origin image
    * @param imageView ImageView widget
-   * @param uri       Uri of the loaded image
+   * @param uri Uri of the loaded image
    */
   fun loadGifImage(
     context: Context,
@@ -110,7 +109,7 @@ interface ImageEngine {
    * 该方法可能会引发OOM
    *
    * @param context 上下文对象
-   * @param path    图片的保存地址
+   * @param path 图片的保存地址
    * @return 根据参数返回一张bitmap
    */
   fun loadBitmapByPath(

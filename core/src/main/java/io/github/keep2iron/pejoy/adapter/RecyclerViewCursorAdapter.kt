@@ -27,7 +27,7 @@ abstract class RecyclerViewCursorAdapter constructor(
   val context: Context,
   protected var cursor: Cursor?
 ) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+  RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   private var mRowIDColumn: Int = 0
 
 //    /**
@@ -61,27 +61,15 @@ abstract class RecyclerViewCursorAdapter constructor(
     holder: RecyclerView.ViewHolder,
     position: Int
   ) {
-    if (!isDataValid(cursor)) {
-      throw IllegalStateException("Cannot bind view holder when cursor is in invalid state.")
-    }
+    check(isDataValid(cursor)) { "Cannot bind view holder when cursor is in invalid state." }
 
-    if (!cursor!!.moveToPosition(position)) {
-      throw IllegalStateException(
-          "Could not move cursor to position " + position
-              + " when trying to bind view holder"
-      )
-    }
+    check(cursor!!.moveToPosition(position)) { "Could not move cursor to position $position when trying to bind view holder" }
 
     render(holder, cursor!!, position)
   }
 
   override fun getItemViewType(position: Int): Int {
-    if (!cursor!!.moveToPosition(position)) {
-      throw IllegalStateException(
-          "Could not move cursor to position " + position
-              + " when trying to get item view type."
-      )
-    }
+    check(cursor!!.moveToPosition(position)) { "Could not move cursor to position $position when trying to get item view type." }
     return getItemViewType(position, cursor!!)
   }
 
@@ -99,17 +87,10 @@ abstract class RecyclerViewCursorAdapter constructor(
   }
 
   override fun getItemId(position: Int): Long {
-    if (!isDataValid(cursor)) {
-      throw IllegalStateException("Cannot lookup item id when cursor is in invalid state.")
-    }
+    check(isDataValid(cursor)) { "Cannot lookup item id when cursor is in invalid state." }
 
     cursor?.let { cursor ->
-      if (!cursor.moveToPosition(position)) {
-        throw IllegalStateException(
-            "Could not move cursor to position " + position
-                + " when trying to get an item id"
-        )
-      }
+      check(cursor.moveToPosition(position)) { "Could not move cursor to position $position when trying to get an item id" }
     }
 
     return cursor!!.getLong(mRowIDColumn)

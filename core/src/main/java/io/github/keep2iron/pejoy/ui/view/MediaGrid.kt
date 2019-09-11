@@ -208,5 +208,4 @@ class MediaGrid @JvmOverloads constructor(
     internal var mViewHolder: RecyclerView.ViewHolder,
     internal var mPosition: Int
   )
-
 }

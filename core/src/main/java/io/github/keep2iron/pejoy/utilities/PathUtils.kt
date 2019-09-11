@@ -21,7 +21,7 @@ object PathUtils {
    * other file-based ContentProviders.
    *
    * @param context The context.
-   * @param uri     The Uri to query.
+   * @param uri The Uri to query.
    * @author paulburke
    */
   @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -35,8 +35,8 @@ object PathUtils {
       if (isExternalStorageDocument(uri)) {
         val docId = DocumentsContract.getDocumentId(uri)
         val split = docId.split(":".toRegex())
-            .dropLastWhile { it.isEmpty() }
-            .toTypedArray()
+          .dropLastWhile { it.isEmpty() }
+          .toTypedArray()
         val type = split[0]
 
         if ("primary".equals(type, ignoreCase = true)) {
@@ -48,15 +48,15 @@ object PathUtils {
 
         val id = DocumentsContract.getDocumentId(uri)
         val contentUri = ContentUris.withAppendedId(
-            Uri.parse("content://downloads/public_downloads"), java.lang.Long.valueOf(id)
+          Uri.parse("content://downloads/public_downloads"), java.lang.Long.valueOf(id)
         )
 
         return getDataColumn(context, contentUri, null, null)
       } else if (isMediaDocument(uri)) { // MediaProvider
         val docId = DocumentsContract.getDocumentId(uri)
         val split = docId.split(":".toRegex())
-            .dropLastWhile { it.isEmpty() }
-            .toTypedArray()
+          .dropLastWhile { it.isEmpty() }
+          .toTypedArray()
         val type = split[0]
 
         var contentUri: Uri? = null
@@ -84,9 +84,9 @@ object PathUtils {
    * Get the value of the data column for this Uri. This is useful for
    * MediaStore Uris, and other file-based ContentProviders.
    *
-   * @param context       The context.
-   * @param uri           The Uri to query.
-   * @param selection     (Optional) Filter used in the query.
+   * @param context The context.
+   * @param uri The Uri to query.
+   * @param selection (Optional) Filter used in the query.
    * @param selectionArgs (Optional) Selection arguments used in the query.
    * @return The value of the _data column, which is typically a file path.
    */

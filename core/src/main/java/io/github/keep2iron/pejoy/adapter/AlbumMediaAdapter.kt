@@ -95,7 +95,7 @@ class AlbumMediaAdapter(
         val drawables = hint.compoundDrawables
         val captureColor =
           getThemeColor(
-              hint.context, R.attr.pejoy_capture_text_color, R.color.pejoy_dracula_capture
+            hint.context, R.attr.pejoy_capture_text_color, R.color.pejoy_dracula_capture
           )
         drawables.indices.forEach {
           val drawable = drawables[it]
@@ -103,7 +103,7 @@ class AlbumMediaAdapter(
             val state = drawable.constantState!!
 
             val newDrawable = state.newDrawable()
-                .mutate()
+              .mutate()
             newDrawable.setColorFilter(captureColor, PorterDuff.Mode.SRC_IN)
             newDrawable.bounds = drawable.bounds
             drawables[it] = newDrawable
@@ -117,13 +117,13 @@ class AlbumMediaAdapter(
 
         val item = Item.valueOf(cursor)
         mediaGrid.preBindMedia(
-            MediaGrid.PreBindInfo(
-                getImageResize(context),
-                placeholder,
-                mSelectionSpec.countable,
-                holder,
-                position
-            )
+          MediaGrid.PreBindInfo(
+            getImageResize(context),
+            placeholder,
+            mSelectionSpec.countable,
+            holder,
+            position
+          )
         )
         mediaGrid.bindMedia(item)
         setCheckStatus(item, mediaGrid)
@@ -139,15 +139,8 @@ class AlbumMediaAdapter(
     payloads: MutableList<Any>
   ) {
     if (payloads.isNotEmpty()) {
-      if (!isDataValid(cursor)) {
-        throw IllegalStateException("Cannot bind view holder when cursor is in invalid state.")
-      }
-      if (!cursor!!.moveToPosition(position)) {
-        throw IllegalStateException(
-            "Could not move cursor to position " + position
-                + " when trying to bind view holder"
-        )
-      }
+      check(isDataValid(cursor)) { "Cannot bind view holder when cursor is in invalid state." }
+      check(cursor!!.moveToPosition(position)) { "Could not move cursor to position $position when trying to bind view holder" }
       val gridView = holder.itemView as MediaGrid
       gridView.setOnMediaGridClickListener(this)
     } else {
@@ -215,8 +208,8 @@ class AlbumMediaAdapter(
       refreshSelection()
     } else {
       if (!model.selectedItemCollection.maxSelectableReached() && assertAddSelection(
-              context, item
-          )
+          context, item
+        )
       ) {
         model.selectedItemCollection.add(item)
         onCheckedViewStateChangeListener?.invoke()
@@ -235,7 +228,7 @@ class AlbumMediaAdapter(
   ) {
     val intent = Intent(context, AlbumPreviewActivity::class.java)
     intent.putExtra(
-        AbstractPreviewActivity.EXTRA_BUNDLE_ITEMS, model.selectedItemCollection.dataWithBundle
+      AbstractPreviewActivity.EXTRA_BUNDLE_ITEMS, model.selectedItemCollection.dataWithBundle
     )
     intent.putExtra(AbstractPreviewActivity.EXTRA_BOOLEAN_ORIGIN_ENABLE, model.originEnabled)
     intent.putExtra(AlbumPreviewActivity.EXTRA_ITEM, item)
@@ -262,7 +255,7 @@ class AlbumMediaAdapter(
       val spanCount = gridLayoutManager.spanCount
       val screenWidth = context.resources.displayMetrics.widthPixels
       val availableWidth = screenWidth - context.resources.getDimensionPixelSize(
-          R.dimen.pejoy_media_grid_spacing
+        R.dimen.pejoy_media_grid_spacing
       ) * (spanCount - 1)
       mImageResize = availableWidth / spanCount
       mImageResize = (mImageResize * mSelectionSpec.thumbnailScale).toInt()

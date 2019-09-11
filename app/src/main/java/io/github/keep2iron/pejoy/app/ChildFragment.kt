@@ -9,7 +9,6 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import io.github.keep2iron.pejoy.MimeType
 import io.github.keep2iron.pejoy.Pejoy
-import io.github.keep2iron.pejoy.engine.ImageEngineImpl
 import keep2iron.github.io.compress.weatherCompressImage
 
 class ChildFragment : Fragment() {
@@ -82,5 +81,4 @@ class ChildFragment : Fragment() {
         }
     }
   }
-
 }

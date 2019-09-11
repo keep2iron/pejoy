@@ -33,7 +33,7 @@ class AlbumLoader private constructor(
   selection: String,
   selectionArgs: Array<String>
 ) :
-    CursorLoader(context, QUERY_URI, PROJECTION, selection, selectionArgs, BUCKET_ORDER_BY) {
+  CursorLoader(context, QUERY_URI, PROJECTION, selection, selectionArgs, BUCKET_ORDER_BY) {
 
   override fun loadInBackground(): Cursor? {
     val albums = super.loadInBackground()
@@ -49,13 +49,13 @@ class AlbumLoader private constructor(
       }
     }
     allAlbum.addRow(
-        arrayOf(
-            Album.ALBUM_ID_ALL,
-            Album.ALBUM_ID_ALL,
-            Album.ALBUM_NAME_ALL,
-            allAlbumCoverPath,
-            totalCount.toString()
-        )
+      arrayOf(
+        Album.ALBUM_ID_ALL,
+        Album.ALBUM_ID_ALL,
+        Album.ALBUM_NAME_ALL,
+        allAlbumCoverPath,
+        totalCount.toString()
+      )
     )
 
     return MergeCursor(arrayOf(allAlbum, albums))
@@ -69,38 +69,38 @@ class AlbumLoader private constructor(
     const val COLUMN_COUNT = "count"
     private val QUERY_URI = MediaStore.Files.getContentUri("external")
     private val COLUMNS = arrayOf(
-        MediaStore.Files.FileColumns._ID,
-        "bucket_id",
-        "bucket_display_name",
-        MediaStore.MediaColumns.DATA,
-        COLUMN_COUNT
+      MediaStore.Files.FileColumns._ID,
+      "bucket_id",
+      "bucket_display_name",
+      MediaStore.MediaColumns.DATA,
+      COLUMN_COUNT
     )
     private val PROJECTION = arrayOf(
-        MediaStore.Files.FileColumns._ID,
-        "bucket_id",
-        "bucket_display_name",
-        MediaStore.MediaColumns.DATA,
-        "COUNT(*) AS $COLUMN_COUNT"
+      MediaStore.Files.FileColumns._ID,
+      "bucket_id",
+      "bucket_display_name",
+      MediaStore.MediaColumns.DATA,
+      "COUNT(*) AS $COLUMN_COUNT"
     )
 
     // === params for showSingleMediaType: false ===
     private const val SELECTION = (
-        "(" + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
-            + " OR "
-            + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)"
-            + " AND " + MediaStore.MediaColumns.SIZE + ">0"
-            + ") GROUP BY (bucket_id")
+      "(" + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?" +
+        " OR " +
+        MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)" +
+        " AND " + MediaStore.MediaColumns.SIZE + ">0" +
+        ") GROUP BY (bucket_id")
     private val SELECTION_ARGS = arrayOf(
-        MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE.toString(),
-        MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO.toString()
+      MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE.toString(),
+      MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO.toString()
     )
     // =============================================
 
     // === params for showSingleMediaType: true ===
     private const val SELECTION_FOR_SINGLE_MEDIA_TYPE = (
-        MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
-            + " AND " + MediaStore.MediaColumns.SIZE + ">0"
-            + ") GROUP BY (bucket_id")
+      MediaStore.Files.FileColumns.MEDIA_TYPE + "=?" +
+        " AND " + MediaStore.MediaColumns.SIZE + ">0" +
+        ") GROUP BY (bucket_id")
 
     private fun getSelectionArgsForSingleMediaType(mediaType: Int): Array<String> {
       return arrayOf(mediaType.toString())
