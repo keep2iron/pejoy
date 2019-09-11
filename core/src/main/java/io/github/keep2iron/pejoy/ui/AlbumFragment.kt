@@ -403,7 +403,8 @@ open class AlbumFragment : Fragment(), View.OnClickListener {
         SelectedItemCollection.STATE_COLLECTION_TYPE,
         SelectedItemCollection.COLLECTION_UNDEFINED
       )
-      val selected = bundle.getParcelableArrayList<Item>(SelectedItemCollection.STATE_SELECTION)
+      val selected =
+        bundle.getParcelableArrayList<Item>(SelectedItemCollection.STATE_SELECTION) ?: ArrayList()
 
       model.selectedItemCollection.overwrite(selected, collectionType)
 

@@ -93,7 +93,7 @@ class Item : Parcelable {
   private constructor(source: Parcel) {
     id = source.readLong()
     mimeType = source.readString() ?: ""
-    contentUri = source.readParcelable(Uri::class.java.classLoader)
+    contentUri = source.readParcelable(Uri::class.java.classLoader) ?: Uri.EMPTY
     size = source.readLong()
     duration = source.readLong()
   }
@@ -152,10 +152,10 @@ class Item : Parcelable {
 
     fun valueOf(cursor: Cursor): Item {
       return Item(
-          cursor.getLong(cursor.getColumnIndex(MediaStore.Files.FileColumns._ID)),
-          cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE)),
-          cursor.getLong(cursor.getColumnIndex(MediaStore.MediaColumns.SIZE)),
-          cursor.getLong(cursor.getColumnIndex("duration"))
+        cursor.getLong(cursor.getColumnIndex(MediaStore.Files.FileColumns._ID)),
+        cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE)),
+        cursor.getLong(cursor.getColumnIndex(MediaStore.MediaColumns.SIZE)),
+        cursor.getLong(cursor.getColumnIndex("duration"))
       )
     }
 

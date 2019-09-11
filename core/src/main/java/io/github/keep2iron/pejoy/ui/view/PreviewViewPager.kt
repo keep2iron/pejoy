@@ -11,7 +11,7 @@ class PreviewViewPager @JvmOverloads constructor(
   context: Context,
   attrs: AttributeSet? = null
 ) :
-    ViewPager(context, attrs) {
+  ViewPager(context, attrs) {
 
   private var onClickListener: OnClickListener? = null
 
@@ -32,7 +32,7 @@ class PreviewViewPager @JvmOverloads constructor(
     return super.dispatchTouchEvent(ev)
   }
 
-  override fun setOnClickListener(onClickListener: OnClickListener) {
+  override fun setOnClickListener(onClickListener: OnClickListener?) {
     this.onClickListener = onClickListener
   }
 
