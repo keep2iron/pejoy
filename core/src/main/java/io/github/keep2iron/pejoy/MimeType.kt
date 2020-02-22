@@ -187,5 +187,17 @@ enum class MimeType(
     fun ofVideo(): Set<MimeType> {
       return EnumSet.of(MPEG, MP4, QUICKTIME, THREEGPP, THREEGPP2, MKV, WEBM, TS, AVI)
     }
+
+    fun isImage(mimeType: String?): Boolean {
+      return mimeType?.startsWith("image") ?: false
+    }
+
+    fun isVideo(mimeType: String?): Boolean {
+      return mimeType?.startsWith("video") ?: false
+    }
+
+    fun isGif(mimeType: String?): Boolean {
+      return if (mimeType == null) false else mimeType == GIF.toString()
+    }
   }
 }

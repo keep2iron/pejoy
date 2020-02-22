@@ -18,16 +18,16 @@ package io.github.keep2iron.pejoy.internal.entity
 
 import android.content.Context
 import android.database.Cursor
+import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
-import android.provider.MediaStore
 import io.github.keep2iron.pejoy.R
 import io.github.keep2iron.pejoy.internal.loader.AlbumLoader
 
 class Album : Parcelable {
 
   val id: String
-  val coverPath: String
+  val coverPath: Uri
   private val mDisplayName: String
 
   var count: Long = 0
@@ -41,7 +41,7 @@ class Album : Parcelable {
 
   internal constructor(
     id: String,
-    coverPath: String,
+    coverPath: Uri ,
     albumName: String,
     count: Long
   ) {
@@ -53,7 +53,7 @@ class Album : Parcelable {
 
   internal constructor(source: Parcel) {
     id = source.readString() ?: ""
-    coverPath = source.readString() ?: ""
+    coverPath = source.readParcelable(Uri::class.java.classLoader)?:Uri.EMPTY
     mDisplayName = source.readString() ?: ""
     count = source.readLong()
   }
@@ -67,7 +67,7 @@ class Album : Parcelable {
     flags: Int
   ) {
     dest.writeString(id)
-    dest.writeString(coverPath)
+    dest.writeParcelable(coverPath,0)
     dest.writeString(mDisplayName)
     dest.writeLong(count)
   }
@@ -102,11 +102,12 @@ class Album : Parcelable {
      * This method is not responsible for managing cursor resource, such as close, iterate, and so on.
      */
     fun valueOf(cursor: Cursor): Album {
+      val column = cursor.getString(cursor.getColumnIndex(AlbumLoader.COLUMN_URI))
       return Album(
-          cursor.getString(cursor.getColumnIndex("bucket_id")),
-          cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DATA)),
-          cursor.getString(cursor.getColumnIndex("bucket_display_name")),
-          cursor.getLong(cursor.getColumnIndex(AlbumLoader.COLUMN_COUNT))
+        cursor.getString(cursor.getColumnIndex("bucket_id")),
+        Uri.parse(column ?: ""),
+        cursor.getString(cursor.getColumnIndex("bucket_display_name")),
+        cursor.getLong(cursor.getColumnIndex(AlbumLoader.COLUMN_COUNT))
       )
     }
   }

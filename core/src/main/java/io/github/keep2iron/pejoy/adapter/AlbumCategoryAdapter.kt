@@ -17,7 +17,6 @@ package io.github.keep2iron.pejoy.adapter
 
 import android.content.Context
 import android.database.Cursor
-import android.net.Uri
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -31,7 +30,6 @@ import io.github.keep2iron.pejoy.internal.entity.SelectionSpec
 import io.github.keep2iron.pejoy.ui.AlbumModel
 import io.github.keep2iron.pejoy.ui.view.PejoyCheckRadioView
 import io.github.keep2iron.pejoy.utilities.getThemeDrawable
-import java.io.File
 
 /**
  * 相册分类
@@ -78,7 +76,7 @@ class AlbumCategoryAdapter(
     SelectionSpec.instance.imageEngine!!.loadThumbnail(
         context, context.resources.getDimensionPixelSize(
         R.dimen.pejoy_media_grid_size
-    ), mPlaceholder, (view as ViewGroup).getChildAt(0), Uri.fromFile(File(album.coverPath))
+    ), mPlaceholder, (view as ViewGroup).getChildAt(0), album.coverPath
     )
     view.findViewById<PejoyCheckRadioView>(R.id.checkRadioView)
         .setChecked(model.currentAlbum.value?.id == album.id)
