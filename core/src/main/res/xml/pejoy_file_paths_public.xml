@@ -15,7 +15,7 @@
   limitations under the License.
   -->
 <paths>
-  <external-path
+  <external-files-path
       name="pejoy_images"
       path="Pictures/"/>
 </paths>

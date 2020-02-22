@@ -14,7 +14,9 @@ class CaptureMediaScanner constructor(
 
   init {
     scanner = MediaScannerConnection(context, this)
-    scanner!!.connect()
+    if(!scanner!!.isConnected) {
+      scanner!!.connect()
+    }
   }
 
   override fun onMediaScannerConnected() {

@@ -41,7 +41,7 @@ class Album : Parcelable {
 
   internal constructor(
     id: String,
-    coverPath: Uri ,
+    coverPath: Uri,
     albumName: String,
     count: Long
   ) {
@@ -53,7 +53,7 @@ class Album : Parcelable {
 
   internal constructor(source: Parcel) {
     id = source.readString() ?: ""
-    coverPath = source.readParcelable(Uri::class.java.classLoader)?:Uri.EMPTY
+    coverPath = source.readParcelable(Uri::class.java.classLoader) ?: Uri.EMPTY
     mDisplayName = source.readString() ?: ""
     count = source.readLong()
   }
@@ -67,7 +67,7 @@ class Album : Parcelable {
     flags: Int
   ) {
     dest.writeString(id)
-    dest.writeParcelable(coverPath,0)
+    dest.writeParcelable(coverPath, 0)
     dest.writeString(mDisplayName)
     dest.writeLong(count)
   }

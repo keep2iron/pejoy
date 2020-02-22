@@ -60,7 +60,7 @@ class MediaStoreCompat(
   ): Intent {
     val captureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
     if (captureIntent.resolveActivity(context.packageManager) != null) {
-      val photoFile: File? = createImageFile()
+      val photoFile: File? = createImageFile(context)
 
       if (photoFile != null) {
         currentPhotoPath = photoFile.absolutePath
@@ -95,7 +95,7 @@ class MediaStoreCompat(
   ) {
     val captureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
     if (captureIntent.resolveActivity(context.packageManager) != null) {
-      val photoFile: File? = createImageFile()
+      val photoFile: File? = createImageFile(context)
 
       if (photoFile != null) {
         currentPhotoPath = photoFile.absolutePath
@@ -131,15 +131,13 @@ class MediaStoreCompat(
     }
   }
 
-  private fun createImageFile(): File? {
+  private fun createImageFile(context:Context): File? {
     // Create an image file name
     val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
     val imageFileName = String.format("JPEG_%s.jpg", timeStamp)
     val storageDir: File?
     if (mCaptureStrategy!!.isPublic) {
-      storageDir = Environment.getExternalStoragePublicDirectory(
-        Environment.DIRECTORY_PICTURES
-      )
+      storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
       if (!storageDir!!.exists()) {
         storageDir.mkdirs()
       }
