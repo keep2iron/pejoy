@@ -1,6 +1,10 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.novoda.bintray-release'
+if (MAVEN_LOCAL.toBoolean()) {
+  apply plugin: 'maven'
+} else {
+  apply plugin: 'com.novoda.bintray-release'
+}
 apply from: '../gradle/klint.gradle'
 
 android {
@@ -59,11 +63,59 @@ dependencies {
   }
 }
 
-publish {
-  userOrg = 'keep2iron'
-  groupId = 'io.github.keep2iron'
-  artifactId = 'pejoy-core'
-  publishVersion = '0.0.4-beta'
-  desc = 'image picker,base on matisse'
-  website = 'https://keep2iron.github.io'
+if (MAVEN_LOCAL.toBoolean()) {
+  group = rootProject.ext.version_group
+  version = rootProject.ext.version_pejoy_core
+
+  uploadArchives {
+    repositories {
+      mavenDeployer {
+        // 唯一标识
+        pom.groupId = rootProject.ext.version_group
+        // 项目名称
+        pom.artifactId = "pejoy-core"
+        repository(url: uri(project.MAVEN_LOCAL_REPO))
+        // 版本号
+        pom.version = rootProject.ext.version_pejoy_core
+      }
+    }
+  }
+
+  // 指定编码
+  tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+  }
+
+  // 打包源码
+  task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+  }
+
+  task javadoc(type: Javadoc) {
+    failOnError false
+    source = android.sourceSets.main.java.sourceFiles
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    classpath += configurations.compile
+  }
+
+// 制作文档(Javadoc)
+  task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+  }
+
+  artifacts {
+    archives sourcesJar
+    archives javadocJar
+  }
+} else {
+  publish {
+    userOrg = 'keep2iron'
+    groupId = rootProject.ext.version_group
+    artifactId = 'pejoy-core'
+    publishVersion =  rootProject.ext.version_pejoy_core
+    desc = 'image picker,base on matisse'
+    website = 'https://keep2iron.github.io'
+  }
 }

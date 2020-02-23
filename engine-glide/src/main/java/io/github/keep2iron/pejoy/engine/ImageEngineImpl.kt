@@ -28,7 +28,6 @@ class ImageEngineImpl : ImageEngine {
       imageWidth = resize
       imageHeight = resize
       scaleType = ImageLoaderOptions.ScaleType.CENTER_CROP
-      placeHolderRes = 0
       placeHolder = placeholder
       isLoadGif = false
     }
@@ -47,7 +46,6 @@ class ImageEngineImpl : ImageEngine {
       imageWidth = resize
       imageHeight = resize
       scaleType = ImageLoaderOptions.ScaleType.CENTER_CROP
-      placeHolderRes = 0
       placeHolder = placeholder
       isLoadGif = true
     }
@@ -65,7 +63,6 @@ class ImageEngineImpl : ImageEngine {
       imageView, uri
     ) {
       scaleType = ImageLoaderOptions.ScaleType.CENTER_CROP
-      placeHolderRes = 0
       placeHolder = placeholder
       isLoadGif = true
     }

@@ -37,13 +37,20 @@ class AlbumLoader private constructor(
   selection: String,
   selectionArgs: Array<String>
 ) :
-  CursorLoader(context, QUERY_URI, if(beforeAndroid10()) PROJECTION else PROJECTION_29, selection, selectionArgs, BUCKET_ORDER_BY) {
+  CursorLoader(
+    context,
+    QUERY_URI,
+    if (beforeAndroid10()) PROJECTION else PROJECTION_29,
+    selection,
+    selectionArgs,
+    BUCKET_ORDER_BY
+  ) {
 
   override fun loadInBackground(): Cursor? {
     val albums = super.loadInBackground()
     val allAlbum = MatrixCursor(COLUMNS)
 
-    if(beforeAndroid10()) {
+    if (beforeAndroid10()) {
       var totalCount = 0
       var allAlbumCoverUri: Uri? = null
       val otherAlbums = MatrixCursor(COLUMNS)
@@ -87,7 +94,7 @@ class AlbumLoader private constructor(
       )
 
       return MergeCursor(arrayOf(allAlbum, otherAlbums))
-    }else {
+    } else {
       var totalCount = 0
       var allAlbumCoverUri: Uri? = null
 
@@ -194,10 +201,11 @@ class AlbumLoader private constructor(
         MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)" +
         " AND " + MediaStore.MediaColumns.SIZE + ">0" +
         ") GROUP BY (bucket_id")
-    private const val SELECTION_29 = ("(" + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
-      + " OR "
-      + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)"
-      + " AND " + MediaStore.MediaColumns.SIZE + ">0")
+    private const val SELECTION_29 = ("(" + MediaStore.Files.FileColumns.MEDIA_TYPE +
+      "=?" +
+      " OR " +
+      MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)" +
+      " AND " + MediaStore.MediaColumns.SIZE + ">0")
     private val SELECTION_ARGS = arrayOf(
       MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE.toString(),
       MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO.toString()
@@ -210,8 +218,9 @@ class AlbumLoader private constructor(
         " AND " + MediaStore.MediaColumns.SIZE + ">0" +
         ") GROUP BY (bucket_id")
     private const val SELECTION_FOR_SINGLE_MEDIA_TYPE_29 =
-      (MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
-        + " AND " + MediaStore.MediaColumns.SIZE + ">0")
+      (MediaStore.Files.FileColumns.MEDIA_TYPE +
+        "=?" +
+        " AND " + MediaStore.MediaColumns.SIZE + ">0")
 
     private fun getSelectionArgsForSingleMediaType(mediaType: Int): Array<String> {
       return arrayOf(mediaType.toString())

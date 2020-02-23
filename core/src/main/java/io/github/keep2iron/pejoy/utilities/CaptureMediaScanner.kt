@@ -14,7 +14,7 @@ class CaptureMediaScanner constructor(
 
   init {
     scanner = MediaScannerConnection(context, this)
-    if(!scanner!!.isConnected) {
+    if (!scanner!!.isConnected) {
       scanner!!.connect()
     }
   }

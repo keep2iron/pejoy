@@ -9,6 +9,14 @@ buildscript {
     classpath deps.kotlin_gradle_plugin
     classpath 'com.novoda:bintray-release:0.9.2'
   }
+
+  ext {
+    version_pejoy_core = '0.0.5-alpha01'
+    version_pejoy_compress = '0.0.5-alpha01'
+    version_pejoy_engin_fresco = '0.0.5-alpha01'
+    version_pejoy_engin_glide = '0.0.5-alpha01'
+    version_group = 'io.github.keep2iron'
+  }
 }
 
 allprojects {

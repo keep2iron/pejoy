@@ -131,7 +131,7 @@ class MediaStoreCompat(
     }
   }
 
-  private fun createImageFile(context:Context): File? {
+  private fun createImageFile(context: Context): File? {
     // Create an image file name
     val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
     val imageFileName = String.format("JPEG_%s.jpg", timeStamp)

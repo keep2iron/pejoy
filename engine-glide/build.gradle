@@ -1,6 +1,10 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.novoda.bintray-release'
+if (MAVEN_LOCAL.toBoolean()) {
+  apply plugin: 'maven'
+} else {
+  apply plugin: 'com.novoda.bintray-release'
+}
 apply from: '../gradle/klint.gradle'
 
 android {
@@ -35,8 +39,8 @@ dependencies {
   implementation fileTree(dir: 'libs', include: ['*.jar'])
 
   compileOnly project(':core')
-  compileOnly "io.github.keep2iron:pineapple-glide:0.0.1"
-  compileOnly 'com.github.bumptech.glide:glide:4.9.0'
+  compileOnly "io.github.keep2iron:pineapple-glide:0.0.2-alpha02"
+  compileOnly 'com.github.bumptech.glide:glide:4.10.0'
   implementation deps.support.app_compat
   implementation deps.kotlin.stdlib_jdk7
   implementation 'com.github.chrisbanes:PhotoView:2.3.0'
@@ -56,11 +60,59 @@ dependencies {
   }
 }
 
-publish {
-  userOrg = 'keep2iron'
-  groupId = 'io.github.keep2iron'
-  artifactId = 'pejoy-glide'
-  publishVersion = '0.0.1-beta'
-  desc = 'image picker,base on matisse'
-  website = 'https://keep2iron.github.io'
+if (MAVEN_LOCAL.toBoolean()) {
+  group = rootProject.ext.version_group
+  version = rootProject.ext.version_pejoy_engin_glide
+
+  uploadArchives {
+    repositories {
+      mavenDeployer {
+        // 唯一标识
+        pom.groupId = rootProject.ext.version_group
+        // 项目名称
+        pom.artifactId = "pejoy-glide"
+        repository(url: uri(project.MAVEN_LOCAL_REPO))
+        // 版本号
+        pom.version = rootProject.ext.version_pejoy_engin_glide
+      }
+    }
+  }
+
+  // 指定编码
+  tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+  }
+
+  // 打包源码
+  task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+  }
+
+  task javadoc(type: Javadoc) {
+    failOnError false
+    source = android.sourceSets.main.java.sourceFiles
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    classpath += configurations.compile
+  }
+
+  // 制作文档(Javadoc)
+  task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+  }
+
+  artifacts {
+    archives sourcesJar
+    archives javadocJar
+  }
+} else {
+  publish {
+    userOrg = 'keep2iron'
+    groupId = rootProject.ext.version_group
+    artifactId = 'pejoy-glide'
+    publishVersion = rootProject.ext.version_pejoy_engin_glide
+    desc = 'image picker,base on matisse'
+    website = 'https://keep2iron.github.io'
+  }
 }
