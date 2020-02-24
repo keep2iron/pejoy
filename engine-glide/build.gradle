@@ -38,8 +38,8 @@ android {
 dependencies {
   implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-  compileOnly project(':core')
-  compileOnly "io.github.keep2iron:pineapple-glide:0.0.2-alpha02"
+  implementation project(':core')
+  implementation "io.github.keep2iron:pineapple-glide:0.0.2-alpha02"
   compileOnly 'com.github.bumptech.glide:glide:4.10.0'
   implementation deps.support.app_compat
   implementation deps.kotlin.stdlib_jdk7

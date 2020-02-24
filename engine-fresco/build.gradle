@@ -39,7 +39,7 @@ dependencies {
   implementation fileTree(dir: 'libs', include: ['*.jar'])
 
   compileOnly project(':core')
-  compileOnly 'io.github.keep2iron:pineapple-fresco:0.0.2-alpha01'
+  implementation 'io.github.keep2iron:pineapple-fresco:0.0.2-alpha01'
   compileOnly deps.fresco
   implementation deps.kotlin.stdlib_jdk7
   implementation 'me.relex:photodraweeview:1.1.3'
