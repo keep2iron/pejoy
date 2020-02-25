@@ -28,21 +28,18 @@ class MainActivity : AppCompatActivity() {
     StrictMode.setVmPolicy(builder.build())
 
 //    setContentView(R.layout.activity_main)
-
-    GlobalScope.launch(Dispatchers.Main) {
-      // 在 UI 线程创建一个新协程
-      ImageLoaderManager.init(
-        application,
-        ImageLoaderConfig(
-          applicationContext,
-          maxCacheCount = 300,
-          maxCacheSize = (400 * Util.MB)
-        ),
-        defaultImageLoaderOptions = {
-          scaleType = ImageLoaderOptions.ScaleType.FIT_CENTER
-        }
-      )
-    }
+    // 在 UI 线程创建一个新协程
+    ImageLoaderManager.init(
+      application,
+      ImageLoaderConfig(
+        applicationContext,
+        maxCacheCount = 300,
+        maxCacheSize = (400 * Util.MB)
+      ),
+      defaultImageLoaderOptions = {
+        scaleType = ImageLoaderOptions.ScaleType.FIT_CENTER
+      }
+    )
 
     supportFragmentManager.beginTransaction()
       .replace(android.R.id.content, ChildFragment())

@@ -35,19 +35,20 @@ dependencies {
   implementation deps.support.constraint_layout
 
   implementation deps.rxjava2
+//  implementation 'com.github.bumptech.glide:glide:4.10.0'
+//  implementation project(':engine-glide')
+//  implementation 'io.github.keep2iron:pineapple-glide:0.0.1'
 
-
-  implementation project(':core')
-
-  implementation 'com.github.bumptech.glide:glide:4.10.0'
-  implementation project(':engine-glide')
-  implementation 'io.github.keep2iron:pineapple-glide:0.0.1'
-
-//  implementation deps.fresco
+  implementation('com.facebook.fresco:fresco:2.1.0') {
+    exclude group: 'com.facebook.soloader', module: 'soloader'
+    exclude group: 'com.facebook.fresco', module: 'soloader'
+  }
 //  implementation project(':engine-fresco')
-//  implementation 'io.github.keep2iron:pineapple-fresco:0.0.1-fix2'
+  implementation('io.github.keep2iron:pejoy-fresco:0.0.6')
+  implementation('io.github.keep2iron:pineapple-fresco:0.0.2')
 
   implementation project(':compress')
+//  implementation 'io.github.keep2iron:pejoy-compress:0.0.5'
 
   testImplementation 'junit:junit:4.12'
   androidTestImplementation 'androidx.test:runner:1.1.0'

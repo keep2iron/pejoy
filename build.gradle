@@ -11,9 +11,9 @@ buildscript {
   }
 
   ext {
-    version_pejoy_core = '0.0.5-alpha01'
-    version_pejoy_compress = '0.0.5-alpha01'
-    version_pejoy_engin_fresco = '0.0.5-alpha01'
+    version_pejoy_core = '0.0.5'
+    version_pejoy_compress = '0.0.5'
+    version_pejoy_engin_fresco = '0.0.5'
     version_pejoy_engin_glide = '0.0.5-alpha01'
     version_group = 'io.github.keep2iron'
   }
@@ -21,6 +21,9 @@ buildscript {
 
 allprojects {
   repositories {
+    maven {
+      url "$rootDir/../maven-local"
+    }
     addRepos(repositories)
   }
 }
