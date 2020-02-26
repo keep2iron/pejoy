@@ -43,8 +43,8 @@ dependencies {
     exclude group: 'com.facebook.soloader', module: 'soloader'
     exclude group: 'com.facebook.fresco', module: 'soloader'
   }
-//  implementation project(':engine-fresco')
-  implementation('io.github.keep2iron:pejoy-fresco:0.0.6')
+  implementation project(':engine-fresco')
+//  implementation('io.github.keep2iron:pejoy-fresco:0.0.6')
   implementation('io.github.keep2iron:pineapple-fresco:0.0.2')
 
   implementation project(':compress')
